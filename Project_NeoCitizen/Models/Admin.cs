@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Project_NeoCitizen.Models
 {
-    class User
+    class Admin
     {
-        public string UserID { get; set; }
+        public string AdminID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
     }

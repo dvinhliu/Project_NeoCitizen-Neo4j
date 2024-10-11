@@ -36,14 +36,14 @@ namespace Project_NeoCitizen
             {
                 try
                 {
-                    var user = await neo4JConnection.LoginAsync(username, password);
+                    var admin = await neo4JConnection.LoginAsync(username, password);
 
-                    if (user != null)
+                    if (admin != null)
                     {
                         MessageBox.Show("Đăng nhập thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         MainForm main = new MainForm();
-                        main.lblID_NV.Text = user.UserID;
-                        main.lblUsername.Text = user.Username;
+                        main.lblID_NV.Text = admin.AdminID;
+                        main.lblUsername.Text = admin.Username;
                         this.Hide();
                         main.ShowDialog();
                     }

@@ -99,5 +99,21 @@ namespace Project_NeoCitizen
             btn_Family.ForeColor = Color.DarkGreen;
             activeForm = null;
         }
+
+        private void btn_Citizen_Click(object sender, EventArgs e)
+        {
+            btnClear();
+            openChildForm(new CitizenForm());
+            btn_Citizen.ForeColor = Color.DarkGreen;
+            activeForm = null;
+        }
+
+        private void btn_Address_Click(object sender, EventArgs e)
+        {
+            btnClear();
+            openChildForm(new AddressForm());
+            btn_Address.ForeColor = Color.DarkGreen;
+            activeForm = null;
+        }
     }
 }

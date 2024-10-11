@@ -8,7 +8,7 @@ namespace Project_NeoCitizen.Models
 {
     class Family
     {
-        public string Id { get; set; }
+        public string FamilyID { get; set; }
         public string FamilyName { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace Project_NeoCitizen
 
                 foreach (var family in await families)
                 {
-                    dgv_Family.Rows.Add(family.Id, family.FamilyName);
+                    dgv_Family.Rows.Add(family.FamilyID, family.FamilyName);
                 }    
             }
             catch (Exception ex)
@@ -70,7 +70,7 @@ namespace Project_NeoCitizen
             }
         }
 
-        private void txt_SearchFamily_TextChanged(object sender, EventArgs e)
+        private async void txt_SearchFamily_TextChangedAsync(object sender, EventArgs e)
         {
             string search = txt_SearchFamily.Text.Trim();
             if (cbb_sortsearch.Text != "")
@@ -81,13 +81,20 @@ namespace Project_NeoCitizen
                 }
                 else
                 {
-                    if (cbb_sortsearch.SelectedItem.ToString() == "ID Gia Đình")
+                    try
                     {
+                        var familes = await neo4JConnection.SearchFamilyAsync(search, cbb_sortsearch.SelectedItem.ToString());
 
+                        dgv_Family.Rows.Clear();
+
+                        foreach (var family in familes)
+                        {
+                            dgv_Family.Rows.Add(family.FamilyID, family.FamilyName);
+                        }    
                     }
-                    else if (cbb_sortsearch.SelectedItem.ToString() == "Tên Gia Đình")
+                    catch (Exception ex)
                     {
-
+                        MessageBox.Show("Đã xảy ra lỗi khi tìm kiếm gia đình: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -96,6 +103,49 @@ namespace Project_NeoCitizen
                 MessageBox.Show("Vui lòng chọn tìm kiếm theo", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+        }
+
+        private void btn_ResetSearch_Click(object sender, EventArgs e)
+        {
+            txt_SearchFamily.Clear();
+        }
+
+        private async void dgv_Family_CellContentClickAsync(object sender, DataGridViewCellEventArgs e)
+        {
+            string colName = dgv_Family.Columns[e.ColumnIndex].Name;
+            if (colName == "Edit")
+            {
+                FamilyModule module = new FamilyModule(this);
+                module.txt_IDF.Text = dgv_Family.Rows[e.RowIndex].Cells[0].Value.ToString();
+                module.txt_FN.Text = dgv_Family.Rows[e.RowIndex].Cells[1].Value.ToString();
+                module.txt_IDF.Focus();
+                module.ShowDialog();
+            }
+            else if (colName == "Delete")
+            {
+                if (MessageBox.Show("Bạn có chắc muốn xóa tài khoản này không?", "Thông Báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        var familyid = dgv_Family.Rows[e.RowIndex].Cells[0].Value.ToString();
+
+                        await neo4JConnection.DeleteFamilyWithManagerAsync(familyid);
+                        MessageBox.Show("Xóa Thành Công", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        GetData();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Đã xảy ra lỗi khi xóa gia đình: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void btn_AddFamily_Click(object sender, EventArgs e)
+        {
+            FamilyModule module = new FamilyModule(this);
+            module.isAddMode = true;
+            module.ShowDialog();
         }
     }
 }

@@ -8,10 +8,9 @@ namespace Project_NeoCitizen.Models
 {
     class Employment
     {
-        public string Id { get; set; }
-        public string Position { get; set; }
+        public string EmploymentID { get; set; }
         public string Company { get; set; }
+        public string Position { get; set; }
         public string StartDate { get; set; }
-        public string EndDate { get; set; }
     }
 }

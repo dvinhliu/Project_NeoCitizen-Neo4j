@@ -47,6 +47,7 @@ namespace Project_NeoCitizen
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_Address = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -76,6 +77,7 @@ namespace Project_NeoCitizen
             this.btn_Citizen.TabIndex = 12;
             this.btn_Citizen.Text = "Công dân";
             this.btn_Citizen.UseVisualStyleBackColor = false;
+            this.btn_Citizen.Click += new System.EventHandler(this.btn_Citizen_Click);
             // 
             // btn_TrangChu
             // 
@@ -97,6 +99,7 @@ namespace Project_NeoCitizen
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btn_Address);
             this.panel3.Controls.Add(this.btn_Employment);
             this.panel3.Controls.Add(this.btn_Education);
             this.panel3.Controls.Add(this.btn_Citizen);
@@ -138,7 +141,7 @@ namespace Project_NeoCitizen
             this.btn_Education.Name = "btn_Education";
             this.btn_Education.Size = new System.Drawing.Size(201, 45);
             this.btn_Education.TabIndex = 13;
-            this.btn_Education.Text = "Giáo dục";
+            this.btn_Education.Text = "CCCD";
             this.btn_Education.UseVisualStyleBackColor = false;
             // 
             // btn_Family
@@ -278,6 +281,24 @@ namespace Project_NeoCitizen
             this.panel1.Size = new System.Drawing.Size(1348, 54);
             this.panel1.TabIndex = 3;
             // 
+            // btn_Address
+            // 
+            this.btn_Address.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
+            this.btn_Address.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Address.FlatAppearance.BorderSize = 0;
+            this.btn_Address.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Address.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Address.ForeColor = System.Drawing.Color.White;
+            this.btn_Address.Image = ((System.Drawing.Image)(resources.GetObject("btn_Address.Image")));
+            this.btn_Address.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Address.Location = new System.Drawing.Point(0, 255);
+            this.btn_Address.Name = "btn_Address";
+            this.btn_Address.Size = new System.Drawing.Size(201, 45);
+            this.btn_Address.TabIndex = 15;
+            this.btn_Address.Text = "Địa chỉ";
+            this.btn_Address.UseVisualStyleBackColor = false;
+            this.btn_Address.Click += new System.EventHandler(this.btn_Address_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -321,6 +342,7 @@ namespace Project_NeoCitizen
         private System.Windows.Forms.Button btn_Education;
         private System.Windows.Forms.Button btn_Family;
         private System.Windows.Forms.Button btn_LogOut;
+        private System.Windows.Forms.Button btn_Address;
     }
 }
 

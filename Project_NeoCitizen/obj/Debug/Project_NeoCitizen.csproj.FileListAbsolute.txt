@@ -30,3 +30,6 @@ D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\bin\Debug\System.Va
 D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.csproj.CopyComplete
 D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.HomeForm.resources
 D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.FamilyForm.resources
+D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.FamilyModule.resources
+D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.AddressForm.resources
+D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.CitizenForm.resources

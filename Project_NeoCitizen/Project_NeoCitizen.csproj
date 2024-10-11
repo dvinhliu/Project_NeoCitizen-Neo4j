@@ -75,11 +75,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddressForm.Designer.cs">
+      <DependentUpon>AddressForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CitizenForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CitizenForm.Designer.cs">
+      <DependentUpon>CitizenForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FamilyForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FamilyForm.Designer.cs">
       <DependentUpon>FamilyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FamilyModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FamilyModule.Designer.cs">
+      <DependentUpon>FamilyModule.cs</DependentUpon>
     </Compile>
     <Compile Include="HomeForm.cs">
       <SubType>Form</SubType>
@@ -101,15 +119,24 @@
     </Compile>
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Citizen.cs" />
-    <Compile Include="Models\Education.cs" />
     <Compile Include="Models\Employment.cs" />
     <Compile Include="Models\Family.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Admin.cs" />
+    <Compile Include="Models\IdentityCard.cs" />
     <Compile Include="Neo4jConnection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddressForm.resx">
+      <DependentUpon>AddressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CitizenForm.resx">
+      <DependentUpon>CitizenForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FamilyForm.resx">
       <DependentUpon>FamilyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FamilyModule.resx">
+      <DependentUpon>FamilyModule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HomeForm.resx">
       <DependentUpon>HomeForm.cs</DependentUpon>
@@ -150,8 +177,10 @@
     <Content Include="Resources\Eye1.png" />
     <Content Include="Resources\Home.png" />
     <Content Include="Resources\icons8-add-administrator-26.png" />
-    <Content Include="Resources\icons8-education-30.png" />
+    <Content Include="Resources\icons8-address-30.png" />
     <Content Include="Resources\icons8-employee-30.png" />
+    <Content Include="Resources\icons8-identity-card-30.png" />
+    <Content Include="Resources\icons8-log-out-30.png" />
     <Content Include="Resources\icons8-reset-26 %281%29.png" />
     <Content Include="Resources\icons8-search-20.png" />
     <Content Include="Resources\icons8-staff-30.png" />

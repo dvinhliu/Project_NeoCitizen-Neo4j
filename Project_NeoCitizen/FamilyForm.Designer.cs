@@ -32,6 +32,11 @@ namespace Project_NeoCitizen
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FamilyForm));
             this.dgv_Family = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Details = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Edit = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Delete = new System.Windows.Forms.DataGridViewImageColumn();
             this.label7 = new System.Windows.Forms.Label();
             this.btn_AddFamily = new System.Windows.Forms.Button();
             this.btn_ResetSearch = new System.Windows.Forms.Button();
@@ -45,10 +50,6 @@ namespace Project_NeoCitizen
             this.txt_IDFamily = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.grpBox_TK = new System.Windows.Forms.GroupBox();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Edit = new System.Windows.Forms.DataGridViewImageColumn();
-            this.Delete = new System.Windows.Forms.DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Family)).BeginInit();
             this.grpBox_Search.SuspendLayout();
             this.grpBox_TK.SuspendLayout();
@@ -74,6 +75,7 @@ namespace Project_NeoCitizen
             this.dgv_Family.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
+            this.Details,
             this.Edit,
             this.Delete});
             this.dgv_Family.EnableHeadersVisualStyles = false;
@@ -86,7 +88,51 @@ namespace Project_NeoCitizen
             this.dgv_Family.RowTemplate.Height = 24;
             this.dgv_Family.Size = new System.Drawing.Size(1147, 439);
             this.dgv_Family.TabIndex = 7;
+            this.dgv_Family.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_Family_CellContentClickAsync);
             this.dgv_Family.SelectionChanged += new System.EventHandler(this.dgv_Family_SelectionChanged);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "ID Gia Đình";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 130;
+            // 
+            // Column2
+            // 
+            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column2.HeaderText = "Tên Gia Đình";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Details
+            // 
+            this.Details.HeaderText = "";
+            this.Details.Image = ((System.Drawing.Image)(resources.GetObject("Details.Image")));
+            this.Details.MinimumWidth = 6;
+            this.Details.Name = "Details";
+            this.Details.ReadOnly = true;
+            this.Details.Width = 125;
+            // 
+            // Edit
+            // 
+            this.Edit.HeaderText = "";
+            this.Edit.Image = ((System.Drawing.Image)(resources.GetObject("Edit.Image")));
+            this.Edit.MinimumWidth = 6;
+            this.Edit.Name = "Edit";
+            this.Edit.ReadOnly = true;
+            this.Edit.Width = 125;
+            // 
+            // Delete
+            // 
+            this.Delete.HeaderText = "";
+            this.Delete.Image = ((System.Drawing.Image)(resources.GetObject("Delete.Image")));
+            this.Delete.MinimumWidth = 6;
+            this.Delete.Name = "Delete";
+            this.Delete.ReadOnly = true;
+            this.Delete.Width = 125;
             // 
             // label7
             // 
@@ -116,6 +162,7 @@ namespace Project_NeoCitizen
             this.btn_AddFamily.Text = "Thêm";
             this.btn_AddFamily.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_AddFamily.UseVisualStyleBackColor = false;
+            this.btn_AddFamily.Click += new System.EventHandler(this.btn_AddFamily_Click);
             // 
             // btn_ResetSearch
             // 
@@ -135,6 +182,7 @@ namespace Project_NeoCitizen
             this.btn_ResetSearch.Text = "Làm mới";
             this.btn_ResetSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_ResetSearch.UseVisualStyleBackColor = false;
+            this.btn_ResetSearch.Click += new System.EventHandler(this.btn_ResetSearch_Click);
             // 
             // label8
             // 
@@ -172,7 +220,7 @@ namespace Project_NeoCitizen
             this.txt_SearchFamily.Name = "txt_SearchFamily";
             this.txt_SearchFamily.Size = new System.Drawing.Size(353, 29);
             this.txt_SearchFamily.TabIndex = 11;
-            this.txt_SearchFamily.TextChanged += new System.EventHandler(this.txt_SearchFamily_TextChanged);
+            this.txt_SearchFamily.TextChanged += new System.EventHandler(this.txt_SearchFamily_TextChangedAsync);
             // 
             // txt_Familyname
             // 
@@ -203,7 +251,7 @@ namespace Project_NeoCitizen
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(189, 25);
+            this.label2.Location = new System.Drawing.Point(184, 25);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(120, 23);
             this.label2.TabIndex = 30;
@@ -223,7 +271,7 @@ namespace Project_NeoCitizen
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(23, 25);
+            this.label1.Location = new System.Drawing.Point(19, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(108, 23);
             this.label1.TabIndex = 28;
@@ -244,41 +292,7 @@ namespace Project_NeoCitizen
             this.grpBox_TK.Size = new System.Drawing.Size(1147, 191);
             this.grpBox_TK.TabIndex = 5;
             this.grpBox_TK.TabStop = false;
-            this.grpBox_TK.Text = "Quản lý gia dình";
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "ID Gia Đình";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 130;
-            // 
-            // Column2
-            // 
-            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column2.HeaderText = "Tên Gia Đình";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            // 
-            // Edit
-            // 
-            this.Edit.HeaderText = "";
-            this.Edit.Image = ((System.Drawing.Image)(resources.GetObject("Edit.Image")));
-            this.Edit.MinimumWidth = 6;
-            this.Edit.Name = "Edit";
-            this.Edit.ReadOnly = true;
-            this.Edit.Width = 188;
-            // 
-            // Delete
-            // 
-            this.Delete.HeaderText = "";
-            this.Delete.Image = ((System.Drawing.Image)(resources.GetObject("Delete.Image")));
-            this.Delete.MinimumWidth = 6;
-            this.Delete.Name = "Delete";
-            this.Delete.ReadOnly = true;
-            this.Delete.Width = 188;
+            this.grpBox_TK.Text = "Quản lý gia đình";
             // 
             // FamilyForm
             // 
@@ -318,6 +332,7 @@ namespace Project_NeoCitizen
         private System.Windows.Forms.GroupBox grpBox_TK;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewImageColumn Details;
         private System.Windows.Forms.DataGridViewImageColumn Edit;
         private System.Windows.Forms.DataGridViewImageColumn Delete;
     }
