@@ -32,6 +32,12 @@ namespace Project_NeoCitizen
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CitizenForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.grpBox_TK = new System.Windows.Forms.GroupBox();
+            this.txt_phone = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txt_gender = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txt_dob = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.btn_AddCitizen = new System.Windows.Forms.Button();
             this.btn_ResetSearch = new System.Windows.Forms.Button();
             this.txt_Citizenname = new System.Windows.Forms.TextBox();
@@ -45,12 +51,6 @@ namespace Project_NeoCitizen
             this.label1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.dgv_Citizen = new System.Windows.Forms.DataGridView();
-            this.txt_dob = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txt_gender = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txt_phone = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -86,6 +86,66 @@ namespace Project_NeoCitizen
             this.grpBox_TK.TabIndex = 8;
             this.grpBox_TK.TabStop = false;
             this.grpBox_TK.Text = "Quản lý công dân";
+            // 
+            // txt_phone
+            // 
+            this.txt_phone.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.txt_phone.Location = new System.Drawing.Point(794, 50);
+            this.txt_phone.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txt_phone.Name = "txt_phone";
+            this.txt_phone.ReadOnly = true;
+            this.txt_phone.Size = new System.Drawing.Size(169, 29);
+            this.txt_phone.TabIndex = 38;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(789, 25);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(45, 23);
+            this.label5.TabIndex = 37;
+            this.label5.Text = "SĐT";
+            // 
+            // txt_gender
+            // 
+            this.txt_gender.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.txt_gender.Location = new System.Drawing.Point(590, 50);
+            this.txt_gender.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txt_gender.Name = "txt_gender";
+            this.txt_gender.ReadOnly = true;
+            this.txt_gender.Size = new System.Drawing.Size(169, 29);
+            this.txt_gender.TabIndex = 36;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(586, 25);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(79, 23);
+            this.label4.TabIndex = 35;
+            this.label4.Text = "Giới tính";
+            // 
+            // txt_dob
+            // 
+            this.txt_dob.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.txt_dob.Location = new System.Drawing.Point(386, 50);
+            this.txt_dob.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txt_dob.Name = "txt_dob";
+            this.txt_dob.ReadOnly = true;
+            this.txt_dob.Size = new System.Drawing.Size(169, 29);
+            this.txt_dob.TabIndex = 34;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(384, 25);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(96, 23);
+            this.label3.TabIndex = 33;
+            this.label3.Text = "Ngày Sinh";
             // 
             // btn_AddCitizen
             // 
@@ -265,66 +325,6 @@ namespace Project_NeoCitizen
             this.dgv_Citizen.TabIndex = 10;
             this.dgv_Citizen.SelectionChanged += new System.EventHandler(this.dgv_Citizen_SelectionChanged);
             // 
-            // txt_dob
-            // 
-            this.txt_dob.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.txt_dob.Location = new System.Drawing.Point(386, 50);
-            this.txt_dob.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txt_dob.Name = "txt_dob";
-            this.txt_dob.ReadOnly = true;
-            this.txt_dob.Size = new System.Drawing.Size(169, 29);
-            this.txt_dob.TabIndex = 34;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(384, 25);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(96, 23);
-            this.label3.TabIndex = 33;
-            this.label3.Text = "Ngày Sinh";
-            // 
-            // txt_gender
-            // 
-            this.txt_gender.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.txt_gender.Location = new System.Drawing.Point(590, 50);
-            this.txt_gender.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txt_gender.Name = "txt_gender";
-            this.txt_gender.ReadOnly = true;
-            this.txt_gender.Size = new System.Drawing.Size(169, 29);
-            this.txt_gender.TabIndex = 36;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(586, 25);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(79, 23);
-            this.label4.TabIndex = 35;
-            this.label4.Text = "Giới tính";
-            // 
-            // txt_phone
-            // 
-            this.txt_phone.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.txt_phone.Location = new System.Drawing.Point(794, 50);
-            this.txt_phone.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txt_phone.Name = "txt_phone";
-            this.txt_phone.ReadOnly = true;
-            this.txt_phone.Size = new System.Drawing.Size(169, 29);
-            this.txt_phone.TabIndex = 38;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(789, 25);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 23);
-            this.label5.TabIndex = 37;
-            this.label5.Text = "SĐT";
-            // 
             // Column1
             // 
             this.Column1.HeaderText = "ID Công Dân";
@@ -372,7 +372,7 @@ namespace Project_NeoCitizen
             this.Details.MinimumWidth = 6;
             this.Details.Name = "Details";
             this.Details.ReadOnly = true;
-            this.Details.Width = 125;
+            this.Details.Width = 60;
             // 
             // Edit
             // 
@@ -381,7 +381,7 @@ namespace Project_NeoCitizen
             this.Edit.MinimumWidth = 6;
             this.Edit.Name = "Edit";
             this.Edit.ReadOnly = true;
-            this.Edit.Width = 125;
+            this.Edit.Width = 60;
             // 
             // Delete
             // 
@@ -390,7 +390,7 @@ namespace Project_NeoCitizen
             this.Delete.MinimumWidth = 6;
             this.Delete.Name = "Delete";
             this.Delete.ReadOnly = true;
-            this.Delete.Width = 125;
+            this.Delete.Width = 60;
             // 
             // CitizenForm
             // 

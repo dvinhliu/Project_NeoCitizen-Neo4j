@@ -115,7 +115,13 @@ namespace Project_NeoCitizen
         private async void dgv_Family_CellContentClickAsync(object sender, DataGridViewCellEventArgs e)
         {
             string colName = dgv_Family.Columns[e.ColumnIndex].Name;
-            if (colName == "Edit")
+            if (colName == "Details")
+            {
+                string familyID = dgv_Family.Rows[e.RowIndex].Cells[0].Value.ToString();
+                DetailFamilyModule module = new DetailFamilyModule(familyID);
+                module.ShowDialog();
+            }    
+            else if (colName == "Edit")
             {
                 FamilyModule module = new FamilyModule(this);
                 module.txt_IDF.Text = dgv_Family.Rows[e.RowIndex].Cells[0].Value.ToString();

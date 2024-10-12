@@ -220,6 +220,102 @@ namespace Project_NeoCitizen
             }
         }
 
+        public async Task<List<Citizen>> GetAllCitizensWithFamilyAsync(string familyID)
+        {
+            var citizens = new List<Citizen>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+            MATCH (c:Citizen)-[:BELONGS_TO]->(f:Family)
+            WHERE f.FamilyID = $familyID
+            RETURN c, f";
+
+                var result = await session.RunAsync(query, new { familyID });
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var citizenNode = record["c"].As<INode>();
+                    var familyNode = record["f"].As<INode>();
+
+                    var citizen = new Citizen
+                    {
+                        CitizenID = citizenNode.Properties["CitizenID"].As<string>(),
+                        FullName = citizenNode.Properties["FullName"].As<string>(),
+                        DateOfBirth = citizenNode.Properties["DateOfBirth"].As<string>(),
+                        Gender = citizenNode.Properties["Gender"].As<string>(),
+                        PhoneNumber = citizenNode.Properties["PhoneNumber"].As<string>(),
+                        Family = new Family
+                        {
+                            FamilyID = familyNode.Properties["FamilyID"].As<string>(),
+                            FamilyName = familyNode.Properties["FamilyName"].As<string>()
+                        }
+                    };
+
+                    citizens.Add(citizen);
+                }
+            }
+            return citizens;
+        }
+        public async Task<List<Citizen>> GetUnlinkedCitizensAsync()
+        {
+            var citizens = new List<Citizen>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                            MATCH (c:Citizen)
+                            WHERE NOT (c)-[:BELONGS_TO]->(:Family)
+                            RETURN c";
+
+                var result = await session.RunAsync(query);
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var citizenNode = record["c"].As<INode>();
+
+                    var citizen = new Citizen
+                    {
+                        CitizenID = citizenNode.Properties["CitizenID"].As<string>(),
+                        FullName = citizenNode.Properties["FullName"].As<string>(),
+                        DateOfBirth = citizenNode.Properties["DateOfBirth"].As<string>(),
+                        Gender = citizenNode.Properties["Gender"].As<string>(),
+                        PhoneNumber = citizenNode.Properties["PhoneNumber"].As<string>()
+                    };
+
+                    citizens.Add(citizen);
+                }
+            }
+
+            return citizens;
+        }
+
+        public async Task AddCitizenToFamilyAsync(string citizenID, string familyID)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                            MATCH (c:Citizen {CitizenID: $citizenID}), (f:Family {FamilyID: $familyID})
+                            MERGE (c)-[:BELONGS_TO]->(f)";
+
+                await session.RunAsync(query, new { citizenID, familyID });
+            }
+        }
+
+        public async Task RemoveCitizenFromFamilyAsync(string citizenID, string familyID)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+            MATCH (c:Citizen {CitizenID: $citizenID})-[r:BELONGS_TO]->(f:Family {FamilyID: $familyID})
+            DELETE r";
+
+                await session.RunAsync(query, new { citizenID, familyID });
+            }
+        }
+
         //Address
         public async Task<List<Address>> GetAllAddressAsync()
         {
@@ -344,27 +440,6 @@ namespace Project_NeoCitizen
                 var result = await session.RunAsync(query, new { familyID = newFamilyID, familyName });
             }
         }
-        //public async Task EditFamilyWithManagerAsync(string familyID, string familyname)
-        //{
-        //    using (var session = _driver.AsyncSession())
-        //    {
-        //        var query = @"
-        //                    MATCH (f:Family {FamilyID: $familyID})
-        //                    SET f.FamilyName = $familyname";
-        //        var result = await session.RunAsync(query, new { familyID, familyname });
-
-        //    }
-        //}
-        //public async Task DeleteFamilyWithManagerAsync(string familyID)
-        //{
-        //    using (var session = _driver.AsyncSession())
-        //    {
-        //        var query = @"
-        //                MATCH (f:Family {FamilyID: $familyID})
-        //                DETACH DELETE f";
-        //        var result = await session.RunAsync(query, new { familyID });
-        //    }
-        //}
 
         //Citizen
         public async Task<List<Citizen>> GetAllCitizenAsync()

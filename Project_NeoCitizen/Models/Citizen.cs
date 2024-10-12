@@ -13,5 +13,10 @@ namespace Project_NeoCitizen.Models
         public string DateOfBirth { get; set; }
         public string Gender { get; set; }
         public string PhoneNumber { get; set; }
+        public Family Family { get; set; }
+        public string IDFullName_ToString()
+        {
+            return $"{CitizenID} - {FullName}";
+        }
     }
 }

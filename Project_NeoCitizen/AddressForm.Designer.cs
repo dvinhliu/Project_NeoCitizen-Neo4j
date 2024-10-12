@@ -30,7 +30,7 @@ namespace Project_NeoCitizen
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddressForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label5 = new System.Windows.Forms.Label();
             this.txt_district = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -38,6 +38,8 @@ namespace Project_NeoCitizen
             this.label3 = new System.Windows.Forms.Label();
             this.txt_city = new System.Windows.Forms.TextBox();
             this.grpBox_TK = new System.Windows.Forms.GroupBox();
+            this.txt_country = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.btn_AddAdrs = new System.Windows.Forms.Button();
             this.btn_ResetSearch = new System.Windows.Forms.Button();
             this.txt_Adrs = new System.Windows.Forms.TextBox();
@@ -51,8 +53,6 @@ namespace Project_NeoCitizen
             this.label1 = new System.Windows.Forms.Label();
             this.dgv_Address = new System.Windows.Forms.DataGridView();
             this.label7 = new System.Windows.Forms.Label();
-            this.txt_country = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -150,6 +150,26 @@ namespace Project_NeoCitizen
             this.grpBox_TK.TabIndex = 11;
             this.grpBox_TK.TabStop = false;
             this.grpBox_TK.Text = "Quản lý địa chỉ";
+            // 
+            // txt_country
+            // 
+            this.txt_country.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.txt_country.Location = new System.Drawing.Point(916, 50);
+            this.txt_country.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txt_country.Name = "txt_country";
+            this.txt_country.ReadOnly = true;
+            this.txt_country.Size = new System.Drawing.Size(169, 29);
+            this.txt_country.TabIndex = 40;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(915, 25);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(86, 23);
+            this.label9.TabIndex = 39;
+            this.label9.Text = "Quốc Gia";
             // 
             // btn_AddAdrs
             // 
@@ -288,14 +308,14 @@ namespace Project_NeoCitizen
             this.dgv_Address.AllowUserToResizeRows = false;
             this.dgv_Address.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_Address.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_Address.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_Address.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_Address.ColumnHeadersHeight = 30;
             this.dgv_Address.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_Address.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -328,26 +348,6 @@ namespace Project_NeoCitizen
             this.label7.Size = new System.Drawing.Size(160, 23);
             this.label7.TabIndex = 12;
             this.label7.Text = "Danh sách địa chỉ";
-            // 
-            // txt_country
-            // 
-            this.txt_country.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.txt_country.Location = new System.Drawing.Point(916, 50);
-            this.txt_country.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txt_country.Name = "txt_country";
-            this.txt_country.ReadOnly = true;
-            this.txt_country.Size = new System.Drawing.Size(169, 29);
-            this.txt_country.TabIndex = 40;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(915, 25);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(86, 23);
-            this.label9.TabIndex = 39;
-            this.label9.Text = "Quốc Gia";
             // 
             // Column1
             // 
@@ -404,7 +404,7 @@ namespace Project_NeoCitizen
             this.Edit.MinimumWidth = 6;
             this.Edit.Name = "Edit";
             this.Edit.ReadOnly = true;
-            this.Edit.Width = 125;
+            this.Edit.Width = 60;
             // 
             // Delete
             // 
@@ -413,7 +413,7 @@ namespace Project_NeoCitizen
             this.Delete.MinimumWidth = 6;
             this.Delete.Name = "Delete";
             this.Delete.ReadOnly = true;
-            this.Delete.Width = 125;
+            this.Delete.Width = 60;
             // 
             // AddressForm
             // 

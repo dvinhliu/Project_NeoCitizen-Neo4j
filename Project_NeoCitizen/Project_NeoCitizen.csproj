@@ -87,6 +87,12 @@
     <Compile Include="CitizenForm.Designer.cs">
       <DependentUpon>CitizenForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DetailFamilyModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DetailFamilyModule.Designer.cs">
+      <DependentUpon>DetailFamilyModule.cs</DependentUpon>
+    </Compile>
     <Compile Include="FamilyForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CitizenForm.resx">
       <DependentUpon>CitizenForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailFamilyModule.resx">
+      <DependentUpon>DetailFamilyModule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FamilyForm.resx">
       <DependentUpon>FamilyForm.cs</DependentUpon>
