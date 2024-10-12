@@ -44,6 +44,7 @@ namespace Project_NeoCitizen
             btn_Family.ForeColor = Color.White;
             btn_Education.ForeColor = Color.White;
             btn_Employment.ForeColor = Color.White;
+            btn_Address.ForeColor = Color.White;
         }
         public string GetDayOfWeekInVietnamese(DayOfWeek dayOfWeek)
         {
