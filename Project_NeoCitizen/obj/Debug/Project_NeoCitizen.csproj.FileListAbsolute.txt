@@ -34,3 +34,4 @@ D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_N
 D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.AddressForm.resources
 D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.CitizenForm.resources
 D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.DetailFamilyModule.resources
+D:\BackupData\BT NOSQL\Project_NeoCitizen\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.AddressModule.resources

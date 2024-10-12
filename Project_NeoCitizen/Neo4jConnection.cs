@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Project_NeoCitizen.Models;
+using System.Windows.Forms;
 
 namespace Project_NeoCitizen
 {
@@ -348,21 +349,37 @@ namespace Project_NeoCitizen
             return lstadress;
         }
 
-        public async Task<List<Family>> SearchAddressAsync(string search, string searchtype)
+        public async Task<List<Address>> SearchAddressAsync(string search, string searchtype)
         {
-            var familes = new List<Family>();
+            var lstadrs = new List<Address>();
 
             using (var session = _driver.AsyncSession())
             {
                 string query = "";
 
-                if (searchtype == "ID Gia Đình")
+                if (searchtype == "ID Địa Chỉ")
                 {
-                    query = "MATCH (f:Family) WHERE f.FamilyID CONTAINS $search RETURN f";
+                    query = "MATCH (a:Address) WHERE a.AddressID CONTAINS $search RETURN a";
                 }
-                else if (searchtype == "Tên Gia Đình")
+                else if (searchtype == "Địa Chỉ")
                 {
-                    query = "MATCH (f:Family) WHERE f.FamilyName CONTAINS $search RETURN f";
+                    query = "MATCH (a:Address) WHERE a.Street CONTAINS $search RETURN a";
+                }
+                else if (searchtype == "Phường")
+                {
+                    query = "MATCH (a:Address) WHERE a.Ward CONTAINS $search RETURN a";
+                }
+                else if (searchtype == "Quận")
+                {
+                    query = "MATCH (a:Address) WHERE a.District CONTAINS $search RETURN a";
+                }
+                else if (searchtype == "Thành Phố")
+                {
+                    query = "MATCH (a:Address) WHERE a.City CONTAINS $search RETURN a";
+                }
+                else if (searchtype == "Quốc Gia")
+                {
+                    query = "MATCH (a:Address) WHERE a.Country CONTAINS $search RETURN a";
                 }
 
                 var result = await session.RunAsync(query, new { search });
@@ -371,16 +388,20 @@ namespace Project_NeoCitizen
 
                 foreach (var record in records)
                 {
-                    var familyNode = record["f"].As<INode>();
-                    var family = new Family
+                    var addresesNode = record["a"].As<INode>();
+                    var address = new Address
                     {
-                        FamilyID = familyNode.Properties["FamilyID"].As<string>(),
-                        FamilyName = familyNode.Properties["FamilyName"].As<string>()
+                        AddressID = addresesNode.Properties["AddressID"].As<string>(),
+                        Street = addresesNode.Properties["Street"].As<string>(),
+                        Ward = addresesNode.Properties["Ward"].As<string>(),
+                        District = addresesNode.Properties["District"].As<string>(),
+                        City = addresesNode.Properties["City"].As<string>(),
+                        Country = addresesNode.Properties["Country"].As<string>()
                     };
-                    familes.Add(family);
+                    lstadrs.Add(address);
                 }
             }
-            return familes;
+            return lstadrs;
         }
         public async Task<List<Address>> GetUnlinkedAddressesAsync()
         {
@@ -417,8 +438,8 @@ namespace Project_NeoCitizen
             using (var session = _driver.AsyncSession())
             {
                 var query = @"
-                        MATCH (e:Address) 
-                        RETURN COALESCE(MAX(toInteger(SUBSTRING(f.AddressID, 1))), 0) AS maxID";
+                        MATCH (a:Address) 
+                        RETURN COALESCE(MAX(toInteger(SUBSTRING(a.AddressID, 1))), 0) AS maxID";
 
                 var result = await session.RunAsync(query);
                 var record = await result.SingleAsync();
@@ -427,17 +448,76 @@ namespace Project_NeoCitizen
                 nextID = maxID == 0 ? 1 : maxID + 1;
 
             }
-            return $"F{nextID.ToString("D3")}";
+            return $"A{nextID.ToString("D3")}";
         }
 
-        public async Task AddAddressWithManagerAsync(string familyName)
+        public async Task<bool> AddAddressWithManagerAsync(string street, string ward, string district, string city, string country)
         {
-            string newFamilyID = await GetNextFamilyIDAsync();
-
             using (var session = _driver.AsyncSession())
             {
-                var query = "CREATE (f:Family {FamilyID: $familyID, FamilyName: $familyName})";
-                var result = await session.RunAsync(query, new { familyID = newFamilyID, familyName });
+                var checkQuery = @"
+                                    MATCH (a:Address)
+                                    WHERE toLower(a.Street) = toLower($street) 
+                                      AND toLower(a.Ward) = toLower($ward)
+                                      AND toLower(a.District) = toLower($district)
+                                      AND toLower(a.City) = toLower($city)
+                                      AND toLower(a.Country) = toLower($country)
+                                    RETURN a";
+
+                var checkResult = await session.RunAsync(checkQuery, new { street, ward, district, city, country });
+                var checkRecords = await checkResult.ToListAsync();
+
+                if (checkRecords.Count > 0)
+                {
+                    MessageBox.Show("Địa chỉ đã tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                string addressID = await GetNextAddressIDAsync();
+
+                var query = @"
+                            CREATE (a:Address {AddressID: $addressID, Street: $street, Ward: $ward, District: $district, City: $city, Country: $country})";
+
+                await session.RunAsync(query, new { addressID, street, ward, district, city, country });
+
+                return true;
+            }
+        }
+        public async Task<bool> EditAddressWithManagerAsync(string addressID, string street, string ward, string district, string city, string country)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var checkQuery = @"
+                                MATCH (a:Address {Street: $street, Ward: $ward, District: $district, City: $city, Country: $country})
+                                WHERE a.AddressID <> $addressID
+                                RETURN a";
+
+                var checkResult = await session.RunAsync(checkQuery, new { addressID, street, ward, district, city, country });
+                var checkRecords = await checkResult.ToListAsync();
+
+                if (checkRecords.Count > 0)
+                {
+                    MessageBox.Show("Địa chỉ đã tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                var query = @"
+                            MATCH (a:Address {AddressID: $addressID})
+                            SET a.Street = $street, a.Ward = $ward, a.District = $district, a.City = $city, a.Country = $country";
+
+                await session.RunAsync(query, new { addressID, street, ward, district, city, country });
+
+                return true;
+            }
+        }
+        public async Task DeleteAddressWithManagerAsync(string addressID)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                            MATCH (a:Address {AddressID: $addressID })
+                            DETACH DELETE a";
+                var result = await session.RunAsync(query, new { addressID });
             }
         }
 

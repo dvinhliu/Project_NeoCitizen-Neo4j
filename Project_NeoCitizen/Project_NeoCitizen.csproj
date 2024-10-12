@@ -81,6 +81,12 @@
     <Compile Include="AddressForm.Designer.cs">
       <DependentUpon>AddressForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddressModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddressModule.Designer.cs">
+      <DependentUpon>AddressModule.cs</DependentUpon>
+    </Compile>
     <Compile Include="CitizenForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +140,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AddressForm.resx">
       <DependentUpon>AddressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddressModule.resx">
+      <DependentUpon>AddressModule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CitizenForm.resx">
       <DependentUpon>CitizenForm.cs</DependentUpon>

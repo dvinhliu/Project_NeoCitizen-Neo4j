@@ -52,7 +52,6 @@ namespace Project_NeoCitizen
             this.txt_IDAdrs = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgv_Address = new System.Windows.Forms.DataGridView();
-            this.label7 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,6 +60,7 @@ namespace Project_NeoCitizen
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Edit = new System.Windows.Forms.DataGridViewImageColumn();
             this.Delete = new System.Windows.Forms.DataGridViewImageColumn();
+            this.label7 = new System.Windows.Forms.Label();
             this.grpBox_TK.SuspendLayout();
             this.grpBox_Search.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Address)).BeginInit();
@@ -189,6 +189,7 @@ namespace Project_NeoCitizen
             this.btn_AddAdrs.Text = "Thêm";
             this.btn_AddAdrs.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_AddAdrs.UseVisualStyleBackColor = false;
+            this.btn_AddAdrs.Click += new System.EventHandler(this.btn_AddAdrs_Click);
             // 
             // btn_ResetSearch
             // 
@@ -208,6 +209,7 @@ namespace Project_NeoCitizen
             this.btn_ResetSearch.Text = "Làm mới";
             this.btn_ResetSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_ResetSearch.UseVisualStyleBackColor = false;
+            this.btn_ResetSearch.Click += new System.EventHandler(this.btn_ResetSearch_Click);
             // 
             // txt_Adrs
             // 
@@ -270,6 +272,7 @@ namespace Project_NeoCitizen
             this.txt_SearchAddress.Name = "txt_SearchAddress";
             this.txt_SearchAddress.Size = new System.Drawing.Size(353, 29);
             this.txt_SearchAddress.TabIndex = 11;
+            this.txt_SearchAddress.TextChanged += new System.EventHandler(this.txt_SearchAddress_TextChangedAsync);
             // 
             // label2
             // 
@@ -337,17 +340,8 @@ namespace Project_NeoCitizen
             this.dgv_Address.RowTemplate.Height = 24;
             this.dgv_Address.Size = new System.Drawing.Size(1147, 439);
             this.dgv_Address.TabIndex = 13;
+            this.dgv_Address.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_Address_CellContentClickAsync);
             this.dgv_Address.SelectionChanged += new System.EventHandler(this.dgv_Address_SelectionChanged);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(7, 195);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(160, 23);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "Danh sách địa chỉ";
             // 
             // Column1
             // 
@@ -414,6 +408,16 @@ namespace Project_NeoCitizen
             this.Delete.Name = "Delete";
             this.Delete.ReadOnly = true;
             this.Delete.Width = 60;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(7, 195);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(160, 23);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Danh sách địa chỉ";
             // 
             // AddressForm
             // 
