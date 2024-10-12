@@ -23,7 +23,7 @@ namespace Project_NeoCitizen
             cbb_sortsearch.Items.Clear();
             foreach (DataGridViewColumn col in dgv_Family.Columns)
             {
-                if (col.CellType != typeof(DataGridViewImageCell))
+                if (col.CellType != typeof(DataGridViewImageCell) && col.Index != 2)
                 {
                     cbb_sortsearch.Items.Add(col.HeaderText);
                 }
@@ -33,13 +33,13 @@ namespace Project_NeoCitizen
         {
             try
             {
-                var families = neo4JConnection.GetAllFamilyAsync();
+                var families = neo4JConnection.GetAllFamilyWithAddressAsync();
 
                 dgv_Family.Rows.Clear();
 
                 foreach (var family in await families)
                 {
-                    dgv_Family.Rows.Add(family.FamilyID, family.FamilyName);
+                    dgv_Family.Rows.Add(family.FamilyID, family.FamilyName, family.Address.GetFullAddress());
                 }    
             }
             catch (Exception ex)
@@ -60,12 +60,14 @@ namespace Project_NeoCitizen
             {
                 txt_IDFamily.Text = dgv_Family.CurrentRow.Cells[0].Value.ToString();
                 txt_Familyname.Text = dgv_Family.CurrentRow.Cells[1].Value.ToString();
+                txt_Address.Text = dgv_Family.CurrentRow.Cells[2].Value.ToString();
                 dgv_Family.Cursor = Cursors.Hand;
             }
             else
             {
                 txt_IDFamily.Clear();
                 txt_Familyname.Clear();
+                txt_Address.Clear();
                 dgv_Family.Cursor = Cursors.Default;
             }
         }
@@ -118,6 +120,17 @@ namespace Project_NeoCitizen
                 FamilyModule module = new FamilyModule(this);
                 module.txt_IDF.Text = dgv_Family.Rows[e.RowIndex].Cells[0].Value.ToString();
                 module.txt_FN.Text = dgv_Family.Rows[e.RowIndex].Cells[1].Value.ToString();
+                var addressValue = dgv_Family.Rows[e.RowIndex].Cells[2].Value.ToString();
+
+                if (module.cbb_FullAdrs.Items.Contains(addressValue))
+                {
+                    module.cbb_FullAdrs.SelectedItem = addressValue;
+                }
+                else
+                {
+                    module.cbb_FullAdrs.Items.Add(addressValue);
+                    module.cbb_FullAdrs.SelectedItem = addressValue;
+                }
                 module.txt_IDF.Focus();
                 module.ShowDialog();
             }

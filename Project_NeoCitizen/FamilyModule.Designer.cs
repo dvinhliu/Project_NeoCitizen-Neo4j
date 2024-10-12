@@ -40,6 +40,8 @@ namespace Project_NeoCitizen
             this.txt_IDF = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbb_FullAdrs = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,7 +88,7 @@ namespace Project_NeoCitizen
             this.btn_huy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_huy.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_huy.ForeColor = System.Drawing.Color.White;
-            this.btn_huy.Location = new System.Drawing.Point(511, 207);
+            this.btn_huy.Location = new System.Drawing.Point(512, 254);
             this.btn_huy.Name = "btn_huy";
             this.btn_huy.Size = new System.Drawing.Size(82, 41);
             this.btn_huy.TabIndex = 47;
@@ -102,7 +104,7 @@ namespace Project_NeoCitizen
             this.btn_sua.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_sua.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_sua.ForeColor = System.Drawing.Color.White;
-            this.btn_sua.Location = new System.Drawing.Point(364, 207);
+            this.btn_sua.Location = new System.Drawing.Point(365, 254);
             this.btn_sua.Name = "btn_sua";
             this.btn_sua.Size = new System.Drawing.Size(82, 41);
             this.btn_sua.TabIndex = 46;
@@ -118,7 +120,7 @@ namespace Project_NeoCitizen
             this.btn_them.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_them.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_them.ForeColor = System.Drawing.Color.White;
-            this.btn_them.Location = new System.Drawing.Point(223, 207);
+            this.btn_them.Location = new System.Drawing.Point(224, 254);
             this.btn_them.Name = "btn_them";
             this.btn_them.Size = new System.Drawing.Size(82, 41);
             this.btn_them.TabIndex = 45;
@@ -149,7 +151,7 @@ namespace Project_NeoCitizen
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 150);
+            this.label2.Location = new System.Drawing.Point(12, 151);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(127, 23);
             this.label2.TabIndex = 40;
@@ -165,10 +167,32 @@ namespace Project_NeoCitizen
             this.label1.TabIndex = 39;
             this.label1.Text = "ID Gia Đình :";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(12, 208);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(76, 23);
+            this.label3.TabIndex = 50;
+            this.label3.Text = "Địa Chỉ:";
+            // 
+            // cbb_FullAdrs
+            // 
+            this.cbb_FullAdrs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbb_FullAdrs.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbb_FullAdrs.FormattingEnabled = true;
+            this.cbb_FullAdrs.Location = new System.Drawing.Point(152, 201);
+            this.cbb_FullAdrs.Name = "cbb_FullAdrs";
+            this.cbb_FullAdrs.Size = new System.Drawing.Size(442, 30);
+            this.cbb_FullAdrs.TabIndex = 51;
+            // 
             // FamilyModule
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(621, 267);
+            this.ClientSize = new System.Drawing.Size(621, 307);
+            this.Controls.Add(this.cbb_FullAdrs);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblTittle);
             this.Controls.Add(this.btn_huy);
@@ -201,5 +225,7 @@ namespace Project_NeoCitizen
         public System.Windows.Forms.TextBox txt_IDF;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.ComboBox cbb_FullAdrs;
     }
 }

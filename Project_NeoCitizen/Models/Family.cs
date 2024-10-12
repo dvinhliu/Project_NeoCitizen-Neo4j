@@ -10,5 +10,6 @@ namespace Project_NeoCitizen.Models
     {
         public string FamilyID { get; set; }
         public string FamilyName { get; set; }
+        public Address Address { get; set; }
     }
 }

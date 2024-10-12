@@ -47,32 +47,46 @@ namespace Project_NeoCitizen
         }
 
         //Family
-        public async Task<List<Family>> GetAllFamilyAsync()
+        public async Task<List<Family>> GetAllFamilyWithAddressAsync()
         {
             var families = new List<Family>();
 
             using (var session = _driver.AsyncSession())
             {
-                var result = await session.RunAsync("MATCH (f:Family) RETURN f");
+                // Truy vấn để lấy gia đình và địa chỉ liên kết
+                var query = @"
+                            MATCH (f:Family)-[:LIVING_AT]->(a:Address)
+                            RETURN f, a";
+
+                var result = await session.RunAsync(query);
 
                 var records = await result.ToListAsync();
 
                 foreach (var record in records)
                 {
                     var familyNode = record["f"].As<INode>();
+                    var addressNode = record["a"].As<INode>();
 
                     var family = new Family
                     {
                         FamilyID = familyNode.Properties["FamilyID"].As<string>(),
-                        FamilyName = familyNode.Properties["FamilyName"].As<string>()
+                        FamilyName = familyNode.Properties["FamilyName"].As<string>(),
+                        Address = new Address
+                        {
+                            Street = addressNode.Properties["Street"].As<string>(),
+                            Ward = addressNode.Properties["Ward"].As<string>(),
+                            District = addressNode.Properties["District"].As<string>(),
+                            City = addressNode.Properties["City"].As<string>(),
+                            Country = addressNode.Properties["Country"].As<string>()
+                        }
                     };
 
                     families.Add(family);
                 }
             }
-
             return families;
         }
+
 
         public async Task<List<Family>> SearchFamilyAsync(string search, string searchtype)
         {
@@ -127,26 +141,72 @@ namespace Project_NeoCitizen
             }
             return $"F{nextID.ToString("D3")}";
         }
-
-        public async Task AddFamilyWithManagerAsync(string familyName)
-        {
-            string newFamilyID = await GetNextFamilyIDAsync();
-
-            using (var session = _driver.AsyncSession())
-            {
-                var query = "CREATE (f:Family {FamilyID: $familyID, FamilyName: $familyName})";
-                var result = await session.RunAsync(query, new { familyID = newFamilyID, familyName });
-            }    
-        }
-        public async Task EditFamilyWithManagerAsync(string familyID, string familyName)
+        public async Task AddFamilyWithAddressAsync(string familyID, string familyName, (string Street, string Ward, string District, string City, string Country) address)
         {
             using (var session = _driver.AsyncSession())
             {
                 var query = @"
-                    MATCH (f:Family {FamilyID: $familyID}) 
-                    SET f.FamilyName = $familyName";
+                MERGE (f:Family {FamilyID: $familyID, FamilyName: $familyName})
+                MERGE (a:Address {Street: $street, Ward: $ward, District: $district, City: $city, Country: $country})
+                MERGE (f)-[:LIVING_AT]->(a)";
 
-                var result = await session.RunAsync(query, new { familyID = familyID, familyName = familyName });
+                var parameters = new Dictionary<string, object>
+                {
+                    { "familyID", familyID },
+                    { "familyName", familyName },
+                    { "street", address.Street },
+                    { "ward", address.Ward },
+                    { "district", address.District },
+                    { "city", address.City },
+                    { "country", address.Country }
+                };
+
+                await session.RunAsync(query, parameters);
+            }
+        }
+
+
+        public async Task EditFamilyWithAddressAsync(string familyID, string familyName, (string Street, string Ward, string District, string City, string Country) address)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                // Cập nhật tên gia đình
+                var query = @"
+                            MATCH (f:Family {FamilyID: $familyID})
+                            SET f.FamilyName = $familyName";
+                await session.RunAsync(query, new { familyID, familyName });
+
+                // Tìm địa chỉ cũ và xóa liên kết
+                var removeLinkQuery = @"
+                                        MATCH (f:Family {FamilyID: $familyID})-[r:LIVING_AT]->(a:Address)
+                                        DETACH DELETE r";
+                await session.RunAsync(removeLinkQuery, new { familyID });
+
+                // Cập nhật hoặc tạo địa chỉ mới
+                var addressQuery = @"
+                                    MERGE (a:Address {Street: $street, Ward: $ward, District: $district, City: $city, Country: $country})";
+                await session.RunAsync(addressQuery, new
+                {
+                    street = address.Street,
+                    ward = address.Ward,
+                    district = address.District,
+                    city = address.City,
+                    country = address.Country
+                });
+
+                // Liên kết gia đình với địa chỉ mới
+                var linkQuery = @"
+                                MATCH (f:Family {FamilyID: $familyID}), (a:Address {Street: $street, Ward: $ward, District: $district, City: $city, Country: $country})
+                                MERGE (f)-[:LIVING_AT]->(a)";
+                await session.RunAsync(linkQuery, new
+                {
+                    familyID,
+                    street = address.Street,
+                    ward = address.Ward,
+                    district = address.District,
+                    city = address.City,
+                    country = address.Country
+                });
             }
         }
         public async Task DeleteFamilyWithManagerAsync(string familyID)
@@ -226,7 +286,35 @@ namespace Project_NeoCitizen
             }
             return familes;
         }
+        public async Task<List<Address>> GetUnlinkedAddressesAsync()
+        {
+            var addresses = new List<Address>();
 
+            using (var session = _driver.AsyncSession())
+            {
+                string query = @"
+                                MATCH (a:Address)
+                                WHERE NOT (a)<-[:LIVING_AT]-(:Family)
+                                RETURN a.Street AS Street, a.Ward AS Ward, a.District AS District, a.City AS City, a.Country AS Country";
+
+                var result = await session.RunAsync(query);
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var address = new Address
+                    {
+                        Street = record["Street"].As<string>(),
+                        Ward = record["Ward"].As<string>(),
+                        District = record["District"].As<string>(),
+                        City = record["City"].As<string>(),
+                        Country = record["Country"].As<string>()
+                    };
+                    addresses.Add(address);
+                }
+            }
+            return addresses;
+        }
         public async Task<string> GetNextAddressIDAsync()
         {
             int nextID;

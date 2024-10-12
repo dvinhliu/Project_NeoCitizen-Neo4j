@@ -14,5 +14,9 @@ namespace Project_NeoCitizen.Models
         public string District { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public string GetFullAddress()
+        {
+            return $"{Street}, {Ward}, {District}, {City}, {Country}";
+        }
     }
 }

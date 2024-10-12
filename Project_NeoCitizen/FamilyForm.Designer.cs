@@ -34,6 +34,7 @@ namespace Project_NeoCitizen
             this.dgv_Family = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Details = new System.Windows.Forms.DataGridViewImageColumn();
             this.Edit = new System.Windows.Forms.DataGridViewImageColumn();
             this.Delete = new System.Windows.Forms.DataGridViewImageColumn();
@@ -50,6 +51,8 @@ namespace Project_NeoCitizen
             this.txt_IDFamily = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.grpBox_TK = new System.Windows.Forms.GroupBox();
+            this.txt_Address = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Family)).BeginInit();
             this.grpBox_Search.SuspendLayout();
             this.grpBox_TK.SuspendLayout();
@@ -75,6 +78,7 @@ namespace Project_NeoCitizen
             this.dgv_Family.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
+            this.Column3,
             this.Details,
             this.Edit,
             this.Delete});
@@ -106,6 +110,14 @@ namespace Project_NeoCitizen
             this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column3.HeaderText = "Địa chỉ";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             // 
             // Details
             // 
@@ -279,6 +291,8 @@ namespace Project_NeoCitizen
             // 
             // grpBox_TK
             // 
+            this.grpBox_TK.Controls.Add(this.txt_Address);
+            this.grpBox_TK.Controls.Add(this.label3);
             this.grpBox_TK.Controls.Add(this.btn_AddFamily);
             this.grpBox_TK.Controls.Add(this.btn_ResetSearch);
             this.grpBox_TK.Controls.Add(this.txt_Familyname);
@@ -293,6 +307,26 @@ namespace Project_NeoCitizen
             this.grpBox_TK.TabIndex = 5;
             this.grpBox_TK.TabStop = false;
             this.grpBox_TK.Text = "Quản lý gia đình";
+            // 
+            // txt_Address
+            // 
+            this.txt_Address.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.txt_Address.Location = new System.Drawing.Point(388, 50);
+            this.txt_Address.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txt_Address.Name = "txt_Address";
+            this.txt_Address.ReadOnly = true;
+            this.txt_Address.Size = new System.Drawing.Size(446, 29);
+            this.txt_Address.TabIndex = 34;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(383, 25);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(69, 23);
+            this.label3.TabIndex = 33;
+            this.label3.Text = "Địa Chỉ";
             // 
             // FamilyForm
             // 
@@ -332,8 +366,11 @@ namespace Project_NeoCitizen
         private System.Windows.Forms.GroupBox grpBox_TK;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewImageColumn Details;
         private System.Windows.Forms.DataGridViewImageColumn Edit;
         private System.Windows.Forms.DataGridViewImageColumn Delete;
+        private System.Windows.Forms.TextBox txt_Address;
+        private System.Windows.Forms.Label label3;
     }
 }
