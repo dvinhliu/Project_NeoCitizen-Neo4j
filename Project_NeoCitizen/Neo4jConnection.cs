@@ -473,6 +473,87 @@ namespace Project_NeoCitizen
         }
 
         //CCCD
+        public async Task<List<IdentityCard>> GetAllIdentityCardAsync()
+        {
+            var lstInCard = new List<IdentityCard>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                var result = await session.RunAsync("MATCH (id:IdentityCard) RETURN DISTINCT id");
+
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var InCardNode = record["id"].As<INode>();
+
+                    var incard = new IdentityCard
+                    {
+                        IdentityCardID = InCardNode.Properties["IdentityCardID"].As<string>(),
+                        DocumentNumber = InCardNode.Properties["DocumentNumber"].As<string>(),
+                        IssueDate = InCardNode.Properties["IssueDate"].As<string>(),
+                        ExpirationDate = InCardNode.Properties["ExpirationDate"].As<string>(),
+                        IssuedBy = InCardNode.Properties["IssuedBy"].As<string>(),
+                        
+                    };
+
+                    lstInCard.Add(incard);
+                }
+            }
+            return lstInCard;
+        }
+
+        public async Task<List<IdentityCard>> SearchIdentityCardAsync(string search, string searchtype)
+        {
+            var lstIdCard = new List<IdentityCard>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                string query = "";
+
+                if (searchtype == "Mã Công Dân")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.IdentityCardID CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Số CCCD")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.DocumentNumber CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Ngày Cấp Phát")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.IssueDate CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Ngày Hết Hạn")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.ExpirationDate CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Cấp Bởi")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.IssuedBy CONTAINS $search RETURN e";
+                }
+
+                var result = await session.RunAsync(query, new { search });
+
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var InCardNode = record["id"].As<INode>();
+                    var IdCard = new IdentityCard
+                    {
+                        IdentityCardID = InCardNode.Properties["IdentityCardID"].As<string>(),
+                        DocumentNumber = InCardNode.Properties["DocumentNumber"].As<string>(),
+                        IssueDate = InCardNode.Properties["IssueDate"].As<string>(),
+                        ExpirationDate = InCardNode.Properties["ExpirationDate"].As<string>(),
+                        IssuedBy = InCardNode.Properties["IssuedBy"].As<string>(),
+                    };
+                    lstIdCard.Add(IdCard);
+                }
+            }
+            return lstIdCard;
+        }
+
+
 
         //Employment
         public async Task<List<Employment>> GetAllEmploymentAsync()
