@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Project_NeoCitizen.Models;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Project_NeoCitizen
 {
@@ -19,6 +20,78 @@ namespace Project_NeoCitizen
             var password = "ROu0TDunDySRD63bIE16QtTN69KDutFWo68yVfV-brc";  
 
             _driver = GraphDatabase.Driver(uri, AuthTokens.Basic(user, password));
+        }
+
+
+        //BACKUP
+        public async Task BackupNeo4jData(string backupDirectory)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                // Tạo danh sách các loại nút cần sao lưu
+                var nodeTypes = new[] { "Address", "Family", "Citizen", "Employment", "IdentityCard", "Admin" };
+
+                // Sử dụng mã hóa UTF-8
+                using (var writer = new StreamWriter(backupDirectory, false, new UTF8Encoding(true)))
+                {
+                    foreach (var nodeType in nodeTypes)
+                    {
+                        var result = await session.RunAsync($"MATCH (n:{nodeType}) RETURN n");
+                        while (await result.FetchAsync())
+                        {
+                            var node = result.Current["n"].As<INode>();
+                            var properties = node.Properties;
+
+                            // Tạo chuỗi theo định dạng yêu cầu
+                            var propertiesString = string.Join(",", properties.Select(p => $"{p.Key}: {p.Value}"));
+                            await writer.WriteLineAsync($"(:{nodeType} {{{propertiesString}}})");
+                        }
+                    }
+                }
+            }
+        }
+
+        //RESTORE
+        public async Task RestoreNeo4jData(string backupFilePath)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                // Đọc tất cả các dòng trong file CSV với mã hóa UTF-8
+                var lines = await Task.Run(() => File.ReadAllLines(backupFilePath, Encoding.UTF8));
+
+                // Bỏ qua dòng tiêu đề
+                foreach (var line in lines)
+                {
+                    var trimmedLine = line.Trim();
+                    if (string.IsNullOrWhiteSpace(trimmedLine)) continue;
+
+                    // Phân tích cú pháp dòng để lấy loại nút và thuộc tính
+                    var startIndex = trimmedLine.IndexOf('(');
+                    var endIndex = trimmedLine.IndexOf(')');
+
+                    var nodeString = trimmedLine.Substring(startIndex + 1, endIndex - startIndex - 1);
+                    var labelAndProps = nodeString.Split(new[] { '{' }, 2);
+                    var labels = labelAndProps[0].Trim().TrimStart(':').Split(':').Select(l => l.Trim());
+                    var propsString = labelAndProps.Length > 1 ? labelAndProps[1].TrimEnd('}') : "";
+
+                    // Phân tách các thuộc tính
+                    var properties = new Dictionary<string, object>();
+                    foreach (var prop in propsString.Split(','))
+                    {
+                        var keyValue = prop.Split(':');
+                        if (keyValue.Length == 2)
+                        {
+                            var key = keyValue[0].Trim();
+                            var value = keyValue[1].Trim();
+                            properties[key] = value; // Lưu giá trị vào từ điển
+                        }
+                    }
+
+                    // Tạo nút mới và thiết lập các thuộc tính
+                    var createNodeQuery = $"MERGE (n:{string.Join(":", labels)} {{ {string.Join(", ", properties.Select(kvp => $"{kvp.Key}: ${kvp.Key}"))} }})";
+                    await session.RunAsync(createNodeQuery, properties);
+                }
+            }
         }
 
         //LOGIN
@@ -324,7 +397,8 @@ namespace Project_NeoCitizen
 
             using (var session = _driver.AsyncSession())
             {
-                var result = await session.RunAsync("MATCH (a:Address) RETURN a");
+                // Thêm ORDER BY để sắp xếp theo AddressID
+                var result = await session.RunAsync("MATCH (a:Address) RETURN a ORDER BY a.AddressID");
 
                 var records = await result.ToListAsync();
 

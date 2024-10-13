@@ -37,13 +37,21 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Neo4j.Driver, Version=5.25.35.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Neo4j.Driver.5.25.0\lib\netstandard2.0\Neo4j.Driver.dll</HintPath>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Neo4j.Driver, Version=5.18.1.1, Culture=neutral, PublicKeyToken=b646bc66d277ac07, processorArchitecture=MSIL">
+      <HintPath>..\packages\Neo4j.Driver.Signed.5.18.1\lib\netstandard2.0\Neo4j.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Pipelines, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.7.0.0\lib\net462\System.IO.Pipelines.dll</HintPath>
@@ -196,10 +204,12 @@
     <Content Include="Resources\Home.png" />
     <Content Include="Resources\icons8-add-administrator-26.png" />
     <Content Include="Resources\icons8-address-30.png" />
+    <Content Include="Resources\icons8-backup-30.png" />
     <Content Include="Resources\icons8-employee-30.png" />
     <Content Include="Resources\icons8-identity-card-30.png" />
     <Content Include="Resources\icons8-log-out-30.png" />
     <Content Include="Resources\icons8-reset-26 %281%29.png" />
+    <Content Include="Resources\icons8-restore-30.png" />
     <Content Include="Resources\icons8-search-20.png" />
     <Content Include="Resources\icons8-staff-30.png" />
     <Content Include="Resources\icons8-trash-can-26.png" />
