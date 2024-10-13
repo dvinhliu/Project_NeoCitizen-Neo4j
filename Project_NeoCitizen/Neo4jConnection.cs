@@ -475,6 +475,158 @@ namespace Project_NeoCitizen
         //CCCD
 
         //Employment
+        public async Task<List<Employment>> GetAllEmploymentAsync()
+        {
+            var lstEmpl = new List<Employment>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                var result = await session.RunAsync("MATCH (e:Employment) RETURN DISTINCT e");
+
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var EmplNode = record["e"].As<INode>();
+
+                    var employment = new Employment
+                    {
+                        EmploymentID = EmplNode.Properties["EmploymentID"].As<string>(),
+                        Company = EmplNode.Properties["Company"].As<string>(),
+                        Position = EmplNode.Properties["Position"].As<string>(),
+                        StartDate = EmplNode.Properties["StartDate"].As<string>(),
+                    };
+
+                    lstEmpl.Add(employment);
+                }
+            }
+            return lstEmpl;
+        }
+
+
+        public async Task<List<Employment>> SearchEmploymentAsync(string search, string searchtype)
+        {
+            var employments = new List<Employment>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                string query = "";
+
+                if (searchtype == "ID Công Việc")
+                {
+                    query = "MATCH (e:Employment) WHERE e.EmploymentID CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Tên Công Ty")
+                {
+                    query = "MATCH (e:Employment) WHERE e.Company CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Vị Trí")
+                {
+                    query = "MATCH (e:Employment) WHERE e.Position CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Ngày Bắt Đầu Làm Việc")
+                {
+                    query = "MATCH (e:Employment) WHERE e.StartDate CONTAINS $search RETURN e";
+                }
+                
+                var result = await session.RunAsync(query, new { search });
+
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var emplNode = record["e"].As<INode>();
+                    var empl = new Employment
+                    {
+                        EmploymentID = emplNode.Properties["EmploymentID"].As<string>(),
+                        Company = emplNode.Properties["Company"].As<string>(),
+                        Position = emplNode.Properties["Position"].As<string>(),
+                        StartDate= emplNode.Properties["StartDate"].As<string>()
+                    };
+                    employments.Add(empl);
+                }
+            }
+            return employments;
+        }
+
+        public async Task DeleteEmploymentWithManagerAsync(string emplID)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                        MATCH (e:Employment {EmploymentID: $emplID})
+                        DETACH DELETE e";
+                var result = await session.RunAsync(query, new { emplID });
+            }
+        }
+
+        public async Task<string> GetNextEmploymentIDAsync()
+        {
+            int nextID;
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                    MATCH (e:Employment) 
+                    RETURN COALESCE(MAX(toInteger(SUBSTRING(e.EmploymentID, 1))), 0) AS maxID";
+
+                var result = await session.RunAsync(query);
+                var record = await result.SingleAsync();
+
+                int maxID = record["maxID"].As<int>();
+                nextID = maxID == 0 ? 1 : maxID + 1;
+            }
+
+            return $"E{nextID.ToString("D3")}";
+        }
+
+
+        public async Task AddEmploymentAsync(string emplID, string company, string position, string startDate)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                    CREATE (e:Employment {
+                        EmploymentID: $emplID, 
+                        Company: $company, 
+                        Position: $position, 
+                        StartDate: $startDate
+                    })";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    { "emplID", emplID },
+                    { "company", company },
+                    { "position", position },
+                    { "startDate", startDate }
+                };
+
+                await session.RunAsync(query, parameters);
+            }
+        }
+
+        public async Task EditEmploymentAsync(string emplID, string company, string position, string startDate)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                MATCH (e:Employment {EmploymentID: $emplID})
+                SET e.Company = $company,
+                    e.Position = $position,
+                    e.StartDate = $startDate";
+
+                        var parameters = new Dictionary<string, object>
+                {
+                    { "emplID", emplID },
+                    { "company", company },
+                    { "position", position },
+                    { "startDate", startDate }
+                };
+                await session.RunAsync(query, parameters);
+            }
+        }
+
+
+        //Dispose
         public void Dispose()
         {
             _driver?.Dispose();

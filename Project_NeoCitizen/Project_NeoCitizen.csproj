@@ -93,6 +93,18 @@
     <Compile Include="DetailFamilyModule.Designer.cs">
       <DependentUpon>DetailFamilyModule.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmploymentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmploymentForm.Designer.cs">
+      <DependentUpon>EmploymentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmploymentModule.Designer.cs">
+      <DependentUpon>EmploymentModule.cs</DependentUpon>
+    </Compile>
     <Compile Include="FamilyForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,6 +152,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DetailFamilyModule.resx">
       <DependentUpon>DetailFamilyModule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmploymentForm.resx">
+      <DependentUpon>EmploymentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmploymentModule.resx">
+      <DependentUpon>EmploymentModule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FamilyForm.resx">
       <DependentUpon>FamilyForm.cs</DependentUpon>

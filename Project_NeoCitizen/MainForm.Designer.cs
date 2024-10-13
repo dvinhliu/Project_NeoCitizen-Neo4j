@@ -34,6 +34,7 @@ namespace Project_NeoCitizen
             this.btn_Citizen = new System.Windows.Forms.Button();
             this.btn_TrangChu = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btn_Address = new System.Windows.Forms.Button();
             this.btn_Employment = new System.Windows.Forms.Button();
             this.btn_Education = new System.Windows.Forms.Button();
             this.btn_Family = new System.Windows.Forms.Button();
@@ -47,7 +48,6 @@ namespace Project_NeoCitizen
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btn_Address = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -110,6 +110,24 @@ namespace Project_NeoCitizen
             this.panel3.Size = new System.Drawing.Size(201, 533);
             this.panel3.TabIndex = 2;
             // 
+            // btn_Address
+            // 
+            this.btn_Address.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
+            this.btn_Address.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Address.FlatAppearance.BorderSize = 0;
+            this.btn_Address.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Address.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Address.ForeColor = System.Drawing.Color.White;
+            this.btn_Address.Image = ((System.Drawing.Image)(resources.GetObject("btn_Address.Image")));
+            this.btn_Address.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Address.Location = new System.Drawing.Point(0, 255);
+            this.btn_Address.Name = "btn_Address";
+            this.btn_Address.Size = new System.Drawing.Size(201, 45);
+            this.btn_Address.TabIndex = 15;
+            this.btn_Address.Text = "Địa chỉ";
+            this.btn_Address.UseVisualStyleBackColor = false;
+            this.btn_Address.Click += new System.EventHandler(this.btn_Address_Click);
+            // 
             // btn_Employment
             // 
             this.btn_Employment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
@@ -126,6 +144,7 @@ namespace Project_NeoCitizen
             this.btn_Employment.TabIndex = 14;
             this.btn_Employment.Text = "Công việc";
             this.btn_Employment.UseVisualStyleBackColor = false;
+            this.btn_Employment.Click += new System.EventHandler(this.btn_Employment_Click);
             // 
             // btn_Education
             // 
@@ -219,7 +238,7 @@ namespace Project_NeoCitizen
             this.lblID_NV.ForeColor = System.Drawing.Color.White;
             this.lblID_NV.Location = new System.Drawing.Point(351, 9);
             this.lblID_NV.Name = "lblID_NV";
-            this.lblID_NV.Size = new System.Drawing.Size(62, 21);
+            this.lblID_NV.Size = new System.Drawing.Size(48, 17);
             this.lblID_NV.TabIndex = 4;
             this.lblID_NV.Text = "label3";
             // 
@@ -230,7 +249,7 @@ namespace Project_NeoCitizen
             this.lbl_Time.ForeColor = System.Drawing.Color.White;
             this.lbl_Time.Location = new System.Drawing.Point(1169, 12);
             this.lbl_Time.Name = "lbl_Time";
-            this.lbl_Time.Size = new System.Drawing.Size(54, 21);
+            this.lbl_Time.Size = new System.Drawing.Size(42, 17);
             this.lbl_Time.TabIndex = 3;
             this.lbl_Time.Text = "label4";
             // 
@@ -241,7 +260,7 @@ namespace Project_NeoCitizen
             this.lblUsername.ForeColor = System.Drawing.Color.White;
             this.lblUsername.Location = new System.Drawing.Point(351, 30);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(62, 21);
+            this.lblUsername.Size = new System.Drawing.Size(48, 17);
             this.lblUsername.TabIndex = 1;
             this.lblUsername.Text = "label3";
             // 
@@ -262,7 +281,7 @@ namespace Project_NeoCitizen
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(43, 20);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(139, 34);
+            this.label1.Size = new System.Drawing.Size(110, 27);
             this.label1.TabIndex = 0;
             this.label1.Text = "Xin Chào";
             // 
@@ -280,24 +299,6 @@ namespace Project_NeoCitizen
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1348, 54);
             this.panel1.TabIndex = 3;
-            // 
-            // btn_Address
-            // 
-            this.btn_Address.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
-            this.btn_Address.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Address.FlatAppearance.BorderSize = 0;
-            this.btn_Address.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Address.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Address.ForeColor = System.Drawing.Color.White;
-            this.btn_Address.Image = ((System.Drawing.Image)(resources.GetObject("btn_Address.Image")));
-            this.btn_Address.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Address.Location = new System.Drawing.Point(0, 255);
-            this.btn_Address.Name = "btn_Address";
-            this.btn_Address.Size = new System.Drawing.Size(201, 45);
-            this.btn_Address.TabIndex = 15;
-            this.btn_Address.Text = "Địa chỉ";
-            this.btn_Address.UseVisualStyleBackColor = false;
-            this.btn_Address.Click += new System.EventHandler(this.btn_Address_Click);
             // 
             // MainForm
             // 

@@ -115,5 +115,13 @@ namespace Project_NeoCitizen
             btn_Address.ForeColor = Color.DarkGreen;
             activeForm = null;
         }
+
+        private void btn_Employment_Click(object sender, EventArgs e)
+        {
+            btnClear();
+            openChildForm(new EmploymentForm());
+            btn_Employment.ForeColor = Color.DarkGreen;
+            activeForm = null;
+        }
     }
 }
