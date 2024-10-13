@@ -14,9 +14,9 @@ namespace Project_NeoCitizen
         private readonly IDriver _driver;
         public Neo4jConnection()
         {
-            var uri = "bolt://localhost:7687";
+            var uri = "neo4j+s://6a9d1e25.databases.neo4j.io";
             var user = "neo4j";            
-            var password = "12345678";  
+            var password = "ROu0TDunDySRD63bIE16QtTN69KDutFWo68yVfV-brc";  
 
             _driver = GraphDatabase.Driver(uri, AuthTokens.Basic(user, password));
         }

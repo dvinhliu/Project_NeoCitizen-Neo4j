@@ -1,0 +1,4 @@
+# Ignore Visual Studio files
+.vs/
+Project_NeoCitizen/bin/
+Project_NeoCitizen/obj/ 
