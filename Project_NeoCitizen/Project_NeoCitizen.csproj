@@ -93,6 +93,18 @@
     <Compile Include="DetailFamilyModule.Designer.cs">
       <DependentUpon>DetailFamilyModule.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmploymentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmploymentForm.Designer.cs">
+      <DependentUpon>EmploymentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmploymentModule.Designer.cs">
+      <DependentUpon>EmploymentModule.cs</DependentUpon>
+    </Compile>
     <Compile Include="FamilyForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +122,18 @@
     </Compile>
     <Compile Include="HomeForm.Designer.cs">
       <DependentUpon>HomeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IdentityCardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IdentityCardForm.Designer.cs">
+      <DependentUpon>IdentityCardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IdentityCardModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IdentityCardModule.Designer.cs">
+      <DependentUpon>IdentityCardModule.cs</DependentUpon>
     </Compile>
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
@@ -141,6 +165,12 @@
     <EmbeddedResource Include="DetailFamilyModule.resx">
       <DependentUpon>DetailFamilyModule.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EmploymentForm.resx">
+      <DependentUpon>EmploymentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmploymentModule.resx">
+      <DependentUpon>EmploymentModule.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FamilyForm.resx">
       <DependentUpon>FamilyForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -149,6 +179,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HomeForm.resx">
       <DependentUpon>HomeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IdentityCardForm.resx">
+      <DependentUpon>IdentityCardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IdentityCardModule.resx">
+      <DependentUpon>IdentityCardModule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

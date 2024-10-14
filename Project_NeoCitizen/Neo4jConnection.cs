@@ -473,8 +473,317 @@ namespace Project_NeoCitizen
         }
 
         //CCCD
+        public async Task<List<IdentityCard>> GetAllIdentityCardAsync()
+        {
+            var lstInCard = new List<IdentityCard>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                var result = await session.RunAsync("MATCH (id:IdentityCard) RETURN DISTINCT id");
+
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var InCardNode = record["id"].As<INode>();
+
+                    var incard = new IdentityCard
+                    {
+                        IdentityCardID = InCardNode.Properties["IdentityCardID"].As<string>(),
+                        DocumentNumber = InCardNode.Properties["DocumentNumber"].As<string>(),
+                        IssueDate = InCardNode.Properties["IssueDate"].As<string>(),
+                        ExpirationDate = InCardNode.Properties["ExpirationDate"].As<string>(),
+                        IssuedBy = InCardNode.Properties["IssuedBy"].As<string>(),
+                        
+                    };
+
+                    lstInCard.Add(incard);
+                }
+            }
+            return lstInCard;
+        }
+
+        public async Task<List<IdentityCard>> SearchIdentityCardAsync(string search, string searchtype)
+        {
+            var lstIdCard = new List<IdentityCard>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                string query = "";
+
+                if (searchtype == "Mã CCCD")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.IdentityCardID CONTAINS $search RETURN id";
+                }
+                else if (searchtype == "Số CCCD")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.DocumentNumber CONTAINS $search RETURN id";
+                }
+                else if (searchtype == "Ngày Cấp Phát")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.IssueDate CONTAINS $search RETURN id";
+                }
+                else if (searchtype == "Ngày Hết Hạn")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.ExpirationDate CONTAINS $search RETURN id";
+                }
+                else if (searchtype == "Cấp Bởi")
+                {
+                    query = "MATCH (id:IdentityCard) WHERE id.IssuedBy CONTAINS $search RETURN id";
+                }
+
+                var result = await session.RunAsync(query, new { search });
+
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var InCardNode = record["id"].As<INode>();
+                    var IdCard = new IdentityCard
+                    {
+                        IdentityCardID = InCardNode.Properties["IdentityCardID"].As<string>(),
+                        DocumentNumber = InCardNode.Properties["DocumentNumber"].As<string>(),
+                        IssueDate = InCardNode.Properties["IssueDate"].As<string>(),
+                        ExpirationDate = InCardNode.Properties["ExpirationDate"].As<string>(),
+                        IssuedBy = InCardNode.Properties["IssuedBy"].As<string>(),
+                    };
+                    lstIdCard.Add(IdCard);
+                }
+            }
+            return lstIdCard;
+        }
+
+        public async Task<string> GetNextIdentityCardIDAsync()
+        {
+            int nextID;
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                    MATCH (id:IdentityCard) 
+                    RETURN COALESCE(MAX(toInteger(SUBSTRING(id.IdentityCardID, 3))), 0) AS maxID";
+
+                var result = await session.RunAsync(query);
+                var record = await result.SingleAsync();
+
+                int maxID = record["maxID"].As<int>();
+                nextID = maxID == 0 ? 1 : maxID + 1;
+            }
+
+            return $"ID{nextID.ToString("D3")}";
+        }
+
+        public async Task AddIdentityCardAsync(string identityCardID, string documentNumber, string issueDate, string expirationDate, string issuedBy)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                MERGE (id:IdentityCard {IdentityCardID: $identityCardID, DocumentNumber: $documentNumber, IssueDate: $issueDate, ExpirationDate: $expirationDate, IssuedBy: $issuedBy})";
+
+                        var parameters = new Dictionary<string, object>
+                {
+                    { "identityCardID", identityCardID },
+                    { "documentNumber", documentNumber },
+                    { "issueDate", issueDate },
+                    { "expirationDate", expirationDate },
+                    { "issuedBy", issuedBy }
+                };
+
+                await session.RunAsync(query, parameters);
+            }
+        }
+
+        public async Task EditIdentityCardAsync(string identityCardID, string documentNumber, string issueDate, string expirationDate, string issuedBy)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                MATCH (id:IdentityCard {IdentityCardID: $identityCardID})
+                SET id.DocumentNumber = $documentNumber,
+                    id.IssueDate = $issueDate,
+                    id.ExpirationDate = $expirationDate,
+                    id.IssuedBy = $issuedBy";
+
+                        var parameters = new Dictionary<string, object>
+                {
+                    { "identityCardID", identityCardID },
+                    { "documentNumber", documentNumber },
+                    { "issueDate", issueDate },
+                    { "expirationDate", expirationDate },
+                    { "issuedBy", issuedBy }
+                };
+
+                await session.RunAsync(query, parameters);
+            }
+        }
+
+        public async Task DeleteIdentityCardWithManagerAsync(string idCardID)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                        MATCH (id:IdentityCard {IdentityCardID: $idCardID})
+                        DETACH DELETE id";
+                var result = await session.RunAsync(query, new { idCardID });
+            }
+        }
+
+
+
+
 
         //Employment
+        public async Task<List<Employment>> GetAllEmploymentAsync()
+        {
+            var lstEmpl = new List<Employment>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                var result = await session.RunAsync("MATCH (e:Employment) RETURN DISTINCT e");
+
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var EmplNode = record["e"].As<INode>();
+
+                    var employment = new Employment
+                    {
+                        EmploymentID = EmplNode.Properties["EmploymentID"].As<string>(),
+                        Company = EmplNode.Properties["Company"].As<string>(),
+                        Position = EmplNode.Properties["Position"].As<string>(),
+                        StartDate = EmplNode.Properties["StartDate"].As<string>(),
+                    };
+
+                    lstEmpl.Add(employment);
+                }
+            }
+            return lstEmpl;
+        }
+
+
+        public async Task<List<Employment>> SearchEmploymentAsync(string search, string searchtype)
+        {
+            var employments = new List<Employment>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                string query = "";
+
+                if (searchtype == "ID Công Việc")
+                {
+                    query = "MATCH (e:Employment) WHERE e.EmploymentID CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Tên Công Ty")
+                {
+                    query = "MATCH (e:Employment) WHERE e.Company CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Vị Trí")
+                {
+                    query = "MATCH (e:Employment) WHERE e.Position CONTAINS $search RETURN e";
+                }
+                else if (searchtype == "Ngày Bắt Đầu Làm Việc")
+                {
+                    query = "MATCH (e:Employment) WHERE e.StartDate CONTAINS $search RETURN e";
+                }
+                
+                var result = await session.RunAsync(query, new { search });
+
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var emplNode = record["e"].As<INode>();
+                    var empl = new Employment
+                    {
+                        EmploymentID = emplNode.Properties["EmploymentID"].As<string>(),
+                        Company = emplNode.Properties["Company"].As<string>(),
+                        Position = emplNode.Properties["Position"].As<string>(),
+                        StartDate= emplNode.Properties["StartDate"].As<string>()
+                    };
+                    employments.Add(empl);
+                }
+            }
+            return employments;
+        }
+
+        public async Task DeleteEmploymentWithManagerAsync(string emplID)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                        MATCH (e:Employment {EmploymentID: $emplID})
+                        DETACH DELETE e";
+                var result = await session.RunAsync(query, new { emplID });
+            }
+        }
+
+        public async Task<string> GetNextEmploymentIDAsync()
+        {
+            int nextID;
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                    MATCH (e:Employment) 
+                    RETURN COALESCE(MAX(toInteger(SUBSTRING(e.EmploymentID, 1))), 0) AS maxID";
+
+                var result = await session.RunAsync(query);
+                var record = await result.SingleAsync();
+
+                int maxID = record["maxID"].As<int>();
+                nextID = maxID == 0 ? 1 : maxID + 1;
+            }
+
+            return $"E{nextID.ToString("D3")}";
+        }
+
+
+        public async Task AddEmploymentAsync(string emplID, string company, string position, string startDate)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                    CREATE (e:Employment {
+                        EmploymentID: $emplID, 
+                        Company: $company, 
+                        Position: $position, 
+                        StartDate: $startDate
+                    })";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    { "emplID", emplID },
+                    { "company", company },
+                    { "position", position },
+                    { "startDate", startDate }
+                };
+
+                await session.RunAsync(query, parameters);
+            }
+        }
+
+        public async Task EditEmploymentAsync(string emplID, string company, string position, string startDate)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                MATCH (e:Employment {EmploymentID: $emplID})
+                SET e.Company = $company,
+                    e.Position = $position,
+                    e.StartDate = $startDate";
+
+                        var parameters = new Dictionary<string, object>
+                {
+                    { "emplID", emplID },
+                    { "company", company },
+                    { "position", position },
+                    { "startDate", startDate }
+                };
+                await session.RunAsync(query, parameters);
+            }
+        }
+
+
+        //Dispose
         public void Dispose()
         {
             _driver?.Dispose();
