@@ -13,6 +13,7 @@ namespace Project_NeoCitizen
     public partial class IdentityCardModule : Form
     {
         public bool isAddMode = false;
+        public bool isDetail = false;
         private readonly Neo4jConnection neo4JConnection;
         IdentityCardForm fm;
         public IdentityCardModule(IdentityCardForm f)
@@ -30,6 +31,22 @@ namespace Project_NeoCitizen
                 btn_them.Enabled = true;
                 btn_sua.Enabled = false;
                 lblTittle.Text = "THÊM THÔNG TIN CCCD";
+            }
+            else if (isDetail)
+            {
+                lblTittle.Text = "THÔNG TIN CCCD";
+                btn_them.Enabled = false;
+                btn_sua.Enabled = false;
+                btn_huy.Enabled = false;
+                btn_them.Visible = false;
+                btn_sua.Visible = false;
+                btn_huy.Visible = false;
+
+                txt_IDCCCD.Enabled = false;
+                txt_SoCCCD.Enabled = false;
+                txt_NgayCap.Enabled = false;
+                txt_NHH.Enabled = false;
+                txt_CB.Enabled = false;
             }
             else
             {

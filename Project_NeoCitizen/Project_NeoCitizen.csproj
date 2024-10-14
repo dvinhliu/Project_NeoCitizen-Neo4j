@@ -101,6 +101,18 @@
     <Compile Include="CitizenForm.Designer.cs">
       <DependentUpon>CitizenForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CitizenModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CitizenModule.designer.cs">
+      <DependentUpon>CitizenModule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetailCitizenModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DetailCitizenModule.Designer.cs">
+      <DependentUpon>DetailCitizenModule.cs</DependentUpon>
+    </Compile>
     <Compile Include="DetailFamilyModule.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,6 +190,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CitizenForm.resx">
       <DependentUpon>CitizenForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CitizenModule.resx">
+      <DependentUpon>CitizenModule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetailCitizenModule.resx">
+      <DependentUpon>DetailCitizenModule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DetailFamilyModule.resx">
       <DependentUpon>DetailFamilyModule.cs</DependentUpon>

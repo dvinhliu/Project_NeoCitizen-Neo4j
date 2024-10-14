@@ -100,8 +100,14 @@ namespace Project_NeoCitizen
             string colName = dgv_IdentityCard.Columns[e.ColumnIndex].Name;
             if (colName == "Details")
             {
-                string idCard = dgv_IdentityCard.Rows[e.RowIndex].Cells[0].Value.ToString();
-                //module.ShowDialog();
+                IdentityCardModule module = new IdentityCardModule(this);
+                module.isDetail = true;
+                module.txt_IDCCCD.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[0].Value.ToString();
+                module.txt_SoCCCD.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[1].Value.ToString();
+                module.txt_NgayCap.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[2].Value.ToString();
+                module.txt_NHH.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[3].Value.ToString();
+                module.txt_CB.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[4].Value.ToString();
+                module.ShowDialog();
             }
             else if (colName == "Edit")
             {

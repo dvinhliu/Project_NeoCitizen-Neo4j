@@ -694,6 +694,211 @@ namespace Project_NeoCitizen
 
             return lstcitizen;
         }
+        //Search Citizen
+        public async Task<List<Citizen>> SearchCitizenAsync(string search, string searchType)
+        {
+            var citizens = new List<Citizen>();
+
+            using (var session = _driver.AsyncSession())
+            {
+                string query = "";
+
+                switch (searchType)
+                {
+                    case "CitizenID":
+                        query = "MATCH (c:Citizen) WHERE c.CitizenID CONTAINS $search RETURN c";
+                        break;
+                    case "FullName":
+                        query = "MATCH (c:Citizen) WHERE c.FullName CONTAINS $search RETURN c";
+                        break;
+                    case "DateOfBirth":
+                        query = "MATCH (c:Citizen) WHERE c.DateOfBirth CONTAINS $search RETURN c";
+                        break;
+                    case "Gender":
+                        query = "MATCH (c:Citizen) WHERE c.Gender CONTAINS $search RETURN c";
+                        break;
+                    case "PhoneNumber":
+                        query = "MATCH (c:Citizen) WHERE c.PhoneNumber CONTAINS $search RETURN c";
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid search type");
+                }
+
+                var result = await session.RunAsync(query, new { search });
+                var records = await result.ToListAsync();
+
+                foreach (var record in records)
+                {
+                    var citizenNode = record["c"].As<INode>();
+                    var citizen = new Citizen
+                    {
+                        CitizenID = citizenNode.Properties["CitizenID"].As<string>(),
+                        FullName = citizenNode.Properties["FullName"].As<string>(),
+                        DateOfBirth = citizenNode.Properties["DateOfBirth"].As<string>(),
+                        Gender = citizenNode.Properties["Gender"].As<string>(),
+                        PhoneNumber = citizenNode.Properties["PhoneNumber"].As<string>()
+                    };
+                    citizens.Add(citizen);
+                }
+            }
+
+            return citizens;
+        }
+        //ID Auto
+        public async Task<string> GetNextCitizenIDAsync()
+        {
+            int nextID;
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                    MATCH (c:Citizen) 
+                    RETURN COALESCE(MAX(toInteger(SUBSTRING(c.CitizenID, 2))), 0) AS maxID";
+
+                var result = await session.RunAsync(query);
+                var record = await result.SingleAsync();
+
+                int maxID = record["maxID"].As<int>();
+                nextID = maxID == 0 ? 1 : maxID + 1;
+            }
+            return $"C{nextID.ToString("D3")}";
+        }
+        //Add
+        public async Task<bool> AddCitizenAsync(Citizen citizen)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = "CREATE (c:Citizen {CitizenID: $id, FullName: $fullName, PhoneNumber: $phone, Gender: $gender, DateOfBirth: $dob})";
+                var parameters = new
+                {
+                    id = citizen.CitizenID,
+                    fullName = citizen.FullName,
+                    phone = citizen.PhoneNumber,
+                    gender = citizen.Gender,
+                    dob = citizen.DateOfBirth // Thêm ngày sinh
+                };
+
+                try
+                {
+                    await session.RunAsync(query, parameters);
+                    return true; // Thêm thành công
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lỗi khi thêm công dân: {ex.Message}");
+                    return false; // Thêm không thành công
+                }
+            }
+        }
+        //Delete
+        public async Task DeleteCitizenWithManagerAsync(string citizenID)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                        MATCH (c:Citizen {CitizenID: $citizenID})
+                        DETACH DELETE c";
+                var result = await session.RunAsync(query, new { citizenID });
+            }
+        }
+
+        //Detail ID
+        public async Task<Citizen> GetCitizenDetailsByIDAsync(string citizenID)
+        {
+            var query = @"
+        MATCH (c:Citizen {CitizenID: $citizenID})
+        OPTIONAL MATCH (c)-[:BELONGS_TO]->(f:Family)
+        OPTIONAL MATCH (c)-[:LIVING_AT]->(a:Address)
+        OPTIONAL MATCH (c)-[:EMPLOYED_AT]->(e:Employment)
+        OPTIONAL MATCH (c)-[:HAS_DOCUMENT]->(id:IdentityCard)
+        RETURN c, f, a, e, id";
+
+            using (var session = _driver.AsyncSession())
+            {
+                var result = await session.RunAsync(query, new { citizenID });
+
+                Citizen citizen = null;
+                Family family = null;
+                Address address = null;
+                Employment employment = null;
+                IdentityCard identityCard = null;
+
+                while (await result.FetchAsync())
+                {
+                    // Lấy thông tin công dân
+                    var citizenNode = result.Current["c"].As<INode>();
+                    citizen = new Citizen
+                    {
+                        CitizenID = citizenNode.Properties["CitizenID"].As<string>(),
+                        FullName = citizenNode.Properties["FullName"].As<string>(),
+                        Gender = citizenNode.Properties["Gender"].As<string>(),
+                        DateOfBirth = citizenNode.Properties["DateOfBirth"].As<string>(),
+                        PhoneNumber = citizenNode.Properties["PhoneNumber"].As<string>(),
+                    };
+
+                    // Lấy thông tin gia đình (có thể là null)
+                    var familyNode = result.Current["f"].As<INode>();
+                    if (familyNode != null)
+                    {
+                        family = new Family
+                        {
+                            FamilyID = familyNode.Properties["FamilyID"].As<string>(),
+                            FamilyName = familyNode.Properties["FamilyName"].As<string>(),
+                        };
+                    }
+
+                    // Lấy thông tin địa chỉ (có thể là null)
+                    var addressNode = result.Current["a"].As<INode>();
+                    if (addressNode != null)
+                    {
+                        address = new Address
+                        {
+                            AddressID = addressNode.Properties["AddressID"].As<string>(),
+                            Street = addressNode.Properties["Street"].As<string>(),
+                            Ward = addressNode.Properties["Ward"].As<string>(),
+                            District = addressNode.Properties["District"].As<string>(),
+                            City = addressNode.Properties["City"].As<string>(),
+                            Country = addressNode.Properties["Country"].As<string>(),
+                        };
+                    }
+
+                    // Lấy thông tin công việc (có thể là null)
+                    var employmentNode = result.Current["e"].As<INode>();
+                    if (employmentNode != null)
+                    {
+                        employment = new Employment
+                        {
+                            EmploymentID = employmentNode.Properties["EmploymentID"].As<string>(),
+                            Company = employmentNode.Properties["Company"].As<string>(),
+                            Position = employmentNode.Properties["Position"].As<string>(),
+                        };
+                    }
+
+                    // Lấy thông tin giấy tờ nhận dạng (có thể là null)
+                    var idCardNode = result.Current["id"].As<INode>();
+                    if (idCardNode != null)
+                    {
+                        identityCard = new IdentityCard
+                        {
+                            IdentityCardID = idCardNode.Properties["IdentityCardID"].As<string>(),
+                            DocumentNumber = idCardNode.Properties["DocumentNumber"].As<string>(),
+                        };
+                    }
+                }
+
+                // Gán thêm thông tin cho Citizen
+                if (citizen != null)
+                {
+                    citizen.Family = family;
+                    citizen.Address = address;
+                    citizen.Employment = employment;
+                    citizen.IdentityCard = identityCard;
+                }
+
+                return citizen;
+            }
+        }
+
+
 
         //CCCD
         public async Task<List<IdentityCard>> GetAllIdentityCardAsync()
