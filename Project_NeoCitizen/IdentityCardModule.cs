@@ -29,13 +29,13 @@ namespace Project_NeoCitizen
                 txt_IDCCCD.Text = await neo4JConnection.GetNextIdentityCardIDAsync();
                 btn_them.Enabled = true;
                 btn_sua.Enabled = false;
-                lblTittle.Text = "THÊM THÔNG TIN GIA ĐÌNH";
+                lblTittle.Text = "THÊM THÔNG TIN CCCD";
             }
             else
             {
                 btn_sua.Enabled = true;
                 btn_them.Enabled = false;
-                lblTittle.Text = "SỬA THÔNG TIN GIA ĐÌNH";
+                lblTittle.Text = "SỬA THÔNG TIN CCCD";
             }
         }
         public void Clear()

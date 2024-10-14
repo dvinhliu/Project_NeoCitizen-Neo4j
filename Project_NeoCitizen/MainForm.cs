@@ -46,6 +46,7 @@ namespace Project_NeoCitizen
             btn_Family.ForeColor = Color.White;
             btn_IdentityCard.ForeColor = Color.White;
             btn_Employment.ForeColor = Color.White;
+            btn_Address.ForeColor = Color.White;
         }
         public string GetDayOfWeekInVietnamese(DayOfWeek dayOfWeek)
         {
@@ -120,40 +121,62 @@ namespace Project_NeoCitizen
 
         private async void btn_backup_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            using (var dialog = new SaveFileDialog())
             {
-                saveFileDialog.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
-                saveFileDialog.Title = "Chọn nơi lưu và đặt tên file sao lưu";
-                saveFileDialog.FileName = "backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".csv";
+                dialog.Filter = "JSON Files (*.json)|*.json";
+                dialog.Title = "Chọn vị trí tệp sao lưu";
 
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    string backupFilePath = saveFileDialog.FileName;
-                    await neo4JConnection.BackupNeo4jData(backupFilePath);
-
-                    // Hiển thị thông báo sao lưu thành công
-                    MessageBox.Show("Sao lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string backupFilePath = dialog.FileName;
+                    try
+                    {
+                        using (var neo4j = new Neo4jConnection())
+                        {
+                            await neo4j.BackupNeo4jData(backupFilePath);
+                        }
+                        MessageBox.Show("Sao lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Sao lưu thất bại: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
 
         private async void btn_restore_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using (var dialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
-                openFileDialog.Title = "Chọn file CSV để phục hồi";
+                dialog.Filter = "JSON Files (*.json)|*.json";
+                dialog.Title = "Chọn tệp sao lưu để khôi phục";
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    string restoreFilePath = openFileDialog.FileName;
-                    await neo4JConnection.RestoreNeo4jData(restoreFilePath);
+                    string backupFilePath = dialog.FileName;
+                    var confirmResult = MessageBox.Show("Khôi phục dữ liệu sẽ ghi đè lên dữ liệu hiện có. Bạn có muốn tiếp tục không?",
+                                                        "Xác nhận khôi phục",
+                                                        MessageBoxButtons.YesNo,
+                                                        MessageBoxIcon.Warning);
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            using (var neo4j = new Neo4jConnection())
+                            {
+                                await neo4j.RestoreNeo4jData(backupFilePath);
+                            }
+                            MessageBox.Show("Phục hồi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Hiển thị thông báo phục hồi thành công
-                    MessageBox.Show("Phục hồi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Gọi hàm đăng xuất để đăng nhập lại
-                    btn_LogOut_Click(sender, e);
+                            // Gọi hàm đăng xuất khi restore thành công
+                            btn_LogOut_Click(sender, e);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Phục hồi thất bại: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
                 }
             }
         }
