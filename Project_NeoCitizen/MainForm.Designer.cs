@@ -208,7 +208,7 @@ namespace Project_NeoCitizen
             this.btn_LogOut.ForeColor = System.Drawing.Color.White;
             this.btn_LogOut.Image = ((System.Drawing.Image)(resources.GetObject("btn_LogOut.Image")));
             this.btn_LogOut.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_LogOut.Location = new System.Drawing.Point(0, 593);
+            this.btn_LogOut.Location = new System.Drawing.Point(0, 603);
             this.btn_LogOut.Name = "btn_LogOut";
             this.btn_LogOut.Size = new System.Drawing.Size(201, 45);
             this.btn_LogOut.TabIndex = 9;
@@ -250,7 +250,7 @@ namespace Project_NeoCitizen
             this.lbl_Time.AutoSize = true;
             this.lbl_Time.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Time.ForeColor = System.Drawing.Color.White;
-            this.lbl_Time.Location = new System.Drawing.Point(1163, 12);
+            this.lbl_Time.Location = new System.Drawing.Point(1169, 12);
             this.lbl_Time.Name = "lbl_Time";
             this.lbl_Time.Size = new System.Drawing.Size(42, 17);
             this.lbl_Time.TabIndex = 3;
@@ -291,8 +291,6 @@ namespace Project_NeoCitizen
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
-            this.panel1.Controls.Add(this.btn_restore);
-            this.panel1.Controls.Add(this.btn_backup);
             this.panel1.Controls.Add(this.lblID_NV);
             this.panel1.Controls.Add(this.lbl_Time);
             this.panel1.Controls.Add(this.lblUsername);
@@ -385,8 +383,6 @@ namespace Project_NeoCitizen
         private System.Windows.Forms.Button btn_Family;
         private System.Windows.Forms.Button btn_LogOut;
         private System.Windows.Forms.Button btn_Address;
-        private System.Windows.Forms.Button btn_restore;
-        private System.Windows.Forms.Button btn_backup;
     }
 }
 

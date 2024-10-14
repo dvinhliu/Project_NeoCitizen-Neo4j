@@ -12,11 +12,9 @@ namespace Project_NeoCitizen
 {
     public partial class MainForm : Form
     {
-        private readonly Neo4jConnection neo4JConnection;
         public MainForm()
         {
             InitializeComponent();
-            neo4JConnection = new Neo4jConnection();
         }
 
         private Form activeForm = null;
@@ -46,7 +44,6 @@ namespace Project_NeoCitizen
             btn_Family.ForeColor = Color.White;
             btn_IdentityCard.ForeColor = Color.White;
             btn_Employment.ForeColor = Color.White;
-            btn_Address.ForeColor = Color.White;
         }
         public string GetDayOfWeekInVietnamese(DayOfWeek dayOfWeek)
         {
