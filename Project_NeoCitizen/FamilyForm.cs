@@ -110,6 +110,7 @@ namespace Project_NeoCitizen
         private void btn_ResetSearch_Click(object sender, EventArgs e)
         {
             txt_SearchFamily.Clear();
+            cbb_sortsearch.SelectedIndex = -1;
         }
 
         private async void dgv_Family_CellContentClickAsync(object sender, DataGridViewCellEventArgs e)

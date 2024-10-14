@@ -51,20 +51,6 @@ namespace Project_NeoCitizen
             }    
             return false;
         }
-        private async Task LoadUnlinkedAddressesForAutoCompleteAsync()
-        {
-            var unlinkedAddresses = await neo4JConnection.GetUnlinkedAddressesAsync(); // Lấy địa chỉ chưa liên kết từ Neo4j
-            var autoCompleteCollection = new AutoCompleteStringCollection();
-
-            foreach (var address in unlinkedAddresses)
-            {
-                var fullAddress = address.GetFullAddress();
-                autoCompleteCollection.Add(fullAddress);
-            }
-
-            cbb_FullAdrs.AutoCompleteCustomSource = autoCompleteCollection; // Gán nguồn AutoComplete
-            cbb_FullAdrs.DataSource = unlinkedAddresses.Select(a => a.GetFullAddress()).ToList(); // Hiển thị trong ComboBox
-        }
 
         private void btn_huy_Click(object sender, EventArgs e)
         {
