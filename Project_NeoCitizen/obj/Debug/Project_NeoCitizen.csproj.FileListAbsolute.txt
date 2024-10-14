@@ -117,3 +117,6 @@ D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An_NoSQL\Project_NeoCitizen-Neo4j
 D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An_NoSQL\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.csproj.CopyComplete
 D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An_NoSQL\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.exe
 D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An_NoSQL\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.pdb
+D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An_NoSQL\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.csproj.AssemblyReference.cache
+D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An_NoSQL\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.CitizenModule.resources
+D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An_NoSQL\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.DetailCitizenModule.resources
