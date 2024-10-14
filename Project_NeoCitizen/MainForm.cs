@@ -44,7 +44,7 @@ namespace Project_NeoCitizen
             btn_TrangChu.ForeColor = Color.White;
             btn_Citizen.ForeColor = Color.White;
             btn_Family.ForeColor = Color.White;
-            btn_Education.ForeColor = Color.White;
+            btn_IdentityCard.ForeColor = Color.White;
             btn_Employment.ForeColor = Color.White;
             btn_Address.ForeColor = Color.White;
         }
@@ -157,6 +157,21 @@ namespace Project_NeoCitizen
                     btn_LogOut_Click(sender, e);
                 }
             }
+        }
+        private void btn_Employment_Click(object sender, EventArgs e)
+        {
+            btnClear();
+            openChildForm(new EmploymentForm());
+            btn_Employment.ForeColor = Color.DarkGreen;
+            activeForm = null;
+        }
+
+        private void btn_IdentityCard_Click(object sender, EventArgs e)
+        {
+            btnClear();
+            openChildForm(new IdentityCardForm());
+            btn_Employment.ForeColor = Color.DarkGreen;
+            activeForm = null;
         }
     }
 }

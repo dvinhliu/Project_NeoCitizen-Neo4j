@@ -36,7 +36,7 @@ namespace Project_NeoCitizen
             this.panel3 = new System.Windows.Forms.Panel();
             this.btn_Address = new System.Windows.Forms.Button();
             this.btn_Employment = new System.Windows.Forms.Button();
-            this.btn_Education = new System.Windows.Forms.Button();
+            this.btn_IdentityCard = new System.Windows.Forms.Button();
             this.btn_Family = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btn_LogOut = new System.Windows.Forms.Button();
@@ -103,7 +103,7 @@ namespace Project_NeoCitizen
             // 
             this.panel3.Controls.Add(this.btn_Address);
             this.panel3.Controls.Add(this.btn_Employment);
-            this.panel3.Controls.Add(this.btn_Education);
+            this.panel3.Controls.Add(this.btn_IdentityCard);
             this.panel3.Controls.Add(this.btn_Citizen);
             this.panel3.Controls.Add(this.btn_TrangChu);
             this.panel3.Controls.Add(this.btn_Family);
@@ -146,23 +146,25 @@ namespace Project_NeoCitizen
             this.btn_Employment.TabIndex = 14;
             this.btn_Employment.Text = "Công việc";
             this.btn_Employment.UseVisualStyleBackColor = false;
+            this.btn_Employment.Click += new System.EventHandler(this.btn_Employment_Click);
             // 
-            // btn_Education
+            // btn_IdentityCard
             // 
-            this.btn_Education.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
-            this.btn_Education.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Education.FlatAppearance.BorderSize = 0;
-            this.btn_Education.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Education.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Education.ForeColor = System.Drawing.Color.White;
-            this.btn_Education.Image = ((System.Drawing.Image)(resources.GetObject("btn_Education.Image")));
-            this.btn_Education.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Education.Location = new System.Drawing.Point(0, 153);
-            this.btn_Education.Name = "btn_Education";
-            this.btn_Education.Size = new System.Drawing.Size(201, 45);
-            this.btn_Education.TabIndex = 13;
-            this.btn_Education.Text = "CCCD";
-            this.btn_Education.UseVisualStyleBackColor = false;
+            this.btn_IdentityCard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
+            this.btn_IdentityCard.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_IdentityCard.FlatAppearance.BorderSize = 0;
+            this.btn_IdentityCard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_IdentityCard.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_IdentityCard.ForeColor = System.Drawing.Color.White;
+            this.btn_IdentityCard.Image = ((System.Drawing.Image)(resources.GetObject("btn_IdentityCard.Image")));
+            this.btn_IdentityCard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_IdentityCard.Location = new System.Drawing.Point(0, 153);
+            this.btn_IdentityCard.Name = "btn_IdentityCard";
+            this.btn_IdentityCard.Size = new System.Drawing.Size(201, 45);
+            this.btn_IdentityCard.TabIndex = 13;
+            this.btn_IdentityCard.Text = "CCCD";
+            this.btn_IdentityCard.UseVisualStyleBackColor = false;
+            this.btn_IdentityCard.Click += new System.EventHandler(this.btn_IdentityCard_Click);
             // 
             // btn_Family
             // 
@@ -239,7 +241,7 @@ namespace Project_NeoCitizen
             this.lblID_NV.ForeColor = System.Drawing.Color.White;
             this.lblID_NV.Location = new System.Drawing.Point(351, 9);
             this.lblID_NV.Name = "lblID_NV";
-            this.lblID_NV.Size = new System.Drawing.Size(62, 21);
+            this.lblID_NV.Size = new System.Drawing.Size(48, 17);
             this.lblID_NV.TabIndex = 4;
             this.lblID_NV.Text = "label3";
             // 
@@ -250,7 +252,7 @@ namespace Project_NeoCitizen
             this.lbl_Time.ForeColor = System.Drawing.Color.White;
             this.lbl_Time.Location = new System.Drawing.Point(1163, 12);
             this.lbl_Time.Name = "lbl_Time";
-            this.lbl_Time.Size = new System.Drawing.Size(54, 21);
+            this.lbl_Time.Size = new System.Drawing.Size(42, 17);
             this.lbl_Time.TabIndex = 3;
             this.lbl_Time.Text = "label4";
             // 
@@ -261,7 +263,7 @@ namespace Project_NeoCitizen
             this.lblUsername.ForeColor = System.Drawing.Color.White;
             this.lblUsername.Location = new System.Drawing.Point(351, 30);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(62, 21);
+            this.lblUsername.Size = new System.Drawing.Size(48, 17);
             this.lblUsername.TabIndex = 1;
             this.lblUsername.Text = "label3";
             // 
@@ -282,7 +284,7 @@ namespace Project_NeoCitizen
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(43, 20);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(139, 34);
+            this.label1.Size = new System.Drawing.Size(110, 27);
             this.label1.TabIndex = 0;
             this.label1.Text = "Xin Chào";
             // 
@@ -379,7 +381,7 @@ namespace Project_NeoCitizen
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btn_Employment;
-        private System.Windows.Forms.Button btn_Education;
+        private System.Windows.Forms.Button btn_IdentityCard;
         private System.Windows.Forms.Button btn_Family;
         private System.Windows.Forms.Button btn_LogOut;
         private System.Windows.Forms.Button btn_Address;
