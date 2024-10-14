@@ -170,7 +170,7 @@ namespace Project_NeoCitizen
         {
             btnClear();
             openChildForm(new IdentityCardForm());
-            btn_Employment.ForeColor = Color.DarkGreen;
+            btn_IdentityCard.ForeColor = Color.DarkGreen;
             activeForm = null;
         }
     }
