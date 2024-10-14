@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace Project_NeoCitizen
 {
     partial class MainForm
@@ -48,6 +50,8 @@ namespace Project_NeoCitizen
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_restore = new System.Windows.Forms.Button();
+            this.btn_backup = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -301,6 +305,42 @@ namespace Project_NeoCitizen
             this.panel1.Size = new System.Drawing.Size(1348, 54);
             this.panel1.TabIndex = 3;
             // 
+            // btn_restore
+            // 
+            this.btn_restore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
+            this.btn_restore.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_restore.FlatAppearance.BorderSize = 0;
+            this.btn_restore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_restore.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_restore.ForeColor = System.Drawing.Color.White;
+            this.btn_restore.Image = ((System.Drawing.Image)(resources.GetObject("btn_restore.Image")));
+            this.btn_restore.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_restore.Location = new System.Drawing.Point(900, 0);
+            this.btn_restore.Name = "btn_restore";
+            this.btn_restore.Size = new System.Drawing.Size(201, 54);
+            this.btn_restore.TabIndex = 17;
+            this.btn_restore.Text = "Phục hồi";
+            this.btn_restore.UseVisualStyleBackColor = false;
+            this.btn_restore.Click += new System.EventHandler(this.btn_restore_Click);
+            // 
+            // btn_backup
+            // 
+            this.btn_backup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
+            this.btn_backup.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_backup.FlatAppearance.BorderSize = 0;
+            this.btn_backup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_backup.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_backup.ForeColor = System.Drawing.Color.White;
+            this.btn_backup.Image = ((System.Drawing.Image)(resources.GetObject("btn_backup.Image")));
+            this.btn_backup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_backup.Location = new System.Drawing.Point(693, 0);
+            this.btn_backup.Name = "btn_backup";
+            this.btn_backup.Size = new System.Drawing.Size(201, 54);
+            this.btn_backup.TabIndex = 16;
+            this.btn_backup.Text = "Sao lưu";
+            this.btn_backup.UseVisualStyleBackColor = false;
+            this.btn_backup.Click += new System.EventHandler(this.btn_backup_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -340,6 +380,8 @@ namespace Project_NeoCitizen
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
+        private Button btn_restore;
+        private Button btn_backup;
         private System.Windows.Forms.Button btn_Employment;
         private System.Windows.Forms.Button btn_IdentityCard;
         private System.Windows.Forms.Button btn_Family;
