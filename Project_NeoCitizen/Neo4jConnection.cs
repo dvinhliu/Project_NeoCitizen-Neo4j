@@ -511,25 +511,25 @@ namespace Project_NeoCitizen
             {
                 string query = "";
 
-                if (searchtype == "Mã Công Dân")
+                if (searchtype == "Mã CCCD")
                 {
-                    query = "MATCH (id:IdentityCard) WHERE id.IdentityCardID CONTAINS $search RETURN e";
+                    query = "MATCH (id:IdentityCard) WHERE id.IdentityCardID CONTAINS $search RETURN id";
                 }
                 else if (searchtype == "Số CCCD")
                 {
-                    query = "MATCH (id:IdentityCard) WHERE id.DocumentNumber CONTAINS $search RETURN e";
+                    query = "MATCH (id:IdentityCard) WHERE id.DocumentNumber CONTAINS $search RETURN id";
                 }
                 else if (searchtype == "Ngày Cấp Phát")
                 {
-                    query = "MATCH (id:IdentityCard) WHERE id.IssueDate CONTAINS $search RETURN e";
+                    query = "MATCH (id:IdentityCard) WHERE id.IssueDate CONTAINS $search RETURN id";
                 }
                 else if (searchtype == "Ngày Hết Hạn")
                 {
-                    query = "MATCH (id:IdentityCard) WHERE id.ExpirationDate CONTAINS $search RETURN e";
+                    query = "MATCH (id:IdentityCard) WHERE id.ExpirationDate CONTAINS $search RETURN id";
                 }
                 else if (searchtype == "Cấp Bởi")
                 {
-                    query = "MATCH (id:IdentityCard) WHERE id.IssuedBy CONTAINS $search RETURN e";
+                    query = "MATCH (id:IdentityCard) WHERE id.IssuedBy CONTAINS $search RETURN id";
                 }
 
                 var result = await session.RunAsync(query, new { search });
@@ -552,6 +552,82 @@ namespace Project_NeoCitizen
             }
             return lstIdCard;
         }
+
+        public async Task<string> GetNextIdentityCardIDAsync()
+        {
+            int nextID;
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                    MATCH (id:IdentityCard) 
+                    RETURN COALESCE(MAX(toInteger(SUBSTRING(id.IdentityCardID, 3))), 0) AS maxID";
+
+                var result = await session.RunAsync(query);
+                var record = await result.SingleAsync();
+
+                int maxID = record["maxID"].As<int>();
+                nextID = maxID == 0 ? 1 : maxID + 1;
+            }
+
+            return $"ID{nextID.ToString("D3")}";
+        }
+
+        public async Task AddIdentityCardAsync(string identityCardID, string documentNumber, string issueDate, string expirationDate, string issuedBy)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                MERGE (id:IdentityCard {IdentityCardID: $identityCardID, DocumentNumber: $documentNumber, IssueDate: $issueDate, ExpirationDate: $expirationDate, IssuedBy: $issuedBy})";
+
+                        var parameters = new Dictionary<string, object>
+                {
+                    { "identityCardID", identityCardID },
+                    { "documentNumber", documentNumber },
+                    { "issueDate", issueDate },
+                    { "expirationDate", expirationDate },
+                    { "issuedBy", issuedBy }
+                };
+
+                await session.RunAsync(query, parameters);
+            }
+        }
+
+        public async Task EditIdentityCardAsync(string identityCardID, string documentNumber, string issueDate, string expirationDate, string issuedBy)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                MATCH (id:IdentityCard {IdentityCardID: $identityCardID})
+                SET id.DocumentNumber = $documentNumber,
+                    id.IssueDate = $issueDate,
+                    id.ExpirationDate = $expirationDate,
+                    id.IssuedBy = $issuedBy";
+
+                        var parameters = new Dictionary<string, object>
+                {
+                    { "identityCardID", identityCardID },
+                    { "documentNumber", documentNumber },
+                    { "issueDate", issueDate },
+                    { "expirationDate", expirationDate },
+                    { "issuedBy", issuedBy }
+                };
+
+                await session.RunAsync(query, parameters);
+            }
+        }
+
+        public async Task DeleteIdentityCardWithManagerAsync(string idCardID)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+                        MATCH (id:IdentityCard {IdentityCardID: $idCardID})
+                        DETACH DELETE id";
+                var result = await session.RunAsync(query, new { idCardID });
+            }
+        }
+
+
 
 
 

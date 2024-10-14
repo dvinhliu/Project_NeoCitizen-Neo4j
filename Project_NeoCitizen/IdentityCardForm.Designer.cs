@@ -29,7 +29,7 @@ namespace Project_NeoCitizen
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IdentityCardForm));
             this.label7 = new System.Windows.Forms.Label();
             this.dgv_IdentityCard = new System.Windows.Forms.DataGridView();
@@ -82,14 +82,14 @@ namespace Project_NeoCitizen
             this.dgv_IdentityCard.AllowUserToResizeRows = false;
             this.dgv_IdentityCard.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgv_IdentityCard.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_IdentityCard.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_IdentityCard.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_IdentityCard.ColumnHeadersHeight = 30;
             this.dgv_IdentityCard.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_IdentityCard.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -111,6 +111,8 @@ namespace Project_NeoCitizen
             this.dgv_IdentityCard.RowTemplate.Height = 24;
             this.dgv_IdentityCard.Size = new System.Drawing.Size(860, 357);
             this.dgv_IdentityCard.TabIndex = 13;
+            this.dgv_IdentityCard.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_IdentityCard_CellContentClickAsync);
+            this.dgv_IdentityCard.SelectionChanged += new System.EventHandler(this.dgv_IdentityCard_SelectionChanged);
             // 
             // txt_IDIdentityCard
             // 
@@ -256,6 +258,7 @@ namespace Project_NeoCitizen
             this.btn_AddIdentityCard.Text = "Thêm";
             this.btn_AddIdentityCard.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_AddIdentityCard.UseVisualStyleBackColor = false;
+            this.btn_AddIdentityCard.Click += new System.EventHandler(this.btn_AddIdentityCard_Click);
             // 
             // btn_ResetSearch
             // 
@@ -275,6 +278,7 @@ namespace Project_NeoCitizen
             this.btn_ResetSearch.Text = "Làm mới";
             this.btn_ResetSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_ResetSearch.UseVisualStyleBackColor = false;
+            this.btn_ResetSearch.Click += new System.EventHandler(this.btn_ResetSearch_Click);
             // 
             // txt_DocumentNumber
             // 
@@ -308,6 +312,7 @@ namespace Project_NeoCitizen
             this.txt_SearchIdentityCard.Name = "txt_SearchIdentityCard";
             this.txt_SearchIdentityCard.Size = new System.Drawing.Size(266, 25);
             this.txt_SearchIdentityCard.TabIndex = 11;
+            this.txt_SearchIdentityCard.TextChanged += new System.EventHandler(this.txt_SearchIdentityCard_TextChangedAsync);
             // 
             // grpBox_TK
             // 
@@ -336,7 +341,7 @@ namespace Project_NeoCitizen
             // 
             // Column1
             // 
-            this.Column1.HeaderText = "Mã Công Dân";
+            this.Column1.HeaderText = "Mã CCCD";
             this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;

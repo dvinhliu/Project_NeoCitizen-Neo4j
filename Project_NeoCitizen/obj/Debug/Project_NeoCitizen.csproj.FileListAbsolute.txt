@@ -73,3 +73,4 @@ D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An\Project_NeoCitizen-Neo4j\Proje
 D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.EmploymentForm.resources
 D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.EmploymentModule.resources
 D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.IdentityCardForm.resources
+D:\Hoc_Ki_7_HUIT\Cơ Sở Dữ Liệu NoSQL\Do_An\Project_NeoCitizen-Neo4j\Project_NeoCitizen\obj\Debug\Project_NeoCitizen.IdentityCardModule.resources

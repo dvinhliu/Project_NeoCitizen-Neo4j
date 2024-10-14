@@ -54,6 +54,115 @@ namespace Project_NeoCitizen
             GetData();
             LoadCBBSort();
         }
+
+        private async void txt_SearchIdentityCard_TextChangedAsync(object sender, EventArgs e)
+        {
+            string search = txt_SearchIdentityCard.Text.Trim();
+            if (cbb_sortsearch.Text != "")
+            {
+                if (search == "")
+                {
+                    GetData();
+                }
+                else
+                {
+                    try
+                    {
+                        var identityCards = await neo4JConnection.SearchIdentityCardAsync(search, cbb_sortsearch.SelectedItem.ToString());
+
+                        dgv_IdentityCard.Rows.Clear();
+
+                        foreach (var idCard in identityCards)
+                        {
+                            dgv_IdentityCard.Rows.Add(idCard.IdentityCardID, idCard.DocumentNumber, idCard.IssueDate, idCard.ExpirationDate, idCard.IssuedBy); ;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Đã xảy ra lỗi khi tìm kiếm CCCD: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn tìm kiếm theo", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+        }
+
+        private void btn_ResetSearch_Click(object sender, EventArgs e)
+        {
+            txt_SearchIdentityCard.Clear();
+        }
+
+        private async void dgv_IdentityCard_CellContentClickAsync(object sender, DataGridViewCellEventArgs e)
+        {
+            string colName = dgv_IdentityCard.Columns[e.ColumnIndex].Name;
+            if (colName == "Details")
+            {
+                string idCard = dgv_IdentityCard.Rows[e.RowIndex].Cells[0].Value.ToString();
+                //module.ShowDialog();
+            }
+            else if (colName == "Edit")
+            {
+                IdentityCardModule module = new IdentityCardModule(this);
+                module.txt_IDCCCD.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[0].Value.ToString();
+                module.txt_SoCCCD.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[1].Value.ToString();
+                module.txt_NgayCap.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[2].Value.ToString();
+                module.txt_NHH.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[3].Value.ToString();
+                module.txt_CB.Text = dgv_IdentityCard.Rows[e.RowIndex].Cells[4].Value.ToString();
+               
+                module.txt_IDCCCD.Focus();
+                module.ShowDialog();
+            }
+            else if (colName == "Delete")
+            {
+                if (MessageBox.Show("Bạn có chắc muốn xóa CCCD này không?", "Thông Báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        var idCard = dgv_IdentityCard.Rows[e.RowIndex].Cells[0].Value.ToString();
+
+                        await neo4JConnection.DeleteIdentityCardWithManagerAsync(idCard);
+                        MessageBox.Show("Xóa Thành Công", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        GetData();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Đã xảy ra lỗi khi xóa CCCD: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void btn_AddIdentityCard_Click(object sender, EventArgs e)
+        {
+            IdentityCardModule module = new IdentityCardModule(this);
+            module.isAddMode = true;
+            module.ShowDialog();
+        }
+
+        private void dgv_IdentityCard_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgv_IdentityCard.SelectedRows.Count > 0)
+            {
+                txt_IDIdentityCard.Text = dgv_IdentityCard.CurrentRow.Cells[0].Value.ToString();
+                txt_DocumentNumber.Text = dgv_IdentityCard.CurrentRow.Cells[1].Value.ToString();
+                txt_IssueDate.Text = dgv_IdentityCard.CurrentRow.Cells[2].Value.ToString();
+                txt_ExpirationDate.Text = dgv_IdentityCard.CurrentRow.Cells[3].Value.ToString();
+                txt_IssuedBy.Text = dgv_IdentityCard.CurrentRow.Cells[4].Value.ToString();
+                dgv_IdentityCard.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                txt_IDIdentityCard.Clear();
+                txt_DocumentNumber.Clear();
+                txt_IssueDate.Clear();
+                txt_ExpirationDate.Clear();
+                txt_IssuedBy.Clear();
+                dgv_IdentityCard.Cursor = Cursors.Default;
+            }
+        }
     }
     
 }
