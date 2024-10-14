@@ -12,11 +12,9 @@ namespace Project_NeoCitizen
 {
     public partial class MainForm : Form
     {
-        private readonly Neo4jConnection neo4JConnection;
         public MainForm()
         {
             InitializeComponent();
-            neo4JConnection = new Neo4jConnection();
         }
 
         private Form activeForm = null;
@@ -44,9 +42,8 @@ namespace Project_NeoCitizen
             btn_TrangChu.ForeColor = Color.White;
             btn_Citizen.ForeColor = Color.White;
             btn_Family.ForeColor = Color.White;
-            btn_Education.ForeColor = Color.White;
+            btn_IdentityCard.ForeColor = Color.White;
             btn_Employment.ForeColor = Color.White;
-            btn_Address.ForeColor = Color.White;
         }
         public string GetDayOfWeekInVietnamese(DayOfWeek dayOfWeek)
         {
@@ -119,44 +116,20 @@ namespace Project_NeoCitizen
             activeForm = null;
         }
 
-        private async void btn_backup_Click(object sender, EventArgs e)
+        private void btn_Employment_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
-            {
-                saveFileDialog.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
-                saveFileDialog.Title = "Chọn nơi lưu và đặt tên file sao lưu";
-                saveFileDialog.FileName = "backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".csv";
-
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string backupFilePath = saveFileDialog.FileName;
-                    await neo4JConnection.BackupNeo4jData(backupFilePath);
-
-                    // Hiển thị thông báo sao lưu thành công
-                    MessageBox.Show("Sao lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
+            btnClear();
+            openChildForm(new EmploymentForm());
+            btn_Employment.ForeColor = Color.DarkGreen;
+            activeForm = null;
         }
 
-        private async void btn_restore_Click(object sender, EventArgs e)
+        private void btn_IdentityCard_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
-                openFileDialog.Title = "Chọn file CSV để phục hồi";
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string restoreFilePath = openFileDialog.FileName;
-                    await neo4JConnection.RestoreNeo4jData(restoreFilePath);
-
-                    // Hiển thị thông báo phục hồi thành công
-                    MessageBox.Show("Phục hồi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Gọi hàm đăng xuất để đăng nhập lại
-                    btn_LogOut_Click(sender, e);
-                }
-            }
+            btnClear();
+            openChildForm(new IdentityCardForm());
+            btn_Employment.ForeColor = Color.DarkGreen;
+            activeForm = null;
         }
     }
 }
