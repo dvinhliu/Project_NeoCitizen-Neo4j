@@ -147,6 +147,9 @@ namespace Project_NeoCitizen
             string colName = dgv_Citizen.Columns[e.ColumnIndex].Name;
             if (colName == "Details")
             {
+                string CitizenID = dgv_Citizen.Rows[e.RowIndex].Cells[0].Value.ToString();
+                DetailCitizenModule module = new DetailCitizenModule(CitizenID);
+                module.ShowDialog();
 
             }
             else if (colName == "Edit")
