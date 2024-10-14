@@ -1,3 +1,7 @@
+# Ignore Visual Studio files
+.vs/
+Project_NeoCitizen/bin/
+Project_NeoCitizen/obj/ 
 
 Project_NeoCitizen/obj/Debug/Project_NeoCitizen.pdb
 Project_NeoCitizen/obj/Debug/Project_NeoCitizen.exe

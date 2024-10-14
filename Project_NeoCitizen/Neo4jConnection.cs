@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Project_NeoCitizen.Models;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Project_NeoCitizen
 {
@@ -24,72 +26,139 @@ namespace Project_NeoCitizen
 
 
         //BACKUP
-        public async Task BackupNeo4jData(string backupDirectory)
+        [Obsolete]
+        public async Task BackupNeo4jData(string backupFilePath)
         {
+            var backupData = new
+            {
+                Nodes = new List<Dictionary<string, object>>(),
+                Relationships = new List<Dictionary<string, object>>()
+            };
+
             using (var session = _driver.AsyncSession())
             {
-                // Tạo danh sách các loại nút cần sao lưu
-                var nodeTypes = new[] { "Address", "Family", "Citizen", "Employment", "IdentityCard", "Admin" };
-
-                // Sử dụng mã hóa UTF-8
-                using (var writer = new StreamWriter(backupDirectory, false, new UTF8Encoding(true)))
+                // Sao lưu tất cả các nút
+                var nodeResult = await session.RunAsync("MATCH (n) RETURN n");
+                while (await nodeResult.FetchAsync())
                 {
-                    foreach (var nodeType in nodeTypes)
+                    var node = nodeResult.Current["n"].As<INode>();
+                    var nodeData = new Dictionary<string, object>
                     {
-                        var result = await session.RunAsync($"MATCH (n:{nodeType}) RETURN n");
-                        while (await result.FetchAsync())
-                        {
-                            var node = result.Current["n"].As<INode>();
-                            var properties = node.Properties;
+                        { "id", node.Id },
+                        { "labels", node.Labels.ToList() },
+                        { "properties", node.Properties }
+                    };
+                    backupData.Nodes.Add(nodeData);
+                }
 
-                            // Tạo chuỗi theo định dạng yêu cầu
-                            var propertiesString = string.Join(",", properties.Select(p => $"{p.Key}: {p.Value}"));
-                            await writer.WriteLineAsync($"(:{nodeType} {{{propertiesString}}})");
-                        }
-                    }
+                // Sao lưu tất cả các mối quan hệ
+                var relResult = await session.RunAsync("MATCH ()-[r]->() RETURN r");
+                while (await relResult.FetchAsync())
+                {
+                    var rel = relResult.Current["r"].As<IRelationship>();
+                    var relData = new Dictionary<string, object>
+                    {
+                        { "id", rel.Id },
+                        { "type", rel.Type },
+                        { "startNode", rel.StartNodeId },
+                        { "endNode", rel.EndNodeId },
+                        { "properties", rel.Properties }
+                    };
+                    backupData.Relationships.Add(relData);
                 }
             }
+
+            // Serialize dữ liệu thành JSON và ghi vào file
+            var json = JsonConvert.SerializeObject(backupData, Formatting.Indented);
+            await Task.Run(() => File.WriteAllText(backupFilePath, json, Encoding.UTF8));
         }
 
         //RESTORE
         public async Task RestoreNeo4jData(string backupFilePath)
         {
+            // Đọc và deserialize dữ liệu từ file JSON
+            string json = await Task.Run(() => File.ReadAllText(backupFilePath, Encoding.UTF8));
+            var backupData = JsonConvert.DeserializeObject<dynamic>(json);
+
+            // Bắt đầu một session và transaction
             using (var session = _driver.AsyncSession())
             {
-                // Đọc tất cả các dòng trong file CSV với mã hóa UTF-8
-                var lines = await Task.Run(() => File.ReadAllLines(backupFilePath, Encoding.UTF8));
-
-                // Bỏ qua dòng tiêu đề
-                foreach (var line in lines)
+                using (var transaction = await session.BeginTransactionAsync())
                 {
-                    var trimmedLine = line.Trim();
-                    if (string.IsNullOrWhiteSpace(trimmedLine)) continue;
-
-                    // Phân tích cú pháp dòng để lấy loại nút và thuộc tính
-                    var startIndex = trimmedLine.IndexOf('(');
-                    var endIndex = trimmedLine.IndexOf(')');
-
-                    var nodeString = trimmedLine.Substring(startIndex + 1, endIndex - startIndex - 1);
-                    var labelAndProps = nodeString.Split(new[] { '{' }, 2);
-                    var labels = labelAndProps[0].Trim().TrimStart(':').Split(':').Select(l => l.Trim());
-                    var propsString = labelAndProps.Length > 1 ? labelAndProps[1].TrimEnd('}') : "";
-
-                    // Phân tách các thuộc tính
-                    var properties = new Dictionary<string, object>();
-                    foreach (var prop in propsString.Split(','))
+                    try
                     {
-                        var keyValue = prop.Split(':');
-                        if (keyValue.Length == 2)
-                        {
-                            var key = keyValue[0].Trim();
-                            var value = keyValue[1].Trim();
-                            properties[key] = value; // Lưu giá trị vào từ điển
-                        }
-                    }
+                        // 1. Xóa tất cả dữ liệu hiện tại
+                        await transaction.RunAsync("MATCH (n) DETACH DELETE n");
 
-                    // Tạo nút mới và thiết lập các thuộc tính
-                    var createNodeQuery = $"MERGE (n:{string.Join(":", labels)} {{ {string.Join(", ", properties.Select(kvp => $"{kvp.Key}: ${kvp.Key}"))} }})";
-                    await session.RunAsync(createNodeQuery, properties);
+                        // 2. Phục hồi các nút và lưu ánh xạ từ ID cũ sang ID mới
+                        var nodeIdMapping = new Dictionary<long, long>();
+
+                        foreach (var node in backupData.Nodes)
+                        {
+                            // Chuyển đổi labels từ JArray thành List<string>
+                            var labels = ((JArray)node.labels).ToObject<List<string>>();
+                            var labelsString = string.Join(":", labels);
+
+                            // Chuyển đổi properties từ JObject thành Dictionary<string, object>
+                            var properties = ((JObject)node.properties).ToObject<Dictionary<string, object>>();
+
+                            // Tạo nút và lấy ID mới
+                            var createNodeQuery = $"CREATE (n:{labelsString} $props) RETURN ID(n) as newId";
+                            var parameters = new { props = properties };
+                            var result = await transaction.RunAsync(createNodeQuery, parameters);
+
+                            if (await result.FetchAsync())
+                            {
+                                long newId = result.Current["newId"].As<long>();
+                                long backupId = node.id;
+                                nodeIdMapping[backupId] = newId;
+                            }
+                        }
+
+                        // 3. Phục hồi các mối quan hệ sử dụng ánh xạ ID mới
+                        foreach (var rel in backupData.Relationships)
+                        {
+                            var type = (string)rel.type;
+                            long startNodeBackupId = (long)rel.startNode;
+                            long endNodeBackupId = (long)rel.endNode;
+
+                            // Chuyển đổi properties từ JObject thành Dictionary<string, object>
+                            var properties = ((JObject)rel.properties).ToObject<Dictionary<string, object>>();
+
+                            // Lấy ID mới từ ánh xạ
+                            if (!nodeIdMapping.ContainsKey(startNodeBackupId) || !nodeIdMapping.ContainsKey(endNodeBackupId))
+                            {
+                                throw new Exception($"Không thể tìm thấy ánh xạ cho StartNodeID {startNodeBackupId} hoặc EndNodeID {endNodeBackupId}");
+                            }
+
+                            long startNodeNewId = nodeIdMapping[startNodeBackupId];
+                            long endNodeNewId = nodeIdMapping[endNodeBackupId];
+
+                            // Tạo mối quan hệ
+                            var createRelQuery = $@"
+                                                MATCH (a) WHERE ID(a) = $startNodeId
+                                                MATCH (b) WHERE ID(b) = $endNodeId
+                                                CREATE (a)-[r:{type} $props]->(b)";
+                            var relParameters = new
+                            {
+                                startNodeId = startNodeNewId,
+                                endNodeId = endNodeNewId,
+                                props = properties
+                            };
+
+                            await transaction.RunAsync(createRelQuery, relParameters);
+                        }
+
+                        // Commit transaction nếu mọi thứ đều thành công
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback transaction nếu có lỗi xảy ra
+                        await transaction.RollbackAsync();
+                        MessageBox.Show($"Lỗi trong quá trình khôi phục: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        throw;
+                    }
                 }
             }
         }

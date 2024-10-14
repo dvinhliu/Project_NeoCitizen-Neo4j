@@ -12,9 +12,11 @@ namespace Project_NeoCitizen
 {
     public partial class MainForm : Form
     {
+        private readonly Neo4jConnection neo4JConnection;
         public MainForm()
         {
             InitializeComponent();
+            neo4JConnection = new Neo4jConnection();
         }
 
         private Form activeForm = null;
@@ -44,6 +46,7 @@ namespace Project_NeoCitizen
             btn_Family.ForeColor = Color.White;
             btn_IdentityCard.ForeColor = Color.White;
             btn_Employment.ForeColor = Color.White;
+            btn_Address.ForeColor = Color.White;
         }
         public string GetDayOfWeekInVietnamese(DayOfWeek dayOfWeek)
         {
@@ -116,6 +119,67 @@ namespace Project_NeoCitizen
             activeForm = null;
         }
 
+        private async void btn_backup_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new SaveFileDialog())
+            {
+                dialog.Filter = "JSON Files (*.json)|*.json";
+                dialog.Title = "Chọn vị trí tệp sao lưu";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    string backupFilePath = dialog.FileName;
+                    try
+                    {
+                        using (var neo4j = new Neo4jConnection())
+                        {
+                            await neo4j.BackupNeo4jData(backupFilePath);
+                        }
+                        MessageBox.Show("Sao lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Sao lưu thất bại: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private async void btn_restore_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new OpenFileDialog())
+            {
+                dialog.Filter = "JSON Files (*.json)|*.json";
+                dialog.Title = "Chọn tệp sao lưu để khôi phục";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    string backupFilePath = dialog.FileName;
+                    var confirmResult = MessageBox.Show("Khôi phục dữ liệu sẽ ghi đè lên dữ liệu hiện có. Bạn có muốn tiếp tục không?",
+                                                        "Xác nhận khôi phục",
+                                                        MessageBoxButtons.YesNo,
+                                                        MessageBoxIcon.Warning);
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            using (var neo4j = new Neo4jConnection())
+                            {
+                                await neo4j.RestoreNeo4jData(backupFilePath);
+                            }
+                            MessageBox.Show("Phục hồi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Gọi hàm đăng xuất khi restore thành công
+                            btn_LogOut_Click(sender, e);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Phục hồi thất bại: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+        }
         private void btn_Employment_Click(object sender, EventArgs e)
         {
             btnClear();
@@ -128,7 +192,7 @@ namespace Project_NeoCitizen
         {
             btnClear();
             openChildForm(new IdentityCardForm());
-            btn_Employment.ForeColor = Color.DarkGreen;
+            btn_IdentityCard.ForeColor = Color.DarkGreen;
             activeForm = null;
         }
     }
