@@ -210,9 +210,9 @@ namespace Project_NeoCitizen
             this.btn_LogOut.ForeColor = System.Drawing.Color.White;
             this.btn_LogOut.Image = ((System.Drawing.Image)(resources.GetObject("btn_LogOut.Image")));
             this.btn_LogOut.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_LogOut.Location = new System.Drawing.Point(0, 603);
+            this.btn_LogOut.Location = new System.Drawing.Point(0, 588);
             this.btn_LogOut.Name = "btn_LogOut";
-            this.btn_LogOut.Size = new System.Drawing.Size(201, 45);
+            this.btn_LogOut.Size = new System.Drawing.Size(201, 60);
             this.btn_LogOut.TabIndex = 9;
             this.btn_LogOut.Text = "Đăng xuất";
             this.btn_LogOut.UseVisualStyleBackColor = false;
@@ -243,7 +243,7 @@ namespace Project_NeoCitizen
             this.lblID_NV.ForeColor = System.Drawing.Color.White;
             this.lblID_NV.Location = new System.Drawing.Point(351, 9);
             this.lblID_NV.Name = "lblID_NV";
-            this.lblID_NV.Size = new System.Drawing.Size(48, 17);
+            this.lblID_NV.Size = new System.Drawing.Size(62, 21);
             this.lblID_NV.TabIndex = 4;
             this.lblID_NV.Text = "label3";
             // 
@@ -252,9 +252,9 @@ namespace Project_NeoCitizen
             this.lbl_Time.AutoSize = true;
             this.lbl_Time.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Time.ForeColor = System.Drawing.Color.White;
-            this.lbl_Time.Location = new System.Drawing.Point(1169, 12);
+            this.lbl_Time.Location = new System.Drawing.Point(1162, 12);
             this.lbl_Time.Name = "lbl_Time";
-            this.lbl_Time.Size = new System.Drawing.Size(42, 17);
+            this.lbl_Time.Size = new System.Drawing.Size(54, 21);
             this.lbl_Time.TabIndex = 3;
             this.lbl_Time.Text = "label4";
             // 
@@ -265,7 +265,7 @@ namespace Project_NeoCitizen
             this.lblUsername.ForeColor = System.Drawing.Color.White;
             this.lblUsername.Location = new System.Drawing.Point(351, 30);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(48, 17);
+            this.lblUsername.Size = new System.Drawing.Size(62, 21);
             this.lblUsername.TabIndex = 1;
             this.lblUsername.Text = "label3";
             // 
@@ -286,13 +286,15 @@ namespace Project_NeoCitizen
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(43, 20);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 27);
+            this.label1.Size = new System.Drawing.Size(139, 34);
             this.label1.TabIndex = 0;
             this.label1.Text = "Xin Chào";
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
+            this.panel1.Controls.Add(this.btn_restore);
+            this.panel1.Controls.Add(this.btn_backup);
             this.panel1.Controls.Add(this.lblID_NV);
             this.panel1.Controls.Add(this.lbl_Time);
             this.panel1.Controls.Add(this.lblUsername);
@@ -311,13 +313,13 @@ namespace Project_NeoCitizen
             this.btn_restore.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_restore.FlatAppearance.BorderSize = 0;
             this.btn_restore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_restore.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_restore.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_restore.ForeColor = System.Drawing.Color.White;
             this.btn_restore.Image = ((System.Drawing.Image)(resources.GetObject("btn_restore.Image")));
             this.btn_restore.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_restore.Location = new System.Drawing.Point(900, 0);
+            this.btn_restore.Location = new System.Drawing.Point(966, 0);
             this.btn_restore.Name = "btn_restore";
-            this.btn_restore.Size = new System.Drawing.Size(201, 54);
+            this.btn_restore.Size = new System.Drawing.Size(163, 54);
             this.btn_restore.TabIndex = 17;
             this.btn_restore.Text = "Phục hồi";
             this.btn_restore.UseVisualStyleBackColor = false;
@@ -329,13 +331,13 @@ namespace Project_NeoCitizen
             this.btn_backup.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_backup.FlatAppearance.BorderSize = 0;
             this.btn_backup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_backup.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_backup.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_backup.ForeColor = System.Drawing.Color.White;
             this.btn_backup.Image = ((System.Drawing.Image)(resources.GetObject("btn_backup.Image")));
             this.btn_backup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_backup.Location = new System.Drawing.Point(693, 0);
+            this.btn_backup.Location = new System.Drawing.Point(797, 0);
             this.btn_backup.Name = "btn_backup";
-            this.btn_backup.Size = new System.Drawing.Size(201, 54);
+            this.btn_backup.Size = new System.Drawing.Size(163, 54);
             this.btn_backup.TabIndex = 16;
             this.btn_backup.Text = "Sao lưu";
             this.btn_backup.UseVisualStyleBackColor = false;
@@ -380,13 +382,13 @@ namespace Project_NeoCitizen
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
-        private Button btn_restore;
-        private Button btn_backup;
         private System.Windows.Forms.Button btn_Employment;
         private System.Windows.Forms.Button btn_IdentityCard;
         private System.Windows.Forms.Button btn_Family;
         private System.Windows.Forms.Button btn_LogOut;
         private System.Windows.Forms.Button btn_Address;
+        private Button btn_restore;
+        private Button btn_backup;
     }
 }
 
