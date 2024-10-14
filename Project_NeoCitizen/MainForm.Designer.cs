@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace Project_NeoCitizen
 {
     partial class MainForm
@@ -378,6 +380,8 @@ namespace Project_NeoCitizen
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
+        private Button btn_restore;
+        private Button btn_backup;
         private System.Windows.Forms.Button btn_Employment;
         private System.Windows.Forms.Button btn_IdentityCard;
         private System.Windows.Forms.Button btn_Family;

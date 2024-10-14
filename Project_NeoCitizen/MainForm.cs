@@ -12,9 +12,11 @@ namespace Project_NeoCitizen
 {
     public partial class MainForm : Form
     {
+        private readonly Neo4jConnection neo4JConnection;
         public MainForm()
         {
             InitializeComponent();
+            neo4JConnection = new Neo4jConnection();
         }
 
         private Form activeForm = null;
