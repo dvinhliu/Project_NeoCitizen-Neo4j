@@ -136,25 +136,38 @@ namespace Project_NeoCitizen
         private async void btn_AddCitizen_Click(object sender, EventArgs e)
         {
             CitizenModule module = new CitizenModule(this);
+            module.isAddMode = true;
             string newCitizenID = await neo4JConnection.GetNextCitizenIDAsync();
             module.txtIDCD.Text = newCitizenID;
-            module.isAddMode = true;
+            module.UpdateButtonStateAsync();
             module.ShowDialog();
         }
 
         private async void dgv_Citizen_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             string colName = dgv_Citizen.Columns[e.ColumnIndex].Name;
+
             if (colName == "Details")
             {
                 string CitizenID = dgv_Citizen.Rows[e.RowIndex].Cells[0].Value.ToString();
                 DetailCitizenModule module = new DetailCitizenModule(CitizenID);
                 module.ShowDialog();
-
             }
             else if (colName == "Edit")
             {
+                string citizenID = dgv_Citizen.Rows[e.RowIndex].Cells[0].Value.ToString();
 
+                // Lấy thông tin công dân để chỉnh sửa
+                var citizenToEdit = await neo4JConnection.GetCitizenByIdAsync(citizenID);
+
+                CitizenModule module = new CitizenModule(this);
+                module.txtIDCD.Text = citizenToEdit.CitizenID;
+                module.txtTenCD.Text = citizenToEdit.FullName;
+                module.txtSDT.Text = citizenToEdit.PhoneNumber;
+                module.cbb_GioiTinh.SelectedItem = citizenToEdit.Gender;
+                module.dtNgaySinh.Value = DateTime.Parse(citizenToEdit.DateOfBirth); // Chuyển đổi thành DateTime
+                module.isAddMode = false; // Đặt chế độ chỉnh sửa
+                module.ShowDialog();
             }
             else if (colName == "Delete")
             {
@@ -163,7 +176,6 @@ namespace Project_NeoCitizen
                     try
                     {
                         var idcitizen = dgv_Citizen.Rows[e.RowIndex].Cells[0].Value.ToString();
-
                         await neo4JConnection.DeleteCitizenWithManagerAsync(idcitizen);
                         MessageBox.Show("Xóa Thành Công", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         GetData();
