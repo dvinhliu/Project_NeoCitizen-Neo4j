@@ -88,11 +88,6 @@ namespace Project_NeoCitizen
                 MessageBox.Show("Số điện thoại phải gồm 10 chữ số.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-            if (cbbDiaChi.SelectedValue == null)
-            {
-                MessageBox.Show("Địa chỉ không được bỏ trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
 
             return true;
         }
@@ -119,6 +114,12 @@ namespace Project_NeoCitizen
                     {
                         var selectedIDCardID = ((KeyValuePair<string, string>)cbbCCCD.SelectedItem).Key;
                         await neo4JConnection.AddRelationshipAsync(citizen.CitizenID, selectedIDCardID, "HAS_DOCUMENT");
+                    }
+
+                    if (cbbDiaChi.SelectedItem != null)
+                    {
+                        var selectedAddressID = ((KeyValuePair<string, string>)cbbDiaChi.SelectedItem).Key;
+                        await neo4JConnection.AddRelationshipAsync(citizen.CitizenID, selectedAddressID, "LIVING_AT");
                     }
 
                     MessageBox.Show("Thêm công dân và các mối quan hệ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);

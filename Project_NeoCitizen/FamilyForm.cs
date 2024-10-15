@@ -39,7 +39,14 @@ namespace Project_NeoCitizen
 
                 foreach (var family in await families)
                 {
-                    dgv_Family.Rows.Add(family.FamilyID, family.FamilyName, family.Address.GetFullAddress());
+                    if (family.Address != null)
+                    {
+                        dgv_Family.Rows.Add(family.FamilyID, family.FamilyName, family.Address.GetFullAddress());
+                    }
+                    else
+                    {
+                        dgv_Family.Rows.Add(family.FamilyID, family.FamilyName, "Không có thông tin");
+                    }    
                 }    
             }
             catch (Exception ex)
@@ -143,7 +150,7 @@ namespace Project_NeoCitizen
             }
             else if (colName == "Delete")
             {
-                if (MessageBox.Show("Bạn có chắc muốn xóa tài khoản này không?", "Thông Báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Bạn có chắc muốn xóa gia đình này không?", "Thông Báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
