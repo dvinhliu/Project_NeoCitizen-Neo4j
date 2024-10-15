@@ -149,7 +149,7 @@ namespace Project_NeoCitizen
             var availableAddresses = await neo4JConnection.GetUnlinkedAddressesAsync();
             foreach (var address in availableAddresses)
             {
-                cbb_FullAdrs.Items.Add($"{address.Street}, {address.Ward}, {address.District}, {address.City}, {address.Country}");
+                cbb_FullAdrs.Items.Add($"{address.GetFullAddress()}");
             }
         }
     }
