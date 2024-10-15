@@ -671,7 +671,7 @@ namespace Project_NeoCitizen
 
             using (var session = _driver.AsyncSession())
             {
-                var result = await session.RunAsync("MATCH (c:Citizen) RETURN c");
+                var result = await session.RunAsync("MATCH (c:Citizen) RETURN c ORDER BY c.CitizenID");
 
                 var records = await result.ToListAsync();
 
@@ -1128,7 +1128,7 @@ namespace Project_NeoCitizen
 
             using (var session = _driver.AsyncSession())
             {
-                var result = await session.RunAsync("MATCH (id:IdentityCard) RETURN DISTINCT id");
+                var result = await session.RunAsync("MATCH (id:IdentityCard) RETURN DISTINCT id ORDER BY id");
 
                 var records = await result.ToListAsync();
 
