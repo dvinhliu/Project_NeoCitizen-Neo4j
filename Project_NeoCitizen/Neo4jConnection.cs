@@ -200,7 +200,8 @@ namespace Project_NeoCitizen
                 var query = @"
                     MATCH (f:Family)
                     OPTIONAL MATCH (f)-[:LIVING_AT]->(a:Address)
-                    RETURN f, a";
+                    RETURN f, a
+                    ORDER BY f.FamilyID";
 
                 var result = await session.RunAsync(query);
                 var records = await result.ToListAsync();
@@ -379,7 +380,8 @@ namespace Project_NeoCitizen
                 var query = @"
             MATCH (c:Citizen)-[:BELONGS_TO]->(f:Family)
             WHERE f.FamilyID = $familyID
-            RETURN c, f";
+            RETURN c, f
+            ORDER BY c.CitizenID";
 
                 var result = await session.RunAsync(query, new { familyID });
                 var records = await result.ToListAsync();
@@ -417,7 +419,8 @@ namespace Project_NeoCitizen
                 var query = @"
                             MATCH (c:Citizen)
                             WHERE NOT (c)-[:BELONGS_TO]->(:Family)
-                            RETURN c";
+                            RETURN c
+                            ORDER BY c.CitizenID";
 
                 var result = await session.RunAsync(query);
                 var records = await result.ToListAsync();

@@ -21,7 +21,6 @@ namespace Project_NeoCitizen
             InitializeComponent();
             neo4JConnection = new Neo4jConnection();
             citizenForm = f;
-            this.isAddMode = isAddMode;
             LoadCBB();
             UpdateButtonStateAsync();
         }
