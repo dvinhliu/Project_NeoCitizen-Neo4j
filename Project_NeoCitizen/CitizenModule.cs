@@ -48,14 +48,6 @@ namespace Project_NeoCitizen
             cbb_GioiTinh.Items.Add("Nữ");
             cbb_GioiTinh.SelectedIndex = 0;
 
-            var jobs = await neo4JConnection.GetAllJobsAsync();
-            foreach (var job in jobs)
-            {
-                cbbCongViec.Items.Add(new KeyValuePair<string, string>(job.EmploymentID, $"{job.Company} - {job.Position}"));
-            }
-            cbbCongViec.DisplayMember = "Value";
-            cbbCongViec.ValueMember = "Key"; 
-
             var identityCards = await neo4JConnection.GetAllIdentityCardsAsync();
             foreach (var card in identityCards)
             {
@@ -73,7 +65,6 @@ namespace Project_NeoCitizen
             cbbDiaChi.DisplayMember = "Value";
             cbbDiaChi.ValueMember = "Key";
 
-            cbbCongViec.SelectedIndex = -1;
             cbbCCCD.SelectedIndex = -1;
             cbbDiaChi.SelectedIndex = -1;
         }
@@ -124,12 +115,6 @@ namespace Project_NeoCitizen
                 if (result)
                 {
                     // Lấy ID (kiểm tra nếu có giá trị mới tạo quan hệ)
-                    if (cbbCongViec.SelectedItem != null)
-                    {
-                        var selectedJobID = ((KeyValuePair<string, string>)cbbCongViec.SelectedItem).Key;
-                        await neo4JConnection.AddRelationshipAsync(citizen.CitizenID, selectedJobID, "EMPLOYED_AT");
-                    }
-
                     if (cbbCCCD.SelectedItem != null)
                     {
                         var selectedIDCardID = ((KeyValuePair<string, string>)cbbCCCD.SelectedItem).Key;
@@ -177,7 +162,6 @@ namespace Project_NeoCitizen
                 if (result)
                 {
                     // Lấy ID
-                    var selectedJobID = ((KeyValuePair<string, string>)cbbCongViec.SelectedItem).Key;
                     var selectedIDCardID = ((KeyValuePair<string, string>)cbbCCCD.SelectedItem).Key;
                     var selectedAddressID = ((KeyValuePair<string, string>)cbbDiaChi.SelectedItem).Key;
 
@@ -186,7 +170,6 @@ namespace Project_NeoCitizen
 
                     // Tạo các mối quan hệ mới
                     await neo4JConnection.AddRelationshipAsync(updatedCitizen.CitizenID, selectedAddressID, "LIVING_AT");
-                    await neo4JConnection.AddRelationshipAsync(updatedCitizen.CitizenID, selectedJobID, "EMPLOYED_AT");
                     await neo4JConnection.AddRelationshipAsync(updatedCitizen.CitizenID, selectedIDCardID, "HAS_DOCUMENT");
 
                     MessageBox.Show("Cập nhật thông tin công dân và các mối quan hệ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
