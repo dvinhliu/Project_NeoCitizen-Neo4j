@@ -196,37 +196,44 @@ namespace Project_NeoCitizen
 
             using (var session = _driver.AsyncSession())
             {
-                // Truy vấn để lấy gia đình và địa chỉ liên kết
+                // Cập nhật câu truy vấn với OPTIONAL MATCH
                 var query = @"
-                            MATCH (f:Family)-[:LIVING_AT]->(a:Address)
-                            RETURN f, a";
+                    MATCH (f:Family)
+                    OPTIONAL MATCH (f)-[:LIVING_AT]->(a:Address)
+                    RETURN f, a";
 
                 var result = await session.RunAsync(query);
-
                 var records = await result.ToListAsync();
 
                 foreach (var record in records)
                 {
                     var familyNode = record["f"].As<INode>();
-                    var addressNode = record["a"].As<INode>();
 
-                    var family = new Family
+                    // Kiểm tra xem có địa chỉ liên kết hay không
+                    Address address = null;
+                    if (record["a"] is INode addressNode)
                     {
-                        FamilyID = familyNode.Properties["FamilyID"].As<string>(),
-                        FamilyName = familyNode.Properties["FamilyName"].As<string>(),
-                        Address = new Address
+                        address = new Address
                         {
                             Street = addressNode.Properties["Street"].As<string>(),
                             Ward = addressNode.Properties["Ward"].As<string>(),
                             District = addressNode.Properties["District"].As<string>(),
                             City = addressNode.Properties["City"].As<string>(),
                             Country = addressNode.Properties["Country"].As<string>()
-                        }
+                        };
+                    }
+
+                    var family = new Family
+                    {
+                        FamilyID = familyNode.Properties["FamilyID"].As<string>(),
+                        FamilyName = familyNode.Properties["FamilyName"].As<string>(),
+                        Address = address // Gán null nếu không có địa chỉ
                     };
 
                     families.Add(family);
                 }
             }
+
             return families;
         }
 
