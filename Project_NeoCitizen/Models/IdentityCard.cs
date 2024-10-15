@@ -13,5 +13,9 @@ namespace Project_NeoCitizen.Models
         public string IssueDate { get; set; }
         public string ExpirationDate { get; set; }
         public string IssuedBy { get; set; }
+        public string IDDocument_ToString()
+        {
+            return $"{IdentityCardID} - {DocumentNumber}";
+        }
     }
 }

@@ -677,33 +677,100 @@ namespace Project_NeoCitizen
         //Citizen
         public async Task<List<Citizen>> GetAllCitizenAsync()
         {
-            var lstcitizen = new List<Citizen>();
+            var citizens = new List<Citizen>();
 
             using (var session = _driver.AsyncSession())
             {
-                var result = await session.RunAsync("MATCH (c:Citizen) RETURN c ORDER BY c.CitizenID");
+                var query = @"
+            MATCH (c:Citizen)
+            OPTIONAL MATCH (c)-[:LIVING_AT]->(a:Address)
+            OPTIONAL MATCH (c)-[:BELONGS_TO]->(f:Family)
+            OPTIONAL MATCH (c)-[:EMPLOYED_AT]->(e:Employment)
+            OPTIONAL MATCH (c)-[:HAS_DOCUMENT]->(id:IdentityCard)
+            RETURN c, a, f, e, id
+            ORDER BY c.CitizenID";
 
+                var result = await session.RunAsync(query);
                 var records = await result.ToListAsync();
 
                 foreach (var record in records)
                 {
                     var citizenNode = record["c"].As<INode>();
 
+                    // Kiểm tra và lấy thông tin Address
+                    Address address = null;
+                    if (record["a"] is INode addressNode)
+                    {
+                        address = new Address
+                        {
+                            AddressID = addressNode.Properties["AddressID"].As<string>(),
+                            Street = addressNode.Properties["Street"].As<string>(),
+                            Ward = addressNode.Properties["Ward"].As<string>(),
+                            District = addressNode.Properties["District"].As<string>(),
+                            City = addressNode.Properties["City"].As<string>(),
+                            Country = addressNode.Properties["Country"].As<string>()
+                        };
+                    }
+
+                    // Kiểm tra và lấy thông tin Family
+                    Family family = null;
+                    if (record["f"] is INode familyNode)
+                    {
+                        family = new Family
+                        {
+                            FamilyID = familyNode.Properties["FamilyID"].As<string>(),
+                            FamilyName = familyNode.Properties["FamilyName"].As<string>()
+                        };
+                    }
+
+                    // Kiểm tra và lấy thông tin Employment
+                    Employment employment = null;
+                    if (record["e"] is INode employmentNode)
+                    {
+                        employment = new Employment
+                        {
+                            EmploymentID = employmentNode.Properties["EmploymentID"].As<string>(),
+                            Company = employmentNode.Properties["Company"].As<string>(),
+                            Position = employmentNode.Properties["Position"].As<string>(),
+                            StartDate = employmentNode.Properties["StartDate"].As<string>()
+                        };
+                    }
+
+                    // Kiểm tra và lấy thông tin IdentityCard
+                    IdentityCard identityCard = null;
+                    if (record["id"] is INode identityCardNode)
+                    {
+                        identityCard = new IdentityCard
+                        {
+                            IdentityCardID = identityCardNode.Properties["IdentityCardID"].As<string>(),
+                            DocumentNumber = identityCardNode.Properties["DocumentNumber"].As<string>(),
+                            IssueDate = identityCardNode.Properties["IssueDate"].As<string>(),
+                            ExpirationDate = identityCardNode.Properties["ExpirationDate"].As<string>(),
+                            IssuedBy = identityCardNode.Properties["IssuedBy"].As<string>()
+                        };
+                    }
+
+                    // Tạo đối tượng Citizen
                     var citizen = new Citizen
                     {
                         CitizenID = citizenNode.Properties["CitizenID"].As<string>(),
                         FullName = citizenNode.Properties["FullName"].As<string>(),
-                        DateOfBirth = citizenNode.Properties["DateOfBirth"].As<string>(),
+                        PhoneNumber = citizenNode.Properties["PhoneNumber"].As<string>(),
                         Gender = citizenNode.Properties["Gender"].As<string>(),
-                        PhoneNumber = citizenNode.Properties["PhoneNumber"].As<string>()
+                        DateOfBirth = citizenNode.Properties["DateOfBirth"].As<string>(),
+                        Address = address,
+                        Family = family,
+                        Employment = employment,
+                        IdentityCard = identityCard
                     };
 
-                    lstcitizen.Add(citizen);
+                    citizens.Add(citizen);
                 }
             }
 
-            return lstcitizen;
+            return citizens;
         }
+
         //Search Citizen
         public async Task<List<Citizen>> SearchCitizenAsync(string search, string searchType)
         {
@@ -780,7 +847,8 @@ namespace Project_NeoCitizen
                 var query = @"
             MATCH (id:IdentityCard)
             WHERE NOT (id)<-[:HAS_DOCUMENT]-(:Citizen)
-            RETURN id.DocumentNumber AS DocumentNumber, id.IssuedBy AS IssuedBy, id.IdentityCardID AS IdentityCardID";
+            RETURN id.DocumentNumber AS DocumentNumber, id.IssuedBy AS IssuedBy, id.IdentityCardID AS IdentityCardID
+            ORDER BY id.IdentityCardID";
 
                 var identityCards = new List<IdentityCard>();
 
@@ -810,7 +878,7 @@ namespace Project_NeoCitizen
         {
             using (var session = _driver.AsyncSession())
             {
-                var query = "MATCH (a:Address) RETURN a.Street AS Street, a.Ward AS Ward, a.District AS District, a.City AS City, a.AddressID AS AddressID";
+                var query = "MATCH (a:Address) RETURN a.Street AS Street, a.Ward AS Ward, a.District AS District, a.City AS City, a.AddressID AS AddressID, a.Country AS Country ORDER BY a.AddressID";
                 var addresses = new List<Address>();
 
                 try
@@ -824,7 +892,8 @@ namespace Project_NeoCitizen
                             Ward = record["Ward"].As<string>(),
                             District = record["District"].As<string>(),
                             City = record["City"].As<string>(),
-                            AddressID = record["AddressID"].As<string>()
+                            AddressID = record["AddressID"].As<string>(),
+                            Country = record["Country"].As<string>()
                         };
                         addresses.Add(address);
                     });
@@ -933,10 +1002,15 @@ namespace Project_NeoCitizen
         {
             using (var session = _driver.AsyncSession())
             {
-                var query = @"MATCH (c:Citizen {CitizenID: $citizenID})RETURN c";
+                var query = @"
+            MATCH (c:Citizen {CitizenID: $citizenID})
+            OPTIONAL MATCH (c)-[:LIVING_AT]->(a:Address)
+            OPTIONAL MATCH (c)-[:BELONGS_TO]->(f:Family)
+            OPTIONAL MATCH (c)-[:EMPLOYED_AT]->(e:Employment)
+            OPTIONAL MATCH (c)-[:HAS_DOCUMENT]->(id:IdentityCard)
+            RETURN c, a, f, e, id";
 
                 var result = await session.RunAsync(query, new { citizenID });
-
                 var record = await result.SingleAsync();
 
                 if (record != null)
@@ -950,8 +1024,62 @@ namespace Project_NeoCitizen
                         FullName = citizenNode.Properties["FullName"].As<string>(),
                         PhoneNumber = citizenNode.Properties["PhoneNumber"].As<string>(),
                         Gender = citizenNode.Properties["Gender"].As<string>(),
-                        DateOfBirth = citizenNode.Properties["DateOfBirth"].As<string>()
+                        DateOfBirth = citizenNode.Properties["DateOfBirth"].As<string>(),
+                        // Mặc định các giá trị liên kết là null
+                        Address = null,
+                        Family = null,
+                        Employment = null,
+                        IdentityCard = null
                     };
+
+                    // Kiểm tra nếu công dân có địa chỉ
+                    if (record["a"] is INode addressNode)
+                    {
+                        citizen.Address = new Address
+                        {
+                            AddressID = addressNode.Properties["AddressID"].As<string>(),
+                            Street = addressNode.Properties["Street"].As<string>(),
+                            Ward = addressNode.Properties["Ward"].As<string>(),
+                            District = addressNode.Properties["District"].As<string>(),
+                            City = addressNode.Properties["City"].As<string>(),
+                            Country = addressNode.Properties["Country"].As<string>()
+                        };
+                    }
+
+                    // Kiểm tra nếu công dân có gia đình
+                    if (record["f"] is INode familyNode)
+                    {
+                        citizen.Family = new Family
+                        {
+                            FamilyID = familyNode.Properties["FamilyID"].As<string>(),
+                            FamilyName = familyNode.Properties["FamilyName"].As<string>()
+                        };
+                    }
+
+                    // Kiểm tra nếu công dân có công việc
+                    if (record["e"] is INode employmentNode)
+                    {
+                        citizen.Employment = new Employment
+                        {
+                            EmploymentID = employmentNode.Properties["EmploymentID"].As<string>(),
+                            Company = employmentNode.Properties["Company"].As<string>(),
+                            Position = employmentNode.Properties["Position"].As<string>(),
+                            StartDate = employmentNode.Properties["StartDate"].As<string>()
+                        };
+                    }
+
+                    // Kiểm tra nếu công dân có giấy tờ nhận dạng
+                    if (record["id"] is INode identityCardNode)
+                    {
+                        citizen.IdentityCard = new IdentityCard
+                        {
+                            IdentityCardID = identityCardNode.Properties["IdentityCardID"].As<string>(),
+                            DocumentNumber = identityCardNode.Properties["DocumentNumber"].As<string>(),
+                            IssueDate = identityCardNode.Properties["IssueDate"].As<string>(),
+                            ExpirationDate = identityCardNode.Properties["ExpirationDate"].As<string>(),
+                            IssuedBy = identityCardNode.Properties["IssuedBy"].As<string>()
+                        };
+                    }
 
                     return citizen;
                 }
@@ -959,33 +1087,115 @@ namespace Project_NeoCitizen
                 return null; // Trả về null nếu không tìm thấy công dân
             }
         }
-        public async Task<bool> UpdateCitizenAsync(Citizen citizen)
+        public async Task UpdateCitizenAsync(Citizen updatedCitizen, string selectedIDCardID, string selectedAddressID, string employmentCompany, string employmentPosition, string startDate)
         {
             using (var session = _driver.AsyncSession())
             {
+                // Cập nhật thông tin công dân
                 var query = @"
-            MATCH (c:Citizen {CitizenID: $id})
-            SET c.FullName = $fullName, c.PhoneNumber = $phone, c.Gender = $gender, c.DateOfBirth = $dob
-            RETURN c";
+            MATCH (c:Citizen {CitizenID: $citizenID})
+            SET c.FullName = $fullName,
+                c.PhoneNumber = $phoneNumber,
+                c.Gender = $gender,
+                c.DateOfBirth = $dateOfBirth";
 
-                var parameters = new
+                var result = await session.RunAsync(query, new
                 {
-                    id = citizen.CitizenID,
-                    fullName = citizen.FullName,
-                    phone = citizen.PhoneNumber,
-                    gender = citizen.Gender,
-                    dob = citizen.DateOfBirth
-                };
+                    citizenID = updatedCitizen.CitizenID,
+                    fullName = updatedCitizen.FullName,
+                    phoneNumber = updatedCitizen.PhoneNumber,
+                    gender = updatedCitizen.Gender,
+                    dateOfBirth = updatedCitizen.DateOfBirth
+                });
 
-                try
+                // Xóa tất cả các mối quan hệ cũ của công dân
+                var removeRelationshipsQuery = @"
+                                        MATCH (c:Citizen {CitizenID: $citizenID})-[r]-()
+                                        DELETE r";
+                await session.RunAsync(removeRelationshipsQuery, new { citizenID = updatedCitizen.CitizenID });
+
+                // Xử lý IDCard
+                if (selectedIDCardID != "Không có thông tin")
                 {
-                    var result = await session.RunAsync(query, parameters);
-                    return true; // Cập nhật thành công
+                    // Liên kết công dân với tài liệu
+                    var linkIdCardQuery = @"
+                        MATCH (c:Citizen {CitizenID: $citizenID}), (d:IdentityCard {IdentityCardID: $idCardID})
+                        MERGE (c)-[:HAS_DOCUMENT]->(d)";
+                    await session.RunAsync(linkIdCardQuery, new
+                    {
+                        citizenID = updatedCitizen.CitizenID,
+                        idCardID = selectedIDCardID
+                    });
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"Lỗi khi cập nhật công dân: {ex.Message}");
-                    return false; // Cập nhật không thành công
+                    // Nếu chọn "Không có thông tin", xóa mối quan hệ IDCard
+                    var removeIdCardQuery = @"
+                            MATCH (c:Citizen {CitizenID: $citizenID})-[r:HAS_DOCUMENT]->(d:IdentityCard)
+                            DELETE r";
+                    await session.RunAsync(removeIdCardQuery, new { citizenID = updatedCitizen.CitizenID });
+                }
+
+                // Xử lý Address
+                if (selectedAddressID != "Không có thông tin")
+                {
+                    // Liên kết công dân với địa chỉ
+                    var linkAddressQuery = @"
+                            MATCH (c:Citizen {CitizenID: $citizenID}), (a:Address {AddressID: $addressID})
+                            MERGE (c)-[:LIVING_AT]->(a)";
+                    await session.RunAsync(linkAddressQuery, new
+                    {
+                        citizenID = updatedCitizen.CitizenID,
+                        addressID = selectedAddressID
+                    });
+                }
+                else
+                {
+                    // Nếu chọn "Không có thông tin", xóa mối quan hệ địa chỉ
+                    var removeAddressQuery = @"
+                            MATCH (c:Citizen {CitizenID: $citizenID})-[r:LIVING_AT]->(a:Address)
+                            DELETE r";
+                    await session.RunAsync(removeAddressQuery, new { citizenID = updatedCitizen.CitizenID });
+                }
+
+                // Xử lý Employment
+                if (!string.IsNullOrWhiteSpace(employmentCompany) && employmentCompany != "Không có thông tin" &&
+                    !string.IsNullOrWhiteSpace(employmentPosition) && employmentPosition != "Không có thông tin")
+                {
+                    // Lấy EmploymentID tiếp theo
+                    string employmentID = await GetNextEmploymentIDAsync(); // Gọi GetNextEmploymentIDAsync
+
+                    // Liên kết công dân với công việc, nếu Employment chưa tồn tại thì tạo mới
+                    var linkOrCreateEmploymentQuery = @"
+                                                MERGE (e:Employment {EmploymentID: $employmentid, Company: $company, Position: $position, StartDate: $startDate})
+                                                WITH e
+                                                MATCH (c:Citizen {CitizenID: $citizenID})
+                                                MERGE (c)-[:EMPLOYED_AT]->(e)";
+
+                    await session.RunAsync(linkOrCreateEmploymentQuery, new
+                    {
+                        citizenID = updatedCitizen.CitizenID,
+                        employmentid = employmentID, // Sử dụng employmentID vừa lấy
+                        company = employmentCompany,
+                        position = employmentPosition,
+                        startDate = startDate
+                    });
+                }
+                else
+                {
+                    // Nếu thông tin việc làm không hợp lệ, xóa mối quan hệ việc làm và xóa nút Employment
+                    var removeRelationshipQuery = @"
+                                                    MATCH (c:Citizen {CitizenID: $citizenID})-[r:EMPLOYED_AT]->(e:Employment)
+                                                    DELETE r";
+
+                    await session.RunAsync(removeRelationshipQuery, new { citizenID = updatedCitizen.CitizenID });
+
+                    var removeEmploymentQuery = @"
+                                                MATCH (e:Employment)
+                                                WHERE NOT (e)<-[:EMPLOYED_AT]-(:Citizen)
+                                                DELETE e";
+
+                    await session.RunAsync(removeEmploymentQuery);
                 }
             }
         }
@@ -1138,7 +1348,7 @@ namespace Project_NeoCitizen
 
             using (var session = _driver.AsyncSession())
             {
-                var result = await session.RunAsync("MATCH (id:IdentityCard) RETURN DISTINCT id ORDER BY id");
+                var result = await session.RunAsync("MATCH (id:IdentityCard) RETURN DISTINCT id ORDER BY id.IdentityCardID");
 
                 var records = await result.ToListAsync();
 
@@ -1297,7 +1507,7 @@ namespace Project_NeoCitizen
 
             using (var session = _driver.AsyncSession())
             {
-                var result = await session.RunAsync("MATCH (e:Employment) RETURN DISTINCT e");
+                var result = await session.RunAsync("MATCH (e:Employment) RETURN DISTINCT e ORDER BY e.EmploymentID");
 
                 var records = await result.ToListAsync();
 

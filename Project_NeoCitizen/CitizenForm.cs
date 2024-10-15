@@ -155,18 +155,7 @@ namespace Project_NeoCitizen
             }
             else if (colName == "Edit")
             {
-                string citizenID = dgv_Citizen.Rows[e.RowIndex].Cells[0].Value.ToString();
-
-                // Lấy thông tin công dân để chỉnh sửa
-                var citizenToEdit = await neo4JConnection.GetCitizenByIdAsync(citizenID);
-
                 CitizenModule module = new CitizenModule(this);
-                module.txtIDCD.Text = citizenToEdit.CitizenID;
-                module.txtTenCD.Text = citizenToEdit.FullName;
-                module.txtSDT.Text = citizenToEdit.PhoneNumber;
-                module.cbb_GioiTinh.SelectedItem = citizenToEdit.Gender;
-                module.dtNgaySinh.Value = DateTime.Parse(citizenToEdit.DateOfBirth); // Chuyển đổi thành DateTime
-                module.isAddMode = false; // Đặt chế độ chỉnh sửa
                 module.ShowDialog();
             }
             else if (colName == "Delete")

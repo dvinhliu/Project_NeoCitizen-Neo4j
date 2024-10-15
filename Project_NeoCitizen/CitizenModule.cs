@@ -21,8 +21,6 @@ namespace Project_NeoCitizen
             InitializeComponent();
             neo4JConnection = new Neo4jConnection();
             citizenForm = f;
-            LoadCBB();
-            UpdateButtonStateAsync();
         }
         public async void UpdateButtonStateAsync()
         {
@@ -31,41 +29,136 @@ namespace Project_NeoCitizen
                 txtIDCD.Text = await neo4JConnection.GetNextCitizenIDAsync();
                 btnThem.Enabled = true;
                 btnSua.Enabled = false;
-                lblTittle.Text = "THÊM CÔNG DÂN";
+                lblTittle.Text = "THÊM THÔNG TIN CÔNG DÂN";
             }
             else
             {
                 btnThem.Enabled = false;
                 btnSua.Enabled = true;
-                lblTittle.Text = "SỬA CÔNG DÂN";
+                lblTittle.Text = "SỬA THÔNG TIN CÔNG DÂN";
             }
         }
 
-        private async void LoadCBB()
+        public async void LoadCBB()
         {
+            // Thêm tùy chọn giới tính
             cbb_GioiTinh.Items.Add("Nam");
             cbb_GioiTinh.Items.Add("Nữ");
             cbb_GioiTinh.SelectedIndex = 0;
 
+            // Xóa tất cả các mục cũ trong ComboBox
+            cbbCCCD.Items.Clear();
+            cbbDiaChi.Items.Clear();
+
+            // Thêm tùy chọn mặc định "Không có thông tin"
+            cbbCCCD.Items.Add("Không có thông tin");
+            cbbDiaChi.Items.Add("Không có thông tin");
+
+            // Lấy danh sách thẻ căn cước
             var identityCards = await neo4JConnection.GetAllIdentityCardsAsync();
-            foreach (var card in identityCards)
+            if (identityCards != null && identityCards.Any()) // Kiểm tra nếu có dữ liệu
             {
-                cbbCCCD.Items.Add(new KeyValuePair<string, string>(card.IdentityCardID, $"{card.DocumentNumber} - {card.IssuedBy}"));
-            }
-            
-            cbbCCCD.DisplayMember = "Value";
-            cbbCCCD.ValueMember = "Key";
+                foreach (var card in identityCards)
+                {
+                    cbbCCCD.Items.Add(new KeyValuePair<string, string>(card.IdentityCardID, $"{card.IDDocument_ToString()}"));
+                }
 
+                cbbCCCD.DisplayMember = "Value";
+                cbbCCCD.ValueMember = "Key";
+            }
+
+            // Lấy danh sách địa chỉ
             var addresses = await neo4JConnection.GetAllAddressesAsync();
-            foreach (var address in addresses)
+            if (addresses != null && addresses.Any()) // Kiểm tra nếu có dữ liệu
             {
-                cbbDiaChi.Items.Add(new KeyValuePair<string, string>(address.AddressID, $"{address.Street}, {address.Ward}, {address.District}, {address.City}"));
-            }
-            cbbDiaChi.DisplayMember = "Value";
-            cbbDiaChi.ValueMember = "Key";
+                foreach (var address in addresses)
+                {
+                    cbbDiaChi.Items.Add(new KeyValuePair<string, string>(address.AddressID, $"{address.GetFullAddress()}"));
+                }
 
-            cbbCCCD.SelectedIndex = -1;
-            cbbDiaChi.SelectedIndex = -1;
+                cbbDiaChi.DisplayMember = "Value";
+                cbbDiaChi.ValueMember = "Key";
+            }
+
+            // Đặt lựa chọn mặc định
+            if (isAddMode)
+            {
+                cbbCCCD.SelectedIndex = 0;
+                cbbDiaChi.SelectedIndex = 0;
+            }
+            else
+            {
+                string citizenID = citizenForm.dgv_Citizen.CurrentRow.Cells[0].Value.ToString();
+
+                var citizenToEdit = await neo4JConnection.GetCitizenByIdAsync(citizenID);
+
+                txtIDCD.Text = citizenToEdit.CitizenID;
+                txtTenCD.Text = citizenToEdit.FullName;
+                txtSDT.Text = citizenToEdit.PhoneNumber;
+                cbb_GioiTinh.SelectedItem = citizenToEdit.Gender;
+                dtNgaySinh.Value = DateTime.Parse(citizenToEdit.DateOfBirth); // Chuyển đổi thành DateTime
+
+                // Kiểm tra và thiết lập giá trị cho cbbCCCD
+                if (citizenToEdit.IdentityCard != null)
+                {
+                    var identityCardID = citizenToEdit.IdentityCard.IdentityCardID; // Lấy ID từ IdentityCard
+                    var identityCardValue = citizenToEdit.IdentityCard.IDDocument_ToString(); // Lấy giá trị hiển thị
+
+                    // Tìm kiếm trong Items của cbbCCCD để thiết lập giá trị
+                    var foundItem = cbbCCCD.Items.OfType<KeyValuePair<string, string>>()
+                        .FirstOrDefault(item => item.Key == identityCardID);
+
+                    if (foundItem.Key != null)
+                    {
+                        cbbCCCD.SelectedItem = foundItem; // Thiết lập selected item
+                    }
+                    else
+                    {
+                        var newItem = new KeyValuePair<string, string>(citizenToEdit.IdentityCard.IdentityCardID, $"{citizenToEdit.IdentityCard.IDDocument_ToString()}");
+                        cbbCCCD.Items.Add(newItem);
+                        cbbCCCD.DisplayMember = "Value";
+                        cbbCCCD.ValueMember = "Key";
+                        cbbCCCD.SelectedItem = newItem;
+                    }    
+                }
+                else
+                {
+                    cbbCCCD.SelectedItem = "Không có thông tin"; // Thiết lập nếu không có thông tin
+                }
+
+                // Kiểm tra và thiết lập giá trị cho cbbDiaChi
+                if (citizenToEdit.Address != null)
+                {
+                    var addressID = citizenToEdit.Address.AddressID; // Lấy ID từ Address
+                    var addressValue = citizenToEdit.Address.GetFullAddress(); // Lấy giá trị hiển thị
+
+                    // Tìm kiếm trong Items của cbbDiaChi để thiết lập giá trị
+                    var foundAddressItem = cbbDiaChi.Items.OfType<KeyValuePair<string, string>>()
+                        .FirstOrDefault(item => item.Key == addressID);
+
+                    if (foundAddressItem.Key != null)
+                    {
+                        cbbDiaChi.SelectedItem = foundAddressItem; // Thiết lập selected item
+                    }
+                }
+                else
+                {
+                    cbbDiaChi.SelectedItem = "Không có thông tin"; // Thiết lập nếu không có thông tin
+                }
+
+                if (citizenToEdit.Employment != null)
+                {
+                    txt_TenCT.Text = citizenToEdit.Employment.Company;
+                    txt_Vitri.Text = citizenToEdit.Employment.Position;
+                    dt_ngayBD.Value = DateTime.Parse(citizenToEdit.Employment.StartDate);
+                }
+                else
+                {
+                    txt_TenCT.Text = "Không có thông tin";
+                    txt_Vitri.Text = "Không có thông tin";
+                    dt_ngayBD.Value = DateTime.Now;
+                }
+            }    
         }
 
         private bool KiemTraNhap()
@@ -157,31 +250,38 @@ namespace Project_NeoCitizen
                     DateOfBirth = dtNgaySinh.Value.ToString("yyyy-MM-dd")
                 };
 
-                bool result = await neo4JConnection.UpdateCitizenAsync(updatedCitizen);
-
-                if (result)
+                // Kiểm tra và lấy IDCard
+                string selectedIDCardID = "Không có thông tin";
+                if (cbbCCCD.SelectedItem is KeyValuePair<string, string> selectedIDCard)
                 {
-                    // Lấy ID
-                    var selectedIDCardID = ((KeyValuePair<string, string>)cbbCCCD.SelectedItem).Key;
-                    var selectedAddressID = ((KeyValuePair<string, string>)cbbDiaChi.SelectedItem).Key;
-
-                    // Xóa các mối quan hệ cũ
-                    await neo4JConnection.RemoveAllRelationshipsAsync(updatedCitizen.CitizenID);
-
-                    // Tạo các mối quan hệ mới
-                    await neo4JConnection.AddRelationshipAsync(updatedCitizen.CitizenID, selectedAddressID, "LIVING_AT");
-                    await neo4JConnection.AddRelationshipAsync(updatedCitizen.CitizenID, selectedIDCardID, "HAS_DOCUMENT");
-
-                    MessageBox.Show("Cập nhật thông tin công dân và các mối quan hệ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    citizenForm.GetData();
-                    this.Close();
+                    selectedIDCardID = selectedIDCard.Key;
                 }
-                else
+
+                // Kiểm tra và lấy Address
+                string selectedAddressID = "Không có thông tin";
+                if (cbbDiaChi.SelectedItem is KeyValuePair<string, string> selectedAddress)
                 {
-                    MessageBox.Show("Cập nhật thông tin công dân không thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    selectedAddressID = selectedAddress.Key;
                 }
+
+                // Lấy thông tin việc làm
+                var employmentCompany = string.IsNullOrWhiteSpace(txt_TenCT.Text) ? "Không có thông tin" : txt_TenCT.Text;
+                var employmentPosition = string.IsNullOrWhiteSpace(txt_Vitri.Text) ? "Không có thông tin" : txt_Vitri.Text;
+                var startDate = dt_ngayBD.Value.ToString("yyyy-MM-dd");
+
+                // Cập nhật công dân
+                await neo4JConnection.UpdateCitizenAsync(updatedCitizen, selectedIDCardID, selectedAddressID, employmentCompany, employmentPosition, startDate);
+
+                MessageBox.Show("Cập nhật thông tin công dân và các mối quan hệ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                citizenForm.GetData();
+                this.Close();
             }
         }
 
+        private void CitizenModule_Load(object sender, EventArgs e)
+        {
+            UpdateButtonStateAsync();
+            LoadCBB();
+        }
     }
 }
