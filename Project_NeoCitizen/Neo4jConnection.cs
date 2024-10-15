@@ -763,6 +763,135 @@ namespace Project_NeoCitizen
             return $"C{nextID.ToString("D3")}";
         }
         //Add
+        public async Task<List<IdentityCard>> GetAllIdentityCardsAsync()
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+            MATCH (id:IdentityCard)
+            WHERE NOT (id)<-[:HAS_DOCUMENT]-(:Citizen)
+            RETURN id.DocumentNumber AS DocumentNumber, id.IssuedBy AS IssuedBy, id.IdentityCardID AS IdentityCardID";
+
+                var identityCards = new List<IdentityCard>();
+
+                try
+                {
+                    var result = await session.RunAsync(query);
+                    await result.ForEachAsync(record =>
+                    {
+                        var identityCard = new IdentityCard
+                        {
+                            DocumentNumber = record["DocumentNumber"].As<string>(),
+                            IssuedBy = record["IssuedBy"].As<string>(),
+                            IdentityCardID = record["IdentityCardID"].As<string>()
+                        };
+                        identityCards.Add(identityCard);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lỗi khi load danh sách CCCD chưa có quan hệ: {ex.Message}");
+                }
+
+                return identityCards;
+            }
+        }
+        public async Task<List<Address>> GetAllAddressesAsync()
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = "MATCH (a:Address) RETURN a.Street AS Street, a.Ward AS Ward, a.District AS District, a.City AS City, a.AddressID AS AddressID";
+                var addresses = new List<Address>();
+
+                try
+                {
+                    var result = await session.RunAsync(query);
+                    await result.ForEachAsync(record =>
+                    {
+                        var address = new Address
+                        {
+                            Street = record["Street"].As<string>(),
+                            Ward = record["Ward"].As<string>(),
+                            District = record["District"].As<string>(),
+                            City = record["City"].As<string>(),
+                            AddressID = record["AddressID"].As<string>()
+                        };
+                        addresses.Add(address);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lỗi khi load danh sách địa chỉ: {ex.Message}");
+                }
+
+                return addresses;
+            }
+        }
+        public async Task<List<Employment>> GetAllJobsAsync()
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = "MATCH (e:Employment) RETURN e.Company AS Company, e.Position AS Position, e.EmploymentID AS EmploymentID";
+                var jobs = new List<Employment>();
+
+                try
+                {
+                    var result = await session.RunAsync(query);
+                    await result.ForEachAsync(record =>
+                    {
+                        var job = new Employment
+                        {
+                            Company = record["Company"].As<string>(),
+                            Position = record["Position"].As<string>(),
+                            EmploymentID = record["EmploymentID"].As<string>()
+                        };
+                        jobs.Add(job);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lỗi khi load danh sách công việc: {ex.Message}");
+                }
+
+                return jobs;
+            }
+        }
+        public async Task<bool> AddRelationshipAsync(string citizenID, string targetID, string relationship)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                string query = "";
+
+                switch (relationship)
+                {
+                    case "LIVING_AT":
+                        query = "MATCH (c:Citizen {CitizenID: $citizenID}), (a:Address {AddressID: $targetID}) " +
+                                "CREATE (c)-[:LIVING_AT]->(a)";
+                        break;
+                    case "EMPLOYED_AT":
+                        query = "MATCH (c:Citizen {CitizenID: $citizenID}), (e:Employment {EmploymentID: $targetID}) " +
+                                "CREATE (c)-[:EMPLOYED_AT]->(e)";
+                        break;
+                    case "HAS_DOCUMENT":
+                        query = "MATCH (c:Citizen {CitizenID: $citizenID}), (id:IdentityCard {IdentityCardID: $targetID}) " +
+                                "CREATE (c)-[:HAS_DOCUMENT]->(id)";
+                        break;
+                }
+
+                var parameters = new { citizenID, targetID };
+
+                try
+                {
+                    await session.RunAsync(query, parameters);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lỗi khi thêm quan hệ: {ex.Message}");
+                    return false;
+                }
+            }
+        }
         public async Task<bool> AddCitizenAsync(Citizen citizen)
         {
             using (var session = _driver.AsyncSession())
@@ -789,28 +918,120 @@ namespace Project_NeoCitizen
                 }
             }
         }
+        //Update
+        public async Task<Citizen> GetCitizenByIdAsync(string citizenID)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"MATCH (c:Citizen {CitizenID: $citizenID})RETURN c";
+
+                var result = await session.RunAsync(query, new { citizenID });
+
+                var record = await result.SingleAsync();
+
+                if (record != null)
+                {
+                    var citizenNode = record["c"].As<INode>();
+
+                    // Tạo đối tượng Citizen từ dữ liệu trong Neo4j
+                    var citizen = new Citizen
+                    {
+                        CitizenID = citizenNode.Properties["CitizenID"].As<string>(),
+                        FullName = citizenNode.Properties["FullName"].As<string>(),
+                        PhoneNumber = citizenNode.Properties["PhoneNumber"].As<string>(),
+                        Gender = citizenNode.Properties["Gender"].As<string>(),
+                        DateOfBirth = citizenNode.Properties["DateOfBirth"].As<string>()
+                    };
+
+                    return citizen;
+                }
+
+                return null; // Trả về null nếu không tìm thấy công dân
+            }
+        }
+        public async Task<bool> UpdateCitizenAsync(Citizen citizen)
+        {
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+            MATCH (c:Citizen {CitizenID: $id})
+            SET c.FullName = $fullName, c.PhoneNumber = $phone, c.Gender = $gender, c.DateOfBirth = $dob
+            RETURN c";
+
+                var parameters = new
+                {
+                    id = citizen.CitizenID,
+                    fullName = citizen.FullName,
+                    phone = citizen.PhoneNumber,
+                    gender = citizen.Gender,
+                    dob = citizen.DateOfBirth
+                };
+
+                try
+                {
+                    var result = await session.RunAsync(query, parameters);
+                    return true; // Cập nhật thành công
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lỗi khi cập nhật công dân: {ex.Message}");
+                    return false; // Cập nhật không thành công
+                }
+            }
+        }
         //Delete
+        public async Task<bool> RemoveAllRelationshipsAsync(string citizenID)
+        {
+            try
+            {
+                using (var session = _driver.AsyncSession())
+                {
+                    await session.WriteTransactionAsync(async tx =>
+                    {
+                        var query = @"
+                        MATCH (c:Citizen {CitizenID: $citizenID})-[r]-()
+                        DELETE r";
+                        await tx.RunAsync(query, new { citizenID });
+                    });
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.WriteLine($"Error removing relationships: {ex.Message}");
+                return false;
+            }
+        }
         public async Task DeleteCitizenWithManagerAsync(string citizenID)
         {
             using (var session = _driver.AsyncSession())
             {
                 var query = @"
-                        MATCH (c:Citizen {CitizenID: $citizenID})
-                        DETACH DELETE c";
-                var result = await session.RunAsync(query, new { citizenID });
+            MATCH (c:Citizen {CitizenID: $citizenID})
+            DETACH DELETE c"; // Xóa công dân cùng với các mối quan hệ
+
+                try
+                {
+                    await session.RunAsync(query, new { citizenID });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lỗi khi xóa công dân: {ex.Message}");
+                    throw; // Để ném lại lỗi cho phần gọi
+                }
             }
         }
-
         //Detail ID
         public async Task<Citizen> GetCitizenDetailsByIDAsync(string citizenID)
         {
             var query = @"
-        MATCH (c:Citizen {CitizenID: $citizenID})
-        OPTIONAL MATCH (c)-[:BELONGS_TO]->(f:Family)
-        OPTIONAL MATCH (c)-[:LIVING_AT]->(a:Address)
-        OPTIONAL MATCH (c)-[:EMPLOYED_AT]->(e:Employment)
-        OPTIONAL MATCH (c)-[:HAS_DOCUMENT]->(id:IdentityCard)
-        RETURN c, f, a, e, id";
+            MATCH (c:Citizen {CitizenID: $citizenID})
+            OPTIONAL MATCH (c)-[:BELONGS_TO]->(f:Family)
+            OPTIONAL MATCH (c)-[:LIVING_AT]->(a:Address)
+            OPTIONAL MATCH (c)-[:EMPLOYED_AT]->(e:Employment)
+            OPTIONAL MATCH (c)-[:HAS_DOCUMENT]->(id:IdentityCard)
+            RETURN c, f, a, e, id";
 
             using (var session = _driver.AsyncSession())
             {

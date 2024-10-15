@@ -23,7 +23,6 @@ namespace Project_NeoCitizen
 
         private async void DetailCitizenModule_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("ID: " + CitizenID);
             await LoadCitizenDetails();
             lblTittle.Text = "THÔNG TIN CHI TIẾT CÔNG DÂN";
         }
