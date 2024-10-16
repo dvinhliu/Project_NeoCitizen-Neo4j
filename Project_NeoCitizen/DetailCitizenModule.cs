@@ -42,6 +42,8 @@ namespace Project_NeoCitizen
                     txt_GD.Text = citizenDetails.Family?.FamilyName ?? "Không có thông tin";
                     txt_SoCC.Text = citizenDetails.IdentityCard?.DocumentNumber ?? "Không có thông tin";
                     txt_DC.Text = citizenDetails.Address?.GetFullAddress() ?? "Không có thông tin";
+                    txt_CongViec.Text = citizenDetails.Employment?.Company ?? "Không có thông tin";
+                    txt_ViTri.Text = citizenDetails.Employment?.Position ?? "Không có thông tin";
                 }
                 else
                 {

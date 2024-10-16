@@ -268,14 +268,14 @@ namespace Project_NeoCitizen
             this.cbbCCCD.Location = new System.Drawing.Point(17, 245);
             this.cbbCCCD.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbbCCCD.Name = "cbbCCCD";
-            this.cbbCCCD.Size = new System.Drawing.Size(233, 30);
+            this.cbbCCCD.Size = new System.Drawing.Size(180, 30);
             this.cbbCCCD.TabIndex = 62;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(266, 216);
+            this.label8.Location = new System.Drawing.Point(206, 219);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(67, 23);
             this.label8.TabIndex = 61;
@@ -286,10 +286,10 @@ namespace Project_NeoCitizen
             this.cbbDiaChi.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbDiaChi.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbbDiaChi.FormattingEnabled = true;
-            this.cbbDiaChi.Location = new System.Drawing.Point(270, 244);
+            this.cbbDiaChi.Location = new System.Drawing.Point(210, 245);
             this.cbbDiaChi.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbbDiaChi.Name = "cbbDiaChi";
-            this.cbbDiaChi.Size = new System.Drawing.Size(575, 30);
+            this.cbbDiaChi.Size = new System.Drawing.Size(635, 30);
             this.cbbDiaChi.TabIndex = 62;
             // 
             // txt_TenCT
@@ -299,14 +299,14 @@ namespace Project_NeoCitizen
             this.txt_TenCT.Location = new System.Drawing.Point(6, 61);
             this.txt_TenCT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txt_TenCT.Name = "txt_TenCT";
-            this.txt_TenCT.Size = new System.Drawing.Size(219, 29);
+            this.txt_TenCT.Size = new System.Drawing.Size(227, 29);
             this.txt_TenCT.TabIndex = 64;
             // 
             // txt_Vitri
             // 
             this.txt_Vitri.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_Vitri.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_Vitri.Location = new System.Drawing.Point(271, 63);
+            this.txt_Vitri.Location = new System.Drawing.Point(239, 61);
             this.txt_Vitri.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txt_Vitri.Name = "txt_Vitri";
             this.txt_Vitri.Size = new System.Drawing.Size(230, 29);
@@ -314,16 +314,16 @@ namespace Project_NeoCitizen
             // 
             // dt_ngayBD
             // 
-            this.dt_ngayBD.Location = new System.Drawing.Point(547, 61);
+            this.dt_ngayBD.Location = new System.Drawing.Point(475, 61);
             this.dt_ngayBD.Name = "dt_ngayBD";
-            this.dt_ngayBD.Size = new System.Drawing.Size(274, 29);
+            this.dt_ngayBD.Size = new System.Drawing.Size(347, 29);
             this.dt_ngayBD.TabIndex = 66;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(6, 25);
+            this.label9.Location = new System.Drawing.Point(6, 36);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(110, 23);
             this.label9.TabIndex = 67;
@@ -333,7 +333,7 @@ namespace Project_NeoCitizen
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(268, 25);
+            this.label10.Location = new System.Drawing.Point(235, 36);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(48, 23);
             this.label10.TabIndex = 68;
@@ -343,7 +343,7 @@ namespace Project_NeoCitizen
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(543, 25);
+            this.label11.Location = new System.Drawing.Point(471, 35);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(198, 23);
             this.label11.TabIndex = 69;

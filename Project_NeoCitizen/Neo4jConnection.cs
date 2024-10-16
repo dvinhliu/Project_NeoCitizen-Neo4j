@@ -906,35 +906,6 @@ namespace Project_NeoCitizen
                 return addresses;
             }
         }
-        public async Task<List<Employment>> GetAllJobsAsync()
-        {
-            using (var session = _driver.AsyncSession())
-            {
-                var query = "MATCH (e:Employment) RETURN e.Company AS Company, e.Position AS Position, e.EmploymentID AS EmploymentID";
-                var jobs = new List<Employment>();
-
-                try
-                {
-                    var result = await session.RunAsync(query);
-                    await result.ForEachAsync(record =>
-                    {
-                        var job = new Employment
-                        {
-                            Company = record["Company"].As<string>(),
-                            Position = record["Position"].As<string>(),
-                            EmploymentID = record["EmploymentID"].As<string>()
-                        };
-                        jobs.Add(job);
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Lỗi khi load danh sách công việc: {ex.Message}");
-                }
-
-                return jobs;
-            }
-        }
         public async Task<bool> AddRelationshipAsync(string citizenID, string targetID, string relationship)
         {
             using (var session = _driver.AsyncSession())
@@ -1200,45 +1171,28 @@ namespace Project_NeoCitizen
             }
         }
         //Delete
-        public async Task<bool> RemoveAllRelationshipsAsync(string citizenID)
-        {
-            try
-            {
-                using (var session = _driver.AsyncSession())
-                {
-                    await session.WriteTransactionAsync(async tx =>
-                    {
-                        var query = @"
-                        MATCH (c:Citizen {CitizenID: $citizenID})-[r]-()
-                        DELETE r";
-                        await tx.RunAsync(query, new { citizenID });
-                    });
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception
-                Console.WriteLine($"Error removing relationships: {ex.Message}");
-                return false;
-            }
-        }
         public async Task DeleteCitizenWithManagerAsync(string citizenID)
         {
             using (var session = _driver.AsyncSession())
             {
+                var queryDeleteEmployment = @"
+                MATCH (c:Citizen {CitizenID: $citizenID})-[r:EMPLOYED_AT]->(e:Employment)
+                DETACH DELETE e";
+
                 var query = @"
-            MATCH (c:Citizen {CitizenID: $citizenID})
-            DETACH DELETE c"; // Xóa công dân cùng với các mối quan hệ
+                MATCH (c:Citizen {CitizenID: $citizenID})
+                DETACH DELETE c";
+
 
                 try
                 {
+                    await session.RunAsync(queryDeleteEmployment, new { citizenID });
                     await session.RunAsync(query, new { citizenID });
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Lỗi khi xóa công dân: {ex.Message}");
-                    throw; // Để ném lại lỗi cho phần gọi
+                    throw; 
                 }
             }
         }
@@ -1265,7 +1219,6 @@ namespace Project_NeoCitizen
 
                 while (await result.FetchAsync())
                 {
-                    // Lấy thông tin công dân
                     var citizenNode = result.Current["c"].As<INode>();
                     citizen = new Citizen
                     {
@@ -1276,7 +1229,6 @@ namespace Project_NeoCitizen
                         PhoneNumber = citizenNode.Properties["PhoneNumber"].As<string>(),
                     };
 
-                    // Lấy thông tin gia đình (có thể là null)
                     var familyNode = result.Current["f"].As<INode>();
                     if (familyNode != null)
                     {
@@ -1287,7 +1239,6 @@ namespace Project_NeoCitizen
                         };
                     }
 
-                    // Lấy thông tin địa chỉ (có thể là null)
                     var addressNode = result.Current["a"].As<INode>();
                     if (addressNode != null)
                     {
@@ -1302,7 +1253,6 @@ namespace Project_NeoCitizen
                         };
                     }
 
-                    // Lấy thông tin công việc (có thể là null)
                     var employmentNode = result.Current["e"].As<INode>();
                     if (employmentNode != null)
                     {
@@ -1314,7 +1264,6 @@ namespace Project_NeoCitizen
                         };
                     }
 
-                    // Lấy thông tin giấy tờ nhận dạng (có thể là null)
                     var idCardNode = result.Current["id"].As<INode>();
                     if (idCardNode != null)
                     {
@@ -1326,7 +1275,6 @@ namespace Project_NeoCitizen
                     }
                 }
 
-                // Gán thêm thông tin cho Citizen
                 if (citizen != null)
                 {
                     citizen.Family = family;
@@ -1337,6 +1285,34 @@ namespace Project_NeoCitizen
 
                 return citizen;
             }
+        }
+        //Add cong viec theo cong dan
+        public async Task<string> AddEmploymentAsync(string company, string position, string startDate)
+        {
+            string emplID = await GetNextEmploymentIDAsync(); // Lấy ID công việc tiếp theo
+
+            using (var session = _driver.AsyncSession())
+            {
+                var query = @"
+            CREATE (e:Employment {
+                EmploymentID: $emplID, 
+                Company: $company, 
+                Position: $position, 
+                StartDate: $startDate
+            })";
+
+                var parameters = new Dictionary<string, object>
+        {
+            { "emplID", emplID },
+            { "company", company },
+            { "position", position },
+            { "startDate", startDate }
+        };
+
+                await session.RunAsync(query, parameters);
+            }
+
+            return emplID; // Có thể trả về ID công việc đã tạo
         }
 
 
