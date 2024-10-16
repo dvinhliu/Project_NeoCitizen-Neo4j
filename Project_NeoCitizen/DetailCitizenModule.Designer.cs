@@ -53,9 +53,9 @@ namespace Project_NeoCitizen
             this.txt_NgaySinh = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txt_GT = new System.Windows.Forms.TextBox();
             this.dt_ngayBD = new System.Windows.Forms.DateTimePicker();
             this.lbl_ngayBD = new System.Windows.Forms.Label();
+            this.txt_GT = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -64,17 +64,17 @@ namespace Project_NeoCitizen
             // 
             this.txt_ViTri.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_ViTri.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_ViTri.Location = new System.Drawing.Point(291, 314);
+            this.txt_ViTri.Location = new System.Drawing.Point(263, 314);
             this.txt_ViTri.Margin = new System.Windows.Forms.Padding(4);
             this.txt_ViTri.Name = "txt_ViTri";
-            this.txt_ViTri.Size = new System.Drawing.Size(262, 29);
+            this.txt_ViTri.Size = new System.Drawing.Size(249, 29);
             this.txt_ViTri.TabIndex = 85;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(287, 287);
+            this.label10.Location = new System.Drawing.Point(259, 287);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(133, 23);
@@ -88,7 +88,7 @@ namespace Project_NeoCitizen
             this.txt_CongViec.Location = new System.Drawing.Point(12, 314);
             this.txt_CongViec.Margin = new System.Windows.Forms.Padding(4);
             this.txt_CongViec.Name = "txt_CongViec";
-            this.txt_CongViec.Size = new System.Drawing.Size(249, 29);
+            this.txt_CongViec.Size = new System.Drawing.Size(226, 29);
             this.txt_CongViec.TabIndex = 85;
             // 
             // label9
@@ -333,6 +333,24 @@ namespace Project_NeoCitizen
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông Tin Công Dân";
             // 
+            // dt_ngayBD
+            // 
+            this.dt_ngayBD.CalendarFont = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dt_ngayBD.Location = new System.Drawing.Point(540, 314);
+            this.dt_ngayBD.Name = "dt_ngayBD";
+            this.dt_ngayBD.Size = new System.Drawing.Size(268, 29);
+            this.dt_ngayBD.TabIndex = 86;
+            // 
+            // lbl_ngayBD
+            // 
+            this.lbl_ngayBD.AutoSize = true;
+            this.lbl_ngayBD.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ngayBD.Location = new System.Drawing.Point(536, 288);
+            this.lbl_ngayBD.Name = "lbl_ngayBD";
+            this.lbl_ngayBD.Size = new System.Drawing.Size(198, 23);
+            this.lbl_ngayBD.TabIndex = 87;
+            this.lbl_ngayBD.Text = "Ngày bắt đầu làm việc";
+            // 
             // txt_GT
             // 
             this.txt_GT.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -342,24 +360,6 @@ namespace Project_NeoCitizen
             this.txt_GT.Name = "txt_GT";
             this.txt_GT.Size = new System.Drawing.Size(133, 29);
             this.txt_GT.TabIndex = 81;
-            // 
-            // dt_ngayBD
-            // 
-            this.dt_ngayBD.CalendarFont = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dt_ngayBD.Location = new System.Drawing.Point(583, 314);
-            this.dt_ngayBD.Name = "dt_ngayBD";
-            this.dt_ngayBD.Size = new System.Drawing.Size(225, 29);
-            this.dt_ngayBD.TabIndex = 86;
-            // 
-            // lbl_ngayBD
-            // 
-            this.lbl_ngayBD.AutoSize = true;
-            this.lbl_ngayBD.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_ngayBD.Location = new System.Drawing.Point(579, 287);
-            this.lbl_ngayBD.Name = "lbl_ngayBD";
-            this.lbl_ngayBD.Size = new System.Drawing.Size(198, 23);
-            this.lbl_ngayBD.TabIndex = 87;
-            this.lbl_ngayBD.Text = "Ngày bắt đầu làm việc";
             // 
             // DetailCitizenModule
             // 
