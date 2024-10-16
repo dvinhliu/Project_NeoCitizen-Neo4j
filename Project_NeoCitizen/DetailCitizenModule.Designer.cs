@@ -44,12 +44,16 @@ namespace Project_NeoCitizen
             this.label7 = new System.Windows.Forms.Label();
             this.txt_SDT = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txt_ViTri = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txt_CongViec = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.txt_GD = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.txt_DC = new System.Windows.Forms.TextBox();
             this.txt_SoCC = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.txt_DC = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -58,39 +62,43 @@ namespace Project_NeoCitizen
             // 
             this.txt_GT.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_GT.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_GT.Location = new System.Drawing.Point(678, 21);
+            this.txt_GT.Location = new System.Drawing.Point(672, 63);
+            this.txt_GT.Margin = new System.Windows.Forms.Padding(4);
             this.txt_GT.Name = "txt_GT";
-            this.txt_GT.Size = new System.Drawing.Size(101, 25);
+            this.txt_GT.Size = new System.Drawing.Size(133, 29);
             this.txt_GT.TabIndex = 81;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(604, 24);
+            this.label4.Location = new System.Drawing.Point(668, 36);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(68, 18);
+            this.label4.Size = new System.Drawing.Size(79, 23);
             this.label4.TabIndex = 80;
-            this.label4.Text = "Giới Tính:";
+            this.label4.Text = "Giới tính";
             // 
             // txt_NgaySinh
             // 
             this.txt_NgaySinh.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_NgaySinh.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_NgaySinh.Location = new System.Drawing.Point(102, 73);
+            this.txt_NgaySinh.Location = new System.Drawing.Point(460, 63);
+            this.txt_NgaySinh.Margin = new System.Windows.Forms.Padding(4);
             this.txt_NgaySinh.Name = "txt_NgaySinh";
-            this.txt_NgaySinh.Size = new System.Drawing.Size(137, 25);
+            this.txt_NgaySinh.Size = new System.Drawing.Size(204, 29);
             this.txt_NgaySinh.TabIndex = 79;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(13, 76);
+            this.label3.Location = new System.Drawing.Point(456, 36);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(78, 18);
+            this.label3.Size = new System.Drawing.Size(93, 23);
             this.label3.TabIndex = 78;
-            this.label3.Text = "Ngày Sinh:";
+            this.label3.Text = "Ngày sinh";
             // 
             // panel1
             // 
@@ -98,8 +106,9 @@ namespace Project_NeoCitizen
             this.panel1.Controls.Add(this.btn_exit);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(916, 27);
+            this.panel1.Size = new System.Drawing.Size(862, 33);
             this.panel1.TabIndex = 77;
             // 
             // btn_exit
@@ -109,9 +118,10 @@ namespace Project_NeoCitizen
             this.btn_exit.FlatAppearance.BorderSize = 0;
             this.btn_exit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_exit.Image = ((System.Drawing.Image)(resources.GetObject("btn_exit.Image")));
-            this.btn_exit.Location = new System.Drawing.Point(878, 0);
+            this.btn_exit.Location = new System.Drawing.Point(811, 0);
+            this.btn_exit.Margin = new System.Windows.Forms.Padding(4);
             this.btn_exit.Name = "btn_exit";
-            this.btn_exit.Size = new System.Drawing.Size(38, 27);
+            this.btn_exit.Size = new System.Drawing.Size(51, 33);
             this.btn_exit.TabIndex = 0;
             this.btn_exit.UseVisualStyleBackColor = true;
             this.btn_exit.Click += new System.EventHandler(this.btn_exit_Click);
@@ -121,9 +131,10 @@ namespace Project_NeoCitizen
             this.lblTittle.AutoSize = true;
             this.lblTittle.Font = new System.Drawing.Font("Tahoma", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTittle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(172)))), ((int)(((byte)(220)))));
-            this.lblTittle.Location = new System.Drawing.Point(12, 28);
+            this.lblTittle.Location = new System.Drawing.Point(224, 37);
+            this.lblTittle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTittle.Name = "lblTittle";
-            this.lblTittle.Size = new System.Drawing.Size(64, 22);
+            this.lblTittle.Size = new System.Drawing.Size(80, 27);
             this.lblTittle.TabIndex = 76;
             this.lblTittle.Text = "label6";
             // 
@@ -131,9 +142,10 @@ namespace Project_NeoCitizen
             // 
             this.txt_HoTen.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_HoTen.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_HoTen.Location = new System.Drawing.Point(354, 21);
+            this.txt_HoTen.Location = new System.Drawing.Point(157, 63);
+            this.txt_HoTen.Margin = new System.Windows.Forms.Padding(4);
             this.txt_HoTen.Name = "txt_HoTen";
-            this.txt_HoTen.Size = new System.Drawing.Size(222, 25);
+            this.txt_HoTen.Size = new System.Drawing.Size(295, 29);
             this.txt_HoTen.TabIndex = 72;
             // 
             // txt_IDCongDan
@@ -141,52 +153,61 @@ namespace Project_NeoCitizen
             this.txt_IDCongDan.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_IDCongDan.Enabled = false;
             this.txt_IDCongDan.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_IDCongDan.Location = new System.Drawing.Point(122, 21);
+            this.txt_IDCongDan.Location = new System.Drawing.Point(8, 63);
+            this.txt_IDCongDan.Margin = new System.Windows.Forms.Padding(4);
             this.txt_IDCongDan.Name = "txt_IDCongDan";
-            this.txt_IDCongDan.Size = new System.Drawing.Size(107, 25);
+            this.txt_IDCongDan.Size = new System.Drawing.Size(141, 29);
             this.txt_IDCongDan.TabIndex = 71;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(264, 24);
+            this.label2.Location = new System.Drawing.Point(153, 36);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 18);
+            this.label2.Size = new System.Drawing.Size(66, 23);
             this.label2.TabIndex = 70;
-            this.label2.Text = "Họ Và Tên:";
+            this.label2.Text = "Họ tên";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(13, 24);
+            this.label1.Location = new System.Drawing.Point(4, 36);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 18);
+            this.label1.Size = new System.Drawing.Size(120, 23);
             this.label1.TabIndex = 69;
-            this.label1.Text = "ID Công Dân:";
+            this.label1.Text = "Mã công dân";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(264, 76);
+            this.label7.Location = new System.Drawing.Point(456, 120);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(103, 18);
+            this.label7.Size = new System.Drawing.Size(120, 23);
             this.label7.TabIndex = 82;
-            this.label7.Text = "Số Điện Thoại:";
+            this.label7.Text = "Số điện thoại";
             // 
             // txt_SDT
             // 
             this.txt_SDT.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_SDT.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_SDT.Location = new System.Drawing.Point(373, 72);
+            this.txt_SDT.Location = new System.Drawing.Point(460, 147);
+            this.txt_SDT.Margin = new System.Windows.Forms.Padding(4);
             this.txt_SDT.Name = "txt_SDT";
-            this.txt_SDT.Size = new System.Drawing.Size(166, 25);
+            this.txt_SDT.Size = new System.Drawing.Size(345, 29);
             this.txt_SDT.TabIndex = 83;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txt_ViTri);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.txt_CongViec);
+            this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.txt_IDCongDan);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txt_HoTen);
@@ -204,79 +225,130 @@ namespace Project_NeoCitizen
             this.groupBox1.Controls.Add(this.txt_NgaySinh);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(16, 71);
+            this.groupBox1.Location = new System.Drawing.Point(21, 87);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(884, 180);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(821, 380);
             this.groupBox1.TabIndex = 86;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông Tin Công Dân";
+            // 
+            // txt_ViTri
+            // 
+            this.txt_ViTri.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.txt_ViTri.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_ViTri.Location = new System.Drawing.Point(356, 314);
+            this.txt_ViTri.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_ViTri.Name = "txt_ViTri";
+            this.txt_ViTri.Size = new System.Drawing.Size(453, 29);
+            this.txt_ViTri.TabIndex = 85;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(352, 287);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(133, 23);
+            this.label10.TabIndex = 84;
+            this.label10.Text = "Vị trí công việc";
+            // 
+            // txt_CongViec
+            // 
+            this.txt_CongViec.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.txt_CongViec.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_CongViec.Location = new System.Drawing.Point(12, 314);
+            this.txt_CongViec.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_CongViec.Name = "txt_CongViec";
+            this.txt_CongViec.Size = new System.Drawing.Size(336, 29);
+            this.txt_CongViec.TabIndex = 85;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(8, 287);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(91, 23);
+            this.label9.TabIndex = 84;
+            this.label9.Text = "Công việc";
             // 
             // txt_GD
             // 
             this.txt_GD.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_GD.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_GD.Location = new System.Drawing.Point(678, 72);
+            this.txt_GD.Location = new System.Drawing.Point(228, 147);
+            this.txt_GD.Margin = new System.Windows.Forms.Padding(4);
             this.txt_GD.Name = "txt_GD";
-            this.txt_GD.Size = new System.Drawing.Size(181, 25);
+            this.txt_GD.Size = new System.Drawing.Size(224, 29);
             this.txt_GD.TabIndex = 83;
             // 
-            // label8
+            // txt_DC
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(555, 75);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(117, 18);
-            this.label8.TabIndex = 82;
-            this.label8.Text = "Thuộc Gia Đình: ";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(20, 125);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(71, 18);
-            this.label5.TabIndex = 82;
-            this.label5.Text = "Số CCCD:";
+            this.txt_DC.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.txt_DC.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_DC.Location = new System.Drawing.Point(12, 230);
+            this.txt_DC.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_DC.Name = "txt_DC";
+            this.txt_DC.Size = new System.Drawing.Size(797, 29);
+            this.txt_DC.TabIndex = 83;
             // 
             // txt_SoCC
             // 
             this.txt_SoCC.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txt_SoCC.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_SoCC.Location = new System.Drawing.Point(102, 122);
+            this.txt_SoCC.Location = new System.Drawing.Point(8, 147);
+            this.txt_SoCC.Margin = new System.Windows.Forms.Padding(4);
             this.txt_SoCC.Name = "txt_SoCC";
-            this.txt_SoCC.Size = new System.Drawing.Size(201, 25);
+            this.txt_SoCC.Size = new System.Drawing.Size(212, 29);
             this.txt_SoCC.TabIndex = 83;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(347, 128);
+            this.label6.Location = new System.Drawing.Point(8, 203);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 18);
+            this.label6.Size = new System.Drawing.Size(67, 23);
             this.label6.TabIndex = 82;
-            this.label6.Text = "Địa Chỉ:";
+            this.label6.Text = "Địa chỉ";
             // 
-            // txt_DC
+            // label8
             // 
-            this.txt_DC.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.txt_DC.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_DC.Location = new System.Drawing.Point(410, 125);
-            this.txt_DC.Name = "txt_DC";
-            this.txt_DC.Size = new System.Drawing.Size(449, 25);
-            this.txt_DC.TabIndex = 83;
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(224, 120);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(136, 23);
+            this.label8.TabIndex = 82;
+            this.label8.Text = "Thuộc gia đình";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(4, 120);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(173, 23);
+            this.label5.TabIndex = 82;
+            this.label5.Text = "Căn cước công dân";
             // 
             // DetailCitizenModule
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(916, 270);
+            this.ClientSize = new System.Drawing.Size(862, 496);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblTittle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DetailCitizenModule";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DetailCitizenModule";
@@ -310,5 +382,9 @@ namespace Project_NeoCitizen
         public System.Windows.Forms.TextBox txt_SoCC;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
+        public System.Windows.Forms.TextBox txt_ViTri;
+        private System.Windows.Forms.Label label10;
+        public System.Windows.Forms.TextBox txt_CongViec;
+        private System.Windows.Forms.Label label9;
     }
 }

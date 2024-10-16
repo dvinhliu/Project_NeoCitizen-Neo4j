@@ -143,7 +143,7 @@ namespace Project_NeoCitizen
             }
             else if (colName == "Delete")
             {
-                if (MessageBox.Show("Bạn có chắc muốn xóa tài khoản này không?", "Thông Báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Bạn có chắc muốn xóa địa chỉ này không?", "Thông Báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {

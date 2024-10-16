@@ -17,9 +17,6 @@ namespace Project_NeoCitizen.Models
         public Employment Employment { get; set; }
         public Address Address { get; set; }
         public IdentityCard IdentityCard { get; set; }
-        public string JobID { get; set; }                // ID của công việc
-        public string IdentityCardID { get; set; }       // ID của thẻ căn cước
-        public string AddressID { get; set; }
         public string IDFullName_ToString()
         {
             return $"{CitizenID} - {FullName}";
