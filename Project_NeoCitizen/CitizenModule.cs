@@ -118,16 +118,24 @@ namespace Project_NeoCitizen
 
                 if (result)
                 {
-                    // Lấy ID
-                    var selectedJobID = ((KeyValuePair<string, string>)cbbCongViec.SelectedItem).Key;
-                    var selectedIDCardID = ((KeyValuePair<string, string>)cbbCCCD.SelectedItem).Key;
-                    var selectedAddressID = ((KeyValuePair<string, string>)cbbDiaChi.SelectedItem).Key;
+                    // Lấy ID (kiểm tra nếu có giá trị mới tạo quan hệ)
+                    if (cbbCongViec.SelectedItem != null)
+                    {
+                        var selectedJobID = ((KeyValuePair<string, string>)cbbCongViec.SelectedItem).Key;
+                        await neo4JConnection.AddRelationshipAsync(citizen.CitizenID, selectedJobID, "EMPLOYED_AT");
+                    }
 
-                    // Lưu các mối quan hệ
-                    await neo4JConnection.AddRelationshipAsync(citizen.CitizenID, selectedAddressID, "LIVING_AT");
-                    await neo4JConnection.AddRelationshipAsync(citizen.CitizenID, selectedJobID, "EMPLOYED_AT");
-                    await neo4JConnection.AddRelationshipAsync(citizen.CitizenID, selectedIDCardID, "HAS_DOCUMENT");
+                    if (cbbCCCD.SelectedItem != null)
+                    {
+                        var selectedIDCardID = ((KeyValuePair<string, string>)cbbCCCD.SelectedItem).Key;
+                        await neo4JConnection.AddRelationshipAsync(citizen.CitizenID, selectedIDCardID, "HAS_DOCUMENT");
+                    }
 
+                    if (cbbDiaChi.SelectedItem != null)
+                    {
+                        var selectedAddressID = ((KeyValuePair<string, string>)cbbDiaChi.SelectedItem).Key;
+                        await neo4JConnection.AddRelationshipAsync(citizen.CitizenID, selectedAddressID, "LIVING_AT");
+                    }
 
                     MessageBox.Show("Thêm công dân và các mối quan hệ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     citizenForm.GetData();
