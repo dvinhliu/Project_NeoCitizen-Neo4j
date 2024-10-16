@@ -323,7 +323,7 @@ namespace Project_NeoCitizen
             this.groupBox1.Controls.Add(this.txt_GT);
             this.groupBox1.Controls.Add(this.txt_NgaySinh);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Font = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(13, 41);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
@@ -348,7 +348,7 @@ namespace Project_NeoCitizen
             this.dt_ngayBD.CalendarFont = new System.Drawing.Font("Tahoma", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dt_ngayBD.Location = new System.Drawing.Point(583, 314);
             this.dt_ngayBD.Name = "dt_ngayBD";
-            this.dt_ngayBD.Size = new System.Drawing.Size(225, 26);
+            this.dt_ngayBD.Size = new System.Drawing.Size(225, 29);
             this.dt_ngayBD.TabIndex = 86;
             // 
             // lbl_ngayBD
