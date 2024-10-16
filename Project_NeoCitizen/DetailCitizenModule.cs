@@ -31,7 +31,7 @@ namespace Project_NeoCitizen
         {
             try
             {
-                var citizenDetails = await neo4JConnection.GetCitizenDetailsByIDAsync(CitizenID);
+                var citizenDetails = await neo4JConnection.GetCitizenByIdAsync(CitizenID);
                 if (citizenDetails != null)
                 {
                     txt_IDCongDan.Text = string.IsNullOrEmpty(citizenDetails.CitizenID) ? "Không có thông tin" : citizenDetails.CitizenID;
@@ -42,6 +42,20 @@ namespace Project_NeoCitizen
                     txt_GD.Text = citizenDetails.Family?.FamilyName ?? "Không có thông tin";
                     txt_SoCC.Text = citizenDetails.IdentityCard?.DocumentNumber ?? "Không có thông tin";
                     txt_DC.Text = citizenDetails.Address?.GetFullAddress() ?? "Không có thông tin";
+                    txt_CongViec.Text = citizenDetails.Employment?.Company ?? "Không có thông tin";
+                    txt_ViTri.Text = citizenDetails.Employment?.Position ?? "Không có thông tin";
+
+                    if (txt_CongViec.Text.Equals("Không có thông tin"))
+                    {
+                        lbl_ngayBD.Visible = false;
+                        dt_ngayBD.Visible = false;
+                    }    
+                    else
+                    {
+                        lbl_ngayBD.Visible = true;
+                        dt_ngayBD.Visible = true;
+                        dt_ngayBD.Value = DateTime.Parse(citizenDetails.Employment.StartDate);
+                    }    
                 }
                 else
                 {
